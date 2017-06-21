@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import logic.SpellingGameStateMachine;
+import viewmodel.SpellingGameStateMachine;
 import view.GdxGame;
 import view.actors.Letter;
 import view.start.StartScreen;

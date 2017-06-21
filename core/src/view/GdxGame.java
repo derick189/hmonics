@@ -4,7 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import model.Data;
+import model.DataManager;
 import view.games.SpellingGameScreen;
 
 public class GdxGame extends Game {
@@ -25,7 +25,7 @@ public class GdxGame extends Game {
         batch = new SpriteBatch();
 //        font = new BitmapFont();
         AssetManager.init();
-        Data.populate();
+        DataManager.populate();
 
         setScreen(new SpellingGameScreen(this, new view.start.StartScreen(this)));
     }

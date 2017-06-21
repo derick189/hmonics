@@ -1,6 +1,6 @@
 package model;
 
-import logic.SpellingGameStateMachine;
+import viewmodel.SpellingGameStateMachine;
 
 public class Word {
     private String wordId;

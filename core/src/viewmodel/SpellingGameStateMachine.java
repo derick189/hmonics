@@ -1,7 +1,7 @@
-package logic;
+package viewmodel;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
-import model.Data;
+import model.DataManager;
 import model.Word;
 import view.actors.Letter;
 import view.games.SpellingGameScreen;
@@ -21,7 +21,7 @@ public class SpellingGameStateMachine {
         language = Language.ENGLISH;
         spellingGameScreen.setDisplayLanguage(language);
 
-        currentWord = Data.getWord("bird");
+        currentWord = DataManager.getWord("bird");
         spellingGameScreen.setPictureAndWordLength(currentWord.getWordId(), currentWord.getSpelling(language).length());
     }
 
@@ -54,7 +54,7 @@ public class SpellingGameStateMachine {
     }
 
     private void changeToNextWord() {
-        currentWord = Data.getWord("gem");
+        currentWord = DataManager.getWord("gem");
         spellingGameScreen.setPictureAndWordLength(currentWord.getWordId(), currentWord.getSpelling(language).length());
     }
 
