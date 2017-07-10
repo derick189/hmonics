@@ -16,6 +16,9 @@ import view.GdxGame;
 import view.actors.Letter;
 import view.start.StartScreen;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class SpellingGameScreen implements Screen {
@@ -42,7 +45,7 @@ public class SpellingGameScreen implements Screen {
     private ArrayList<Container<Letter>> letterContainers;
     private SpellingGameStateMachine spellingGameStateMachine;
 
-    public SpellingGameScreen(final GdxGame gdxGame, Screen parentScreen) {
+    public SpellingGameScreen(final GdxGame gdxGame, Screen parentScreen) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         this.game = gdxGame;
         stage = new Stage(gdxGame.viewport, gdxGame.batch);
         Gdx.input.setInputProcessor(stage);
@@ -55,7 +58,7 @@ public class SpellingGameScreen implements Screen {
         setStage();
     }
 
-    private void setStage() {
+    private void setStage() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         stage.addActor(backgroundGroup = new Group());
         stage.addActor(actorsGroup = new Group());
         stage.addActor(animationsGroup = new Group());

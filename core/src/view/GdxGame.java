@@ -7,6 +7,10 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import model.Data;
 import view.games.SpellingGameScreen;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
+
 public class GdxGame extends Game {
 
     public static final int WIDTH = 1920;
@@ -27,7 +31,16 @@ public class GdxGame extends Game {
         AssetManager.init();
         Data.populate();
 
-        setScreen(new SpellingGameScreen(this, new view.start.StartScreen(this)));
+        try {
+            setScreen(new SpellingGameScreen(this, new view.start.StartScreen(this)));
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void render() {
