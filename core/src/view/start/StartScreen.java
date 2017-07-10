@@ -12,6 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import view.GdxGame;
 import view.games.SpellingGameScreen;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
+
 public class StartScreen implements Screen {
 
     private Stage stage;
@@ -34,10 +38,19 @@ public class StartScreen implements Screen {
         Image titleImage = new Image(view.AssetManager.getTextureRegion("gem"));
         ImageButton studentButton = new ImageButton(view.AssetManager.buttonSkin);
         ImageButton teacherButton = new ImageButton(view.AssetManager.buttonSkin);
+        view.AssetManager.introMusic.play();
         studentButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                StartScreen.this.game.setScreen(new SpellingGameScreen(game, StartScreen.this));
+                try {
+                    StartScreen.this.game.setScreen(new SpellingGameScreen(game, StartScreen.this));
+                } catch (UnsupportedAudioFileException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (LineUnavailableException e) {
+                    e.printStackTrace();
+                }
             }
         });
         teacherButton.addListener(new ChangeListener() {
