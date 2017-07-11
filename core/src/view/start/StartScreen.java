@@ -8,7 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import view.AssetManager;
 import view.GdxGame;
 import view.games.SpellingGameScreen;
 
@@ -36,9 +38,8 @@ public class StartScreen implements Screen {
         stage.addActor(mainTable);
 
         Image titleImage = new Image(view.AssetManager.getTextureRegion("gem"));
-        ImageButton studentButton = new ImageButton(view.AssetManager.buttonSkin);
-        ImageButton teacherButton = new ImageButton(view.AssetManager.buttonSkin);
-        view.AssetManager.introMusic.play();
+        TextButton studentButton = new TextButton("Student", view.AssetManager.buttonSkin);
+        TextButton teacherButton = new TextButton("Teacher", view.AssetManager.buttonSkin);
         studentButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
