@@ -3,9 +3,12 @@ package view;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import model.DataManager;
 import view.games.SpellingGameScreen;
+import view.start.SplashScreen;
+import view.start.StartScreen;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -26,26 +29,29 @@ public class GdxGame extends Game {
         camera.setToOrtho(false, WIDTH, HEIGHT);
         viewport = new ExtendViewport(WIDTH, HEIGHT, camera);
 
-        batch = new SpriteBatch();
 //        font = new BitmapFont();
         AssetManager.init();
         DataManager.populate();
 
-        try {
-            setScreen(new SpellingGameScreen(this, new view.start.StartScreen(this)));
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (LineUnavailableException e) {
-            e.printStackTrace();
-        }
+        batch = new SpriteBatch();
 
+        setScreen(new SplashScreen(this));
+
+        setScreen(new StartScreen(this));
+
+
+//        try {
+//            //setScreen(new SpellingGameScreen(this, new view.start.StartScreen(this)));
+//        } catch (UnsupportedAudioFileException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (LineUnavailableException e) {
+//            e.printStackTrace();
+//        }
     }
 
-    public void render() {
-        super.render(); //important!
-    }
+    public void render() { super.render(); } //important!
 
     public void dispose() {
         batch.dispose();

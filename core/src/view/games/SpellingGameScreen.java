@@ -59,6 +59,7 @@ public class SpellingGameScreen implements Screen {
     }
 
     private void setStage() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        view.AssetManager.spellingGameMusic.play();
         stage.addActor(backgroundGroup = new Group());
         stage.addActor(actorsGroup = new Group());
         stage.addActor(animationsGroup = new Group());
