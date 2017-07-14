@@ -1,5 +1,7 @@
 package logic;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import model.Data;
 import model.Word;
@@ -18,7 +20,7 @@ public class SpellingGameStateMachine {
         state = State.COMPLETING_WORD;
         this.spellingGameScreen = spellingGameScreen;
 
-        language = Language.ENGLISH;
+        language = Language.HMONG;
         spellingGameScreen.setDisplayLanguage(language);
 
         currentWord = Data.getWord("bird");
@@ -32,11 +34,28 @@ public class SpellingGameStateMachine {
             case COMPLETING_WORD:
                 switch (event) {
                     case DROPPED_LETTER:
+                        playLetterSound();
                         if (wordIsCorrect()) {
                             changeToNextWord();
                         }
                 }
                 break;
+        }
+    }
+
+    /**
+     * Helper method to play audio for each letter dropped
+     */
+    private void playLetterSound() {
+        ArrayList<Container<Letter>> letterContainers = spellingGameScreen.getLetterContainers();
+        // Find last container with a letter
+        for (int i = 0; i < letterContainers.size(); i++) {
+            if (letterContainers.get(i).getActor() == null) {
+                Letter letter = letterContainers.get(i-1).getActor();
+                Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/" + language.toString() + "Alphabet/" + letter.getName() + ".mp3"));
+                sound.play();
+                return;
+            }
         }
     }
 

@@ -23,8 +23,8 @@ import java.util.ArrayList;
 
 public class SpellingGameScreen implements Screen {
     private final int separatorHeight = 40;
-    private final int letterSize = 110;
-    private final int imageSize = 400;
+    private int letterSize = 110;
+    private int imageSize = 400;
     private final int spaceSize = 140;
     private Stage stage;
     private GdxGame game;
@@ -118,8 +118,8 @@ public class SpellingGameScreen implements Screen {
                         "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
                         "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
                 int letterIndex = 0;
-                for (int i = 0; i < 2; i++) {
-                    for (int j = 0; j < 13; j++) {
+                for (int i = 0; i < 2; i++) { // For each row
+                    for (int j = 0; j < 13; j++) { // For each column
                         if (letterIndex < alphabet.length) {
                             final Letter letter = new Letter(alphabet[letterIndex++]);
                             letterTable.add(new Container<Letter>(letter).size(letterSize)).size(letterSize);
@@ -149,7 +149,49 @@ public class SpellingGameScreen implements Screen {
                 }
                 return;
             case HMONG:
+                letterSize = 65;
+                imageSize = 300;
+                String[] consonants = {"c", "ch", "d", "dh", "dl", "f", "h", "hl", "hm", "hml", "hn", "hny",
+                    "k", "kh", "l", "m", "ml", "n", "nc", "nch", "ndl", "nk", "nkh", "np", "nph", "npl", "nplh", "nq",
+                    "nqh", "nr", "nrh", "nt", "nth", "nts", "ntsh", "ntx", "ntxh", "ny", "p", "ph", "pl", "plh", "q",
+                    "qh", "r", "rh", "s", "t", "th", "ts", "tsh", "tx", "txh", "v", "x", "xy", "y", "z"};
+                String[] vowels = {"a", "aa", "ai", "au", "aw", "e", "ee", "i", "ia", "o", "oo", "u", "ua", "w"};
+                letterIndex = 0;
+                for (int i = 0; i < 3; i++) { // row
+                    for (int j = 0; j < 29; j++) { // column
+                        if (letterIndex < consonants.length + vowels.length) {
+                            final Letter letter;
+                            if (letterIndex < consonants.length) {
+                                letter = new Letter(consonants[letterIndex++]);
+                            } else { // vowel
+                                letter = new Letter(vowels[(letterIndex++) - consonants.length]);
+                            }
+                            letter.nameLabel.setFontScale(2);
+                            letterTable.add(new Container<Letter>(letter).size(letterSize)).size(letterSize);
 
+                            // Creates a copy when letter is dragged from the alphabet. The copy does not create a copy when moved.
+                            dragAndDrop.addSource(new DragAndDrop.Source(letter) {
+                                public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
+                                    DragAndDrop.Payload payload = new DragAndDrop.Payload();
+                                    Letter letterCopy = new Letter(getActor());
+                                    letterCopy.setSize(spaceSize, spaceSize);
+                                    payload.setObject(letterCopy);
+                                    payload.setDragActor(letterCopy);
+                                    dragAndDrop.addSource(new DragAndDrop.Source(letterCopy) {
+                                        public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
+                                            DragAndDrop.Payload payload = new DragAndDrop.Payload();
+                                            payload.setObject(getActor());
+                                            payload.setDragActor(getActor());
+                                            return payload;
+                                        }
+                                    });
+                                    return payload;
+                                }
+                            });
+                        }
+                    }
+                    letterTable.row();
+                }
                 return;
         }
     }

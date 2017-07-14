@@ -9,7 +9,7 @@ import view.AssetManager;
 
 public class Letter extends Stack {
     private ImageButton imageButton;
-    private Label nameLabel;
+    public static Label nameLabel;
 
     public Letter(String name) {
         setName(name);
