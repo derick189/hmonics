@@ -1,6 +1,7 @@
 package view;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -22,6 +23,7 @@ public class GdxGame extends Game {
     public OrthographicCamera camera;
     public ExtendViewport viewport;
     public SpriteBatch batch;
+    public int introTime = 10000;
 //    public BitmapFont font;
 
     public void create() {
@@ -34,9 +36,15 @@ public class GdxGame extends Game {
         DataManager.populate();
 
         batch = new SpriteBatch();
-
-        setScreen(new SplashScreen(this));
-
+//        Gdx.graphics.setContinuousRendering(false);
+//        setScreen(new SplashScreen(this));
+//
+//        try {
+//            Thread.sleep(10000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        Gdx.graphics.requestRendering();
         setScreen(new StartScreen(this));
 
 
