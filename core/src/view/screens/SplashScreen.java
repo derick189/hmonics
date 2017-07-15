@@ -3,6 +3,8 @@ package view.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL30;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -23,7 +25,8 @@ public class SplashScreen implements Screen {
     }
 
     private void setStage() {
-        Image image = new Image(AssetManager.getTextureRegion("money"));
+        Texture introScreenBackground = new Texture(Gdx.files.internal("images/IntroScreenBackground.png"));
+        Image image = new Image(introScreenBackground);
         image.setSize(GdxGame.WIDTH, GdxGame.HEIGHT);
         stage.addActor(image);
 
