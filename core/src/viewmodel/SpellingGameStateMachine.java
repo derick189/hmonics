@@ -16,7 +16,7 @@ public class SpellingGameStateMachine {
         this.spellingGameScreen = spellingGameScreen;
         state = State.COMPLETING_WORD;
 
-        language = Language.HMONG;
+        language = Language.ENGLISH;
         spellingGameScreen.setDisplayLanguage(language);
 
         currentWord = DataManager.getWord("bird");
@@ -31,12 +31,15 @@ public class SpellingGameStateMachine {
                 switch (event) {
                     case DROPPED_LETTER:
                         System.out.println("Current word: " + spellingGameScreen.getWordInSpaces());
-                        spellingGameScreen.playLetter(language.fileName, (Letter) actor);
-//                        spellingGameScreen.playWord(language.fileName);
-                        spellingGameScreen.explodeEffect(actor, "gem");
                         if (wordIsCorrect()) {
+                            spellingGameScreen.playWord(language.fileName, currentWord);
+                            // TODO special animation for correct word
                             changeToNextWord();
+                            break;
                         }
+                        spellingGameScreen.playLetter(language.fileName, (Letter) actor);
+                        spellingGameScreen.explodeEffect(actor, "gem");
+
                         break;
                 }
                 break;
