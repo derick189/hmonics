@@ -5,8 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import model.DataManager;
-import view.games.SpellingGameScreen;
-import viewmodel.ScreenManager;
+import view.screens.SplashScreen;
 
 public class GdxGame extends Game {
 
@@ -16,7 +15,6 @@ public class GdxGame extends Game {
     public OrthographicCamera camera;
     public ExtendViewport viewport;
     public SpriteBatch batch;
-    public int introTime = 10000;
 //    public BitmapFont font;
 
     public void create() {
@@ -30,30 +28,7 @@ public class GdxGame extends Game {
         AssetManager.init();
         DataManager.populate();
 
-        ScreenManager.start(this, new SpellingGameScreen(this));
-
-
-//        Gdx.graphics.setContinuousRendering(false);
-//        setScreen(new SplashScreen(this));
-//
-//        try {
-//            Thread.sleep(10000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        Gdx.graphics.requestRendering();
-//        setScreen(new StartScreen(this));
-
-
-//        try {
-//            //setScreen(new SpellingGameScreen(this, new view.screens.StartScreen(this)));
-//        } catch (UnsupportedAudioFileException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (LineUnavailableException e) {
-//            e.printStackTrace();
-//        }
+        setScreen(new SplashScreen(GdxGame.this));
     }
 
     public void render() {

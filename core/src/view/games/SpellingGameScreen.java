@@ -26,8 +26,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class SpellingGameScreen implements Screen {
-    private Stage stage;
     private GdxGame game;
+    private Stage stage;
     private DragAndDrop dragAndDrop;
     private Music backgroundMusic;
     private Random random;
@@ -89,7 +89,7 @@ public class SpellingGameScreen implements Screen {
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                ScreenManager.goBack();
+                ScreenManager.previousScreen();
             }
         });
 
@@ -284,9 +284,8 @@ public class SpellingGameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.3f, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
-//        stage.getBatch().setColor(1,1,1,1);
         stage.act(delta);
         stage.draw();
     }
@@ -298,23 +297,26 @@ public class SpellingGameScreen implements Screen {
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void hide() {
+
     }
 
     @Override
     public void pause() {
+
     }
 
     @Override
     public void resume() {
+
     }
 
     @Override
     public void dispose() {
         stage.dispose();
-
     }
 }

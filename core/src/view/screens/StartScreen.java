@@ -4,13 +4,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import view.GdxGame;
 import view.games.SpellingGameScreen;
+import viewmodel.ScreenManager;
 
 public class StartScreen implements Screen {
     private Stage stage;
@@ -33,10 +36,16 @@ public class StartScreen implements Screen {
         Image titleImage = new Image(view.AssetManager.getTextureRegion("gem"));
         TextButton studentButton = new TextButton("Student", view.AssetManager.buttonSkin);
         TextButton teacherButton = new TextButton("Teacher", view.AssetManager.buttonSkin);
-        studentButton.addListener(new ChangeListener() {
+//        studentButton.addListener(new ChangeListener() {
+//            @Override
+//            public void changed(ChangeEvent event, Actor actor) {
+//                StartScreen.this.game.setScreen(new SpellingGameScreen(game));
+//            }
+//        });
+        studentButton.addListener(new ClickListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                StartScreen.this.game.setScreen(new SpellingGameScreen(game));
+            public void clicked(InputEvent event, float x, float y) {
+                ScreenManager.nextScreen(StartScreen.this, new SpellingGameScreen(game));
             }
         });
         teacherButton.addListener(new ChangeListener() {
@@ -61,9 +70,8 @@ public class StartScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.3f, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
-//        stage.getBatch().setColor(1,1,1,1);
         stage.act(delta);
         stage.draw();
     }
@@ -75,18 +83,22 @@ public class StartScreen implements Screen {
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void hide() {
+
     }
 
     @Override
     public void pause() {
+
     }
 
     @Override
     public void resume() {
+
     }
 
     @Override

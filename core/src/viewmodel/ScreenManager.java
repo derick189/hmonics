@@ -15,17 +15,19 @@ public class ScreenManager {
 
     public static void start(GdxGame gdxGame, Screen firstScreen) {
         ScreenManager.game = gdxGame;
-        previousScreens.push(firstScreen);
         game.setScreen(firstScreen);
     }
 
-    public static void changeScreen(Screen previous, Screen next) {
+    public static void nextScreen(Screen previous, Screen next) {
         previousScreens.push(previous);
         game.setScreen(next);
     }
 
-    public static void goBack() {
-        game.setScreen(previousScreens.size() > 1 ? previousScreens.pop() : previousScreens.peek());
+    public static void previousScreen() {
+//        game.setScreen(previousScreens.size() > 1 ? previousScreens.pop() : previousScreens.peek());
+        Screen previous = previousScreens.pop();
+        game.setScreen(previous);
+        previous.resume();
     }
 
     public static ArrayList<Teacher> formatTeachers() {
