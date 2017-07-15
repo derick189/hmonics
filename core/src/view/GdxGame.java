@@ -1,19 +1,11 @@
 package view;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import model.Data;
-import view.games.SpellingGameScreen;
-import view.start.SplashScreen;
-import view.start.StartScreen;
-
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.IOException;
+import model.DataManager;
+import view.screens.SplashScreen;
 
 public class GdxGame extends Game {
 
@@ -23,7 +15,6 @@ public class GdxGame extends Game {
     public OrthographicCamera camera;
     public ExtendViewport viewport;
     public SpriteBatch batch;
-    public int introTime = 10000;
 //    public BitmapFont font;
 
     public void create() {
@@ -31,35 +22,18 @@ public class GdxGame extends Game {
         camera.setToOrtho(false, WIDTH, HEIGHT);
         viewport = new ExtendViewport(WIDTH, HEIGHT, camera);
 
-//        font = new BitmapFont();
-        AssetManager.init();
-        Data.populate();
-
         batch = new SpriteBatch();
-//        Gdx.graphics.setContinuousRendering(false);
-//        setScreen(new SplashScreen(this));
-//
-//        try {
-//            Thread.sleep(10000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        Gdx.graphics.requestRendering();
-        setScreen(new StartScreen(this));
+//        font = new BitmapFont();
 
+        AssetManager.init();
+        DataManager.populate();
 
-//        try {
-//            //setScreen(new SpellingGameScreen(this, new view.start.StartScreen(this)));
-//        } catch (UnsupportedAudioFileException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (LineUnavailableException e) {
-//            e.printStackTrace();
-//        }
+        setScreen(new SplashScreen(GdxGame.this));
     }
 
-    public void render() { super.render(); } //important!
+    public void render() {
+        super.render();
+    } //important!
 
     public void dispose() {
         batch.dispose();

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class Data {
+public class DataManager {
     private static ArrayList<String> wordIdList;
     private static HashMap<String, Word> wordIdToWord;
 
