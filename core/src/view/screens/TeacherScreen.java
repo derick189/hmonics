@@ -1,4 +1,4 @@
-package view.teacher;
+package view.screens;
 
 public class TeacherScreen {
 }

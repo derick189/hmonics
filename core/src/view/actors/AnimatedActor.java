@@ -11,16 +11,16 @@ public class AnimatedActor extends Actor {
     private float time = 0f;
     private boolean flip;
 
-    public AnimatedActor(Animation<TextureRegion> animation, String name) {
+    public AnimatedActor(Animation<TextureRegion> animation, String fileName) {
 //        setDebug(true);
-        this.setName(name);
+        this.setName(fileName);
         this.animation = animation;
         setSize(animation.getKeyFrame(0).getRegionWidth(), animation.getKeyFrame(0).getRegionHeight());
         flip = false;
     }
 
-    public void changeAnimation(Animation<TextureRegion> animation, String name) {
-        this.setName(name);
+    public void changeAnimation(Animation<TextureRegion> animation, String fileName) {
+        this.setName(fileName);
         this.animation = animation;
         setSize(animation.getKeyFrame(0).getRegionWidth(), animation.getKeyFrame(0).getRegionHeight());
         time = 0f;

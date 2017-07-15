@@ -1,4 +1,4 @@
-package view.start;
+package view.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -6,20 +6,13 @@ import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import view.AssetManager;
 import view.GdxGame;
 import view.games.SpellingGameScreen;
 
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.IOException;
-
 public class StartScreen implements Screen {
-
     private Stage stage;
     private GdxGame game;
 
@@ -43,15 +36,7 @@ public class StartScreen implements Screen {
         studentButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                try {
-                    StartScreen.this.game.setScreen(new SpellingGameScreen(game, StartScreen.this));
-                } catch (UnsupportedAudioFileException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (LineUnavailableException e) {
-                    e.printStackTrace();
-                }
+                StartScreen.this.game.setScreen(new SpellingGameScreen(game));
             }
         });
         teacherButton.addListener(new ChangeListener() {

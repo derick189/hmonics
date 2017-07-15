@@ -8,8 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import view.AssetManager;
 
 public class Letter extends Stack {
+    public Label nameLabel;
     private ImageButton imageButton;
-    public static Label nameLabel;
 
     public Letter(String name) {
         setName(name);
