@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import model.Word;
 import view.AssetManager;
 import view.GdxGame;
 import view.actors.AnimatedActor;
@@ -273,13 +274,11 @@ public class SpellingGameScreen implements Screen {
         sound.play();
     }
 
-    public void playWord(String fileName) {
-        for (Container<Letter> letterContainer : letterSpaces) {
-            if (letterContainer.hasChildren()) {
-                Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/" + fileName + "Alphabet/" + letterContainer.getActor().getName() + ".mp3"));
+    public void playWord(String fileName, Word currentWord) {
+
+                Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/" + fileName + "Words/" + currentWord.getWordId() + ".mp3"));
                 sound.play();
-            }
-        }
+
     }
 
     @Override
