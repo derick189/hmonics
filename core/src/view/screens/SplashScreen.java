@@ -4,11 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import view.AssetManager;
 import view.GdxGame;
 import viewmodel.ScreenManager;
 
@@ -31,12 +29,13 @@ public class SplashScreen implements Screen {
         stage.addActor(image);
 
         image.addAction(Actions.sequence(
-                Actions.delay(2f)
-                , Actions.run(new Runnable() {
+//                Actions.delay(.5f),
+                Actions.run(new Runnable() {
                     public void run() {
                         ScreenManager.start(game, new StartScreen(game));
                     }
-                })));
+                })
+        ));
     }
 
     @Override
@@ -59,17 +58,14 @@ public class SplashScreen implements Screen {
 
     @Override
     public void hide() {
-
     }
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override
