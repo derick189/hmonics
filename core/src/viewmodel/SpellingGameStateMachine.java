@@ -3,7 +3,6 @@ package viewmodel;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import model.DataManager;
 import model.Word;
-import view.actors.Letter;
 import view.games.SpellingGameScreen;
 
 public class SpellingGameStateMachine {
@@ -32,35 +31,19 @@ public class SpellingGameStateMachine {
                     case DROPPED_LETTER:
                         System.out.println("Current word: " + spellingGameScreen.getWordInSpaces());
                         if (wordIsCorrect()) {
-                            spellingGameScreen.playWord(language.fileName, currentWord);
+//                            spellingGameScreen.playWord(language.fileName, currentWord);
                             // TODO special animation for correct word
                             changeToNextWord();
-                            break;
+                        } else {
+//                        spellingGameScreen.playLetter(language.fileName, (Letter) actor);
+                            spellingGameScreen.confettiEffect(actor, "gem");
                         }
-                        spellingGameScreen.playLetter(language.fileName, (Letter) actor);
-                        spellingGameScreen.explodeEffect(actor, "gem");
-
                         break;
                 }
                 break;
         }
     }
 
-    /**
-     * Helper method to play audio for each letter dropped
-     */
-//    private void playLetterSound() {
-//        ArrayList<Container<Letter>> letterContainers = spellingGameScreen.getLetterContainers();
-////         Find last container with a letter
-//        for (int i = 0; i < letterContainers.size(); i++) {
-//            if (letterContainers.get(i).getActor() == null) {
-//                Letter letter = letterContainers.get(i - 1).getActor();
-//                Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/" + language.toString() + "Alphabet/" + letter.getName() + ".mp3"));
-//                sound.play();
-////                return;
-//            }
-//        }
-//    }
     private boolean wordIsCorrect() {
         return currentWord.getSpelling(language).equals(spellingGameScreen.getWordInSpaces());
     }

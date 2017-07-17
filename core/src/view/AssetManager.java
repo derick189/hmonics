@@ -9,9 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class AssetManager {
-    public static TextureAtlas atlas;
     public static Skin buttonSkin;
     public static ImageButtonStyle imageButtonStyle;
+    private static TextureAtlas atlas;
 
     public static void init() {
         atlas = new TextureAtlas(Gdx.files.internal("images/pack.atlas"));

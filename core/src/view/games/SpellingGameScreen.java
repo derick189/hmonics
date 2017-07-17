@@ -40,7 +40,6 @@ public class SpellingGameScreen implements Screen {
     private Group actorsGroup;
     private Group animationsGroup;
 
-    private ImageButton backButton;
     private Table letterTable;
     private Table pictureTable;
     private Table spaceTable;
@@ -86,7 +85,7 @@ public class SpellingGameScreen implements Screen {
         letterTable = new Table();
         pictureTable = new Table();
         spaceTable = new Table();
-        backButton = new ImageButton(view.AssetManager.imageButtonStyle);
+        ImageButton backButton = new ImageButton(AssetManager.imageButtonStyle);
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -119,7 +118,7 @@ public class SpellingGameScreen implements Screen {
 
     public void setDisplayLanguage(SpellingGameStateMachine.Language language) {
         setAlphabet(language);
-        // TODO: change letterSpaces to length of word in new language
+        // TODO: change letterSpaces to length of word in new language (optional?)
     }
 
     private void setAlphabet(SpellingGameStateMachine.Language language) {
@@ -252,7 +251,7 @@ public class SpellingGameScreen implements Screen {
         return currentString;
     }
 
-    public void explodeEffect(Actor subject, String fileName) {
+    public void confettiEffect(Actor subject, String fileName) {
         int size = 100;
         float duration = 1f;
         int distance = 300;
@@ -263,7 +262,7 @@ public class SpellingGameScreen implements Screen {
             explosion.setOrigin(size / 2, size / 2);
             animationsGroup.addActor(explosion);
             explosion.addAction(Actions.moveTo(subject.getX() + (random.nextBoolean() ? random.nextInt(distance) : -random.nextInt(distance)) + random.nextInt(distance), subject.getY() + random.nextInt(distance),
-                    duration, Interpolation.fade));
+                    duration, Interpolation.smooth));
             explosion.addAction(Actions.rotateBy(random.nextBoolean() ? random.nextInt(270) : -random.nextInt(270), duration));
             explosion.addAction(Actions.fadeOut(duration));
         }
@@ -275,10 +274,8 @@ public class SpellingGameScreen implements Screen {
     }
 
     public void playWord(String fileName, Word currentWord) {
-
-                Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/" + fileName + "Words/" + currentWord.getWordId() + ".mp3"));
-                sound.play();
-
+        Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/" + fileName + "Words/" + currentWord.getWordId() + ".mp3"));
+        sound.play();
     }
 
     @Override
@@ -301,17 +298,14 @@ public class SpellingGameScreen implements Screen {
 
     @Override
     public void hide() {
-
     }
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override

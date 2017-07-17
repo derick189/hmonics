@@ -25,10 +25,12 @@ public class GdxGame extends Game {
         batch = new SpriteBatch();
 //        font = new BitmapFont();
 
+        boolean loaded = false;
+        setScreen(new SplashScreen(GdxGame.this));
+
         AssetManager.init();
         DataManager.populate();
-
-        setScreen(new SplashScreen(GdxGame.this));
+        loaded = true;
     }
 
     public void render() {
