@@ -63,7 +63,7 @@ public class TeacherScreen implements Screen {
         backButton.addListener(doOnBackButton = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                ScreenManager.previousScreen();
+                ScreenManager.nextScreen(new StartScreen(TeacherScreen.this.game));
             }
         });
         ChangeListener doOnSelectName = new ChangeListener() {

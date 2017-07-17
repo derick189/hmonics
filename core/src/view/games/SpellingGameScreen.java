@@ -20,6 +20,7 @@ import view.AssetManager;
 import view.GdxGame;
 import view.actors.AnimatedActor;
 import view.actors.Letter;
+import view.screens.StudentScreen;
 import viewmodel.ScreenManager;
 import viewmodel.SpellingGameStateMachine;
 
@@ -89,7 +90,7 @@ public class SpellingGameScreen implements Screen {
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                ScreenManager.previousScreen();
+                ScreenManager.nextScreen(new StudentScreen(SpellingGameScreen.this.game));
             }
         });
 

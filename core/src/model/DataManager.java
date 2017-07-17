@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class DataManager {
+    static ArrayList<Teacher> test;
     private static ArrayList<String> wordIdList;
     private static HashMap<String, Word> wordIdToWord;
 
@@ -15,6 +16,14 @@ public class DataManager {
         wordIdToWord = new HashMap<String, Word>();
         for (String wordId : wordIdList) {
             wordIdToWord.put(wordId, new Word(wordId, wordId, wordId));
+        }
+
+        test = new ArrayList<Teacher>();
+        for (int i = 0; i < 3; i++) {
+            Teacher teacher = new Teacher("T" + i);
+            test.add(teacher);
+            Student student = new Student("S" + i);
+            teacher.addStudent(student);
         }
     }
 
@@ -27,13 +36,6 @@ public class DataManager {
     }
 
     public static ArrayList<Teacher> getTeachers() {
-        ArrayList<Teacher> test = new ArrayList<Teacher>();
-        for (int i = 0; i < 3; i++) {
-            Teacher teacher = new Teacher("T" + i);
-            test.add(teacher);
-            Student student = new Student("S" + i);
-            teacher.addStudent(student);
-        }
         return test;
     }
 

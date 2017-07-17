@@ -64,7 +64,7 @@ public class StudentScreen implements Screen {
         backButton.addListener(doOnBackButton = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                ScreenManager.previousScreen();
+                ScreenManager.nextScreen(new StartScreen(StudentScreen.this.game));
             }
         });
         ChangeListener doOnSelectName = new ChangeListener() {
@@ -102,7 +102,7 @@ public class StudentScreen implements Screen {
 
     private void displayGames() {
         // TODO
-        ScreenManager.nextScreen(StudentScreen.this, new SpellingGameScreen(StudentScreen.this.game));
+        ScreenManager.nextScreen(new SpellingGameScreen(StudentScreen.this.game));
     }
 
     @Override

@@ -26,8 +26,7 @@ public class ScreenManager {
         game.setScreen(firstScreen);
     }
 
-    public static void nextScreen(Screen previous, Screen next) {
-        previousScreens.push(previous);
+    public static void nextScreen(Screen next) {
         game.setScreen(next);
     }
 

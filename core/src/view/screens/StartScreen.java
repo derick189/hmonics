@@ -36,7 +36,7 @@ public class StartScreen implements Screen {
         teacherButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                ScreenManager.nextScreen(StartScreen.this, new TeacherScreen(game));
+                ScreenManager.nextScreen(new TeacherScreen(StartScreen.this.game));
             }
         });
 
@@ -44,7 +44,7 @@ public class StartScreen implements Screen {
         studentButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                ScreenManager.nextScreen(StartScreen.this, new StudentScreen(game));
+                ScreenManager.nextScreen(new StudentScreen(StartScreen.this.game));
             }
         });
 
