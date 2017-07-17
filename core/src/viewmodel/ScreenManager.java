@@ -32,9 +32,9 @@ public class ScreenManager {
     public static Table getNewSelectionTable(SelectionType selectionType, ChangeListener doOnSelectName, boolean changeVersion, String text) {
         int totalWidth = 1200;
         int nameWidth = 800;
-        int buttonWidth = 200;
-        int rowHeight = 75;
         int columnSeparator = 100;
+        int buttonWidth = 200;
+        int rowHeight = 100;
         int rowSeparator = 25;
 
         Table selectionTable = new Table();
@@ -166,7 +166,7 @@ public class ScreenManager {
                         }
                         break;
                 }
-                selectionTable.add(scrollPane).width(totalWidth).height((rowHeight + columnSeparator) * 5);
+                selectionTable.add(scrollPane).width(totalWidth).height((rowHeight + rowSeparator) * 5);
                 break;
             case HISTORIES:
                 break;

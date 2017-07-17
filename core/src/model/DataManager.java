@@ -19,11 +19,13 @@ public class DataManager {
         }
 
         test = new ArrayList<Teacher>();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 10; i++) {
             Teacher teacher = new Teacher("T" + i);
             test.add(teacher);
-            Student student = new Student("S" + i);
-            teacher.addStudent(student);
+            for (int j = 0; j < 30; j++) {
+                Student student = new Student("S" + i + j);
+                teacher.addStudent(student);
+            }
         }
     }
 
