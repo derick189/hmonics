@@ -2,15 +2,18 @@ package view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class AssetManager {
     public static Skin buttonSkin;
     public static ImageButtonStyle imageButtonStyle;
+    public static ImageButtonStyle backButtonStyle;
     private static TextureAtlas atlas;
 
     public static void init() {
@@ -20,6 +23,14 @@ public class AssetManager {
         imageButtonStyle.up = AssetManager.buttonSkin.getDrawable("buttonUp");
         imageButtonStyle.down = AssetManager.buttonSkin.getDrawable("buttonDown");
         imageButtonStyle.over = AssetManager.buttonSkin.getDrawable("buttonOver");
+
+        backButtonStyle = new ImageButtonStyle();
+        backButtonStyle.up = imageButtonStyle.up;
+        backButtonStyle.down = imageButtonStyle.down;
+        backButtonStyle.over = imageButtonStyle.over;
+        Texture backButton = new Texture(Gdx.files.internal("basic images/BackButton.png"));
+        Image image = new Image(backButton);
+        backButtonStyle.imageUp = image.getDrawable();
     }
 
     public static TextureRegion getTextureRegion(String fileName) {

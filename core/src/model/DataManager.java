@@ -7,15 +7,20 @@ import java.util.HashMap;
 public class DataManager {
     static ArrayList<Teacher> test;
     private static ArrayList<String> wordIdList;
+    private static ArrayList<String> hmongWordList;
     private static HashMap<String, Word> wordIdToWord;
 
     public static void populate() {
         wordIdList = new ArrayList<String>();
         wordIdList.addAll(Arrays.asList("apple", "bird", "cherry", "gem", "money", "pear"));
 
+        hmongWordList = new ArrayList<String>();
+        hmongWordList.addAll(Arrays.asList("Kua", "noog", "lws suav", "lub pov haum", "nyiaj", "txiv moj coos"));
+
+        // Key: english spelling, Value: Word object
         wordIdToWord = new HashMap<String, Word>();
         for (String wordId : wordIdList) {
-            wordIdToWord.put(wordId, new Word(wordId, wordId, wordId));
+                wordIdToWord.put(wordId, new Word(wordId, hmongWordList.get(wordIdList.indexOf(wordId))));
         }
 
         test = new ArrayList<Teacher>();

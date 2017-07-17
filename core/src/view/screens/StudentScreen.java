@@ -41,7 +41,9 @@ public class StudentScreen implements Screen {
         Image background = new Image(AssetManager.getTextureRegion("background"));
         mainTable.setBackground(background.getDrawable());
 
-        backButton = new ImageButton(AssetManager.imageButtonStyle);
+        backButton = new ImageButton(AssetManager.backButtonStyle);
+
+//        backButton = new ImageButton(AssetManager.imageButtonStyle);
         title = new Label("", AssetManager.buttonSkin);
         title.setFontScale(5);
 

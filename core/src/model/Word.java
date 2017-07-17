@@ -2,19 +2,20 @@ package model;
 
 import viewmodel.SpellingGameStateMachine;
 
+/**
+ * A Word has an english and hmong spelling. The ID associated with a Word is the english spelling.
+ */
 public class Word {
-    private String wordId;
     private String englishSpelling;
     private String hmongSpelling;
 
-    public Word(String wordId, String englishSpelling, String hmongSpelling) {
-        this.wordId = wordId;
+    public Word(String englishSpelling, String hmongSpelling) {
         this.englishSpelling = englishSpelling;
         this.hmongSpelling = hmongSpelling;
     }
 
     public String getWordId() {
-        return wordId;
+        return englishSpelling;
     }
 
     public String getSpelling(SpellingGameStateMachine.Language language) {
