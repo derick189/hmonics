@@ -68,7 +68,7 @@ public class SpellingGameScreen implements Screen {
 
     private void setStage() {
         backgroundMusic = AssetManager.getMusic("spellingGameMusic");
-//        backgroundMusic.play();
+        backgroundMusic.play();
 
         stage.addActor(backgroundGroup = new Group());
         stage.addActor(actorsGroup = new Group());
@@ -86,7 +86,7 @@ public class SpellingGameScreen implements Screen {
         letterTable = new Table();
         pictureTable = new Table();
         spaceTable = new Table();
-        ImageButton backButton = new ImageButton(AssetManager.imageButtonStyle);
+        ImageButton backButton = new ImageButton(AssetManager.backButtonStyle);
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -122,6 +122,10 @@ public class SpellingGameScreen implements Screen {
         // TODO: change letterSpaces to length of word in new language (optional?)
     }
 
+    /**
+     * Sets up game screen with indicated language and associated alphabet
+     * @param language
+     */
     private void setAlphabet(SpellingGameStateMachine.Language language) {
         letterTable.clearChildren();
         switch (language) {

@@ -3,6 +3,7 @@ package viewmodel;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import model.DataManager;
 import model.Word;
+import view.actors.Letter;
 import view.games.SpellingGameScreen;
 
 public class SpellingGameStateMachine {
@@ -15,7 +16,7 @@ public class SpellingGameStateMachine {
         this.spellingGameScreen = spellingGameScreen;
         state = State.COMPLETING_WORD;
 
-        language = Language.ENGLISH;
+        language = Language.HMONG;
         spellingGameScreen.setDisplayLanguage(language);
 
         currentWord = DataManager.getWord("bird");
@@ -31,11 +32,11 @@ public class SpellingGameStateMachine {
                     case DROPPED_LETTER:
                         System.out.println("Current word: " + spellingGameScreen.getWordInSpaces());
                         if (wordIsCorrect()) {
-//                            spellingGameScreen.playWord(language.fileName, currentWord);
+                            spellingGameScreen.playWord(language.fileName, currentWord);
                             // TODO special animation for correct word
                             changeToNextWord();
                         } else {
-//                        spellingGameScreen.playLetter(language.fileName, (Letter) actor);
+                        spellingGameScreen.playLetter(language.fileName, (Letter) actor);
                             spellingGameScreen.confettiEffect(actor, "gem");
                         }
                         break;
