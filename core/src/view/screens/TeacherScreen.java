@@ -60,6 +60,9 @@ public class TeacherScreen implements Screen {
         title.setText("Select a teacher to see their students\nor change teacher");
         String text = "Enter a teacher's name";
 
+        if (doOnBackButton != null) {
+            backButton.removeListener(doOnBackButton);
+        }
         backButton.addListener(doOnBackButton = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -74,7 +77,7 @@ public class TeacherScreen implements Screen {
         };
 
         selectionTable.clearChildren();
-        selectionTable.add(ScreenManager.getNewSelectionTable(ScreenManager.DataType.TEACHERS, doOnSelectName, changeVersion, text));
+        selectionTable.add(ScreenManager.getNewSelectionTable(ScreenManager.SelectionType.TEACHERS, doOnSelectName, changeVersion, text));
     }
 
     private void selectStudents() {
@@ -96,7 +99,7 @@ public class TeacherScreen implements Screen {
         };
 
         selectionTable.clearChildren();
-        selectionTable.add(ScreenManager.getNewSelectionTable(ScreenManager.DataType.STUDENTS, doOnSelectName, changeVersion, text));
+        selectionTable.add(ScreenManager.getNewSelectionTable(ScreenManager.SelectionType.STUDENTS, doOnSelectName, changeVersion, text));
     }
 
     private void displayHistories() {

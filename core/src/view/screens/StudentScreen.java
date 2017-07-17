@@ -61,6 +61,9 @@ public class StudentScreen implements Screen {
         title.setText("Select a teacher to see their students");
         String text = "";
 
+        if (doOnBackButton != null) {
+            backButton.removeListener(doOnBackButton);
+        }
         backButton.addListener(doOnBackButton = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -75,7 +78,7 @@ public class StudentScreen implements Screen {
         };
 
         selectionTable.clearChildren();
-        selectionTable.add(ScreenManager.getNewSelectionTable(ScreenManager.DataType.TEACHERS, doOnSelectName, changeVersion, text));
+        selectionTable.add(ScreenManager.getNewSelectionTable(ScreenManager.SelectionType.TEACHERS, doOnSelectName, changeVersion, text));
     }
 
     private void selectStudents() {
@@ -97,7 +100,7 @@ public class StudentScreen implements Screen {
         };
 
         selectionTable.clearChildren();
-        selectionTable.add(ScreenManager.getNewSelectionTable(ScreenManager.DataType.TEACHERS, doOnSelectName, changeVersion, text));
+        selectionTable.add(ScreenManager.getNewSelectionTable(ScreenManager.SelectionType.STUDENTS, doOnSelectName, changeVersion, text));
     }
 
     private void displayGames() {
