@@ -147,16 +147,16 @@ public class SpellingGameScreen implements Screen {
                 }
                 return;
             case HMONG:
-                letterButtonSize = 65;
+                letterButtonSize = 60;
                 pictureSize = 300;
-                String[] consonants = {"c", "ch", "d", "dh", "dl", "f", "h", "hl", "hm", "hml", "hn", "hny",
+                String[] consonants = {"c", "ch", "d", "dh", "dl", "f", "g", "h", "hl", "hm", "hml", "hn", "hny",
                         "k", "kh", "l", "m", "ml", "n", "nc", "nch", "ndl", "nk", "nkh", "np", "nph", "npl", "nplh", "nq",
                         "nqh", "nr", "nrh", "nt", "nth", "nts", "ntsh", "ntx", "ntxh", "ny", "p", "ph", "pl", "plh", "q",
                         "qh", "r", "rh", "s", "t", "th", "ts", "tsh", "tx", "txh", "v", "x", "xy", "y", "z"};
                 String[] vowels = {"a", "aa", "ai", "au", "aw", "e", "ee", "i", "ia", "o", "oo", "u", "ua", "w"};
                 letterIndex = 0;
                 for (int i = 0; i < 3; i++) { // row
-                    for (int j = 0; j < 29; j++) { // column
+                    for (int j = 0; j < 30; j++) { // column
                         if (letterIndex < consonants.length + vowels.length) {
                             final Letter letter;
                             if (letterIndex < consonants.length) {
