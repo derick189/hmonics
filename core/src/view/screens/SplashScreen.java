@@ -29,7 +29,7 @@ public class SplashScreen implements Screen {
         stage.addActor(image);
 
         image.addAction(Actions.sequence(
-                Actions.delay(2f),
+//                Actions.delay(2f),
                 Actions.run(new Runnable() {
                     public void run() {
                         ScreenManager.start(game, new StartScreen(game));

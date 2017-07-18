@@ -42,10 +42,7 @@ public class StudentScreen implements Screen {
         mainTable.setBackground(background.getDrawable());
 
         backButton = new ImageButton(AssetManager.backButtonStyle);
-
-//        backButton = new ImageButton(AssetManager.imageButtonStyle);
-        title = new Label("", AssetManager.buttonSkin);
-        title.setFontScale(5);
+        title = new Label("", AssetManager.labelStyle64);
 
         selectionTable = new Table();
 
@@ -61,7 +58,7 @@ public class StudentScreen implements Screen {
 
     private void selectTeachers() {
         title.setText("Select a teacher to see their students");
-        String text = "";
+        String infoText = "";
 
         if (doOnBackButton != null) {
             backButton.removeListener(doOnBackButton);
@@ -72,20 +69,25 @@ public class StudentScreen implements Screen {
                 ScreenManager.nextScreen(new StartScreen(StudentScreen.this.game));
             }
         });
-        ChangeListener doOnSelectName = new ChangeListener() {
+        ChangeListener doAfterSelectName = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                selectStudents();
+                StudentScreen.this.selectStudents();
+            }
+        };
+        ChangeListener doAfterChange = new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
             }
         };
 
         selectionTable.clearChildren();
-        selectionTable.add(ScreenManager.getNewSelectionTable(ScreenManager.SelectionType.TEACHERS, doOnSelectName, changeVersion, text));
+        selectionTable.add(ScreenManager.getNewSelectionTable(ScreenManager.SelectionType.TEACHERS, changeVersion, infoText, doAfterSelectName, doAfterChange));
     }
 
     private void selectStudents() {
         title.setText("Select a student to see their games");
-        String text = "";
+        String infoText = "";
 
         backButton.removeListener(doOnBackButton);
         backButton.addListener(doOnBackButton = new ChangeListener() {
@@ -97,12 +99,17 @@ public class StudentScreen implements Screen {
         ChangeListener doOnSelectName = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                displayGames();
+                StudentScreen.this.displayGames();
+            }
+        };
+        ChangeListener doOnChange = new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
             }
         };
 
         selectionTable.clearChildren();
-        selectionTable.add(ScreenManager.getNewSelectionTable(ScreenManager.SelectionType.STUDENTS, doOnSelectName, changeVersion, text));
+        selectionTable.add(ScreenManager.getNewSelectionTable(ScreenManager.SelectionType.STUDENTS, changeVersion, infoText, doOnSelectName, doOnChange));
     }
 
     private void displayGames() {

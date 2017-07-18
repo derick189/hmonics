@@ -11,10 +11,6 @@ public class Teacher {
         students = new ArrayList<Student>();
     }
 
-    public void addStudent(Student student) {
-        students.add(student);
-    }
-
     public String getName() {
         return name;
     }

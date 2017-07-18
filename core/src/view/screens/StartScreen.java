@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import view.AssetManager;
 import view.GdxGame;
 import viewmodel.ScreenManager;
 
@@ -32,8 +33,7 @@ public class StartScreen implements Screen {
         Image background = new Image(view.AssetManager.getTextureRegion("StartScreenBackground"));
         mainTable.setBackground(background.getDrawable());
 
-        TextButton teacherButton = new TextButton("Teacher", view.AssetManager.buttonSkin);
-        teacherButton.getLabel().setFontScale(5.0f);
+        TextButton teacherButton = new TextButton("Teacher", AssetManager.textButtonStyle);
         teacherButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -41,8 +41,7 @@ public class StartScreen implements Screen {
             }
         });
 
-        TextButton studentButton = new TextButton("Student", view.AssetManager.buttonSkin);
-        studentButton.getLabel().setFontScale(5.0f);
+        TextButton studentButton = new TextButton("Student", AssetManager.textButtonStyle);
         studentButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

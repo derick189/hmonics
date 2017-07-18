@@ -164,7 +164,7 @@ public class SpellingGameScreen implements Screen {
                             } else { // vowel
                                 letter = new Letter(vowels[(letterIndex++) - consonants.length]);
                             }
-                            letter.nameLabel.setFontScale(2);
+                            letter.getLabel().setFontScale(.8f);
 
                             letterTable.add(new Container<Letter>(letter).size(letterButtonSize)).size(letterButtonSize);
                             setLetterAsDraggable(letter);
