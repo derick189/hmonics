@@ -41,12 +41,11 @@ public class TeacherScreen implements Screen {
         mainTable.setBackground(background.getDrawable());
 
         backButton = new ImageButton(AssetManager.backButtonStyle);
-        title = new Label("", AssetManager.buttonSkin);
-        title.setFontScale(5);
+        title = new Label("", AssetManager.labelStyle64);
 
         selectionTable = new Table();
 
-        mainTable.add(backButton).size(200).top().padTop(50).left().padLeft(50);
+        mainTable.add(backButton).size(150).top().padTop(50).left().padLeft(50);
         mainTable.add(title).expandX();
         mainTable.add().size(200).top().padTop(50).right().padRight(50);
         mainTable.row();
@@ -58,7 +57,7 @@ public class TeacherScreen implements Screen {
 
     private void selectTeachers() {
         title.setText("Select a teacher to see their students\nor change teacher");
-        String text = "Enter a teacher's name";
+        String infoText = "<Teacher name>";
 
         if (doOnBackButton != null) {
             backButton.removeListener(doOnBackButton);
@@ -72,38 +71,51 @@ public class TeacherScreen implements Screen {
         ChangeListener doOnSelectName = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                selectStudents();
+                TeacherScreen.this.selectStudents();
+            }
+        };
+        ChangeListener doOnChange = new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                TeacherScreen.this.selectTeachers();
             }
         };
 
         selectionTable.clearChildren();
-        selectionTable.add(ScreenManager.getNewSelectionTable(ScreenManager.SelectionType.TEACHERS, doOnSelectName, changeVersion, text));
+        selectionTable.add(ScreenManager.getNewSelectionTable(ScreenManager.SelectionType.TEACHERS, changeVersion, infoText, doOnSelectName, doOnChange));
     }
 
     private void selectStudents() {
         title.setText("Select a student to see their history\nor change student");
-        String text = "Enter a student's name";
+        String infoText = "<Student name>";
 
         backButton.removeListener(doOnBackButton);
         backButton.addListener(doOnBackButton = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                selectTeachers();
+                TeacherScreen.this.selectTeachers();
             }
         });
-        ChangeListener doOnSelectName = new ChangeListener() {
+        ChangeListener doAfterSelectName = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 displayHistories();
             }
         };
+        ChangeListener doAfterChange = new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                TeacherScreen.this.selectStudents();
+            }
+        };
 
         selectionTable.clearChildren();
-        selectionTable.add(ScreenManager.getNewSelectionTable(ScreenManager.SelectionType.STUDENTS, doOnSelectName, changeVersion, text));
+        selectionTable.add(ScreenManager.getNewSelectionTable(ScreenManager.SelectionType.STUDENTS, changeVersion, infoText, doAfterSelectName, doAfterChange));
     }
 
     private void displayHistories() {
-        // TODO
+        selectionTable.clearChildren();
+        selectionTable.add(ScreenManager.getNewHistoryTable(ScreenManager.SelectionType.HISTORIES));
     }
 
     @Override

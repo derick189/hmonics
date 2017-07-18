@@ -12,6 +12,14 @@ public class Student {
         gameHistories = new ArrayList<History>();
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public ArrayList<History> getGameHistory() {
+        return gameHistories;
+    }
+
     public void startNewCurrentHistory(History history) {
         currentHistory = history;
         gameHistories.add(history);
@@ -19,13 +27,5 @@ public class Student {
 
     public void addToCurrentHistory(String word) {
         currentHistory.addWord(word);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public ArrayList<History> getGameHistory() {
-        return gameHistories;
     }
 }
