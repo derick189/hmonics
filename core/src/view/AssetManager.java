@@ -3,24 +3,25 @@ package view;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class AssetManager {
     public static TextureAtlas atlas;
     public static Skin defaultSkin;
     public static ButtonStyle defaultStyle;
+    public static Drawable backplate;
     public static BitmapFont font64;
     public static LabelStyle labelStyle64;
     public static TextFieldStyle textFieldStyle;
@@ -29,12 +30,13 @@ public class AssetManager {
     public static ImageButtonStyle backButtonStyle;
 
     public static void init() {
-        atlas = new TextureAtlas(Gdx.files.internal("images/pack.atlas"));
-        defaultSkin = new Skin(Gdx.files.internal("skins/skin.json"));
+        atlas = new TextureAtlas(Gdx.files.internal("packed-images/pack.atlas"));
+        defaultSkin = new Skin(Gdx.files.internal("skins/clean-crispy/clean-crispy-ui.json"));
         defaultStyle = new ButtonStyle();
-        defaultStyle.up = AssetManager.defaultSkin.getDrawable("buttonUp");
-        defaultStyle.down = AssetManager.defaultSkin.getDrawable("buttonDown");
-        defaultStyle.over = AssetManager.defaultSkin.getDrawable("buttonOver");
+        defaultStyle.up = AssetManager.defaultSkin.getDrawable("button-c");
+        defaultStyle.down = AssetManager.defaultSkin.getDrawable("button-pressed-over-c");
+        defaultStyle.over = AssetManager.defaultSkin.getDrawable("button-over-c");
+        backplate = AssetManager.defaultSkin.getDrawable("button-c-clear");
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/open-sans/OpenSans-Semibold.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -44,15 +46,14 @@ public class AssetManager {
         font64 = generator.generateFont(parameter);
 
         labelStyle64 = new LabelStyle(font64, Color.BLACK);
+        labelStyle64.background = view.AssetManager.backplate;
         textFieldStyle = new TextFieldStyle(font64, Color.BLACK, defaultStyle.down, defaultStyle.down, defaultStyle.up);
         textButtonStyle = new TextButtonStyle(defaultStyle.up, defaultStyle.down, defaultStyle.checked, font64);
 
         imageButtonStyle = new ImageButtonStyle(defaultStyle);
 
         backButtonStyle = new ImageButtonStyle(defaultStyle);
-        Texture backButton = new Texture(Gdx.files.internal("basic images/BackButton.png"));
-        Image image = new Image(backButton);
-        backButtonStyle.imageUp = image.getDrawable();
+        backButtonStyle.imageUp = new TextureRegionDrawable(getTextureRegion("BackButton"));
     }
 
     public static TextureRegion getTextureRegion(String fileName) {

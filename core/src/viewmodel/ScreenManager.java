@@ -17,11 +17,11 @@ import view.GdxGame;
 import java.util.ArrayList;
 
 public class ScreenManager {
+    static int selectedTeacherIndex;
+    static String selectedTeacherName;
+    static int selectedStudentIndex;
+    static String selectedStudentName;
     private static GdxGame game;
-    private static int selectedTeacherIndex;
-    private static String selectedTeacherName;
-    private static int selectedStudentIndex;
-    private static String selectedStudentName;
 
     public static void start(GdxGame gdxGame, Screen firstScreen) {
         ScreenManager.game = gdxGame;
@@ -33,24 +33,27 @@ public class ScreenManager {
         // destroy screens
     }
 
-    public static Table getNewSelectionTable(SelectionType selectionType, boolean changeVersion, String infoText, ChangeListener doAfterSelectName, ChangeListener doAfterChange) {
-        int totalWidth = 1200;
+    public static Table getNewSelectionTable(SelectionType selectionType, String infoText, ChangeListener doAfterSelectName, ChangeListener doAfterAddRemove) {
+        int tableWidth = 1150;
         int nameWidth = 800;
         int columnSeparator = 75;
         int buttonWidth = 250;
         int rowHeight = 100;
         int rowSeparator = 25;
+        boolean changeVersion = !infoText.equals("");
 
         Table selectionTable = new Table();
+        selectionTable.background(AssetManager.backplate);
+        Table aDataRow = new Table();
+        VerticalGroup verticalGroup = new VerticalGroup();
+        verticalGroup.align(Align.topLeft);
+        ScrollPane scrollPane = new ScrollPane(verticalGroup, AssetManager.defaultSkin);
+        scrollPane.setScrollingDisabled(true, false);
+        scrollPane.setFadeScrollBars(false);
+
         switch (selectionType) {
             case TEACHERS:
             case STUDENTS:
-                Table aDataRow = new Table();
-                VerticalGroup verticalGroup = new VerticalGroup();
-                ScrollPane scrollPane = new ScrollPane(verticalGroup, AssetManager.defaultSkin);
-                scrollPane.setScrollingDisabled(true, false);
-                scrollPane.setFadeScrollBars(false);
-
                 // first row for adding an item
                 if (changeVersion) {
                     final TextField addItemField = new TextField(infoText, AssetManager.textFieldStyle);
@@ -86,7 +89,7 @@ public class ScreenManager {
                             });
                             break;
                     }
-                    addButton.addListener(doAfterChange);
+                    addButton.addListener(doAfterAddRemove);
                     aDataRow.add(addItemField).width(nameWidth).height(rowHeight);
                     aDataRow.add().width(columnSeparator);
                     aDataRow.add(addButton).width(buttonWidth).height(rowHeight);
@@ -94,7 +97,7 @@ public class ScreenManager {
                     aDataRow.row();
                     aDataRow.add().height(rowSeparator);
 
-                    selectionTable.add(aDataRow);
+                    selectionTable.add(aDataRow).left();
                     selectionTable.row();
                 }
 
@@ -131,7 +134,7 @@ public class ScreenManager {
                                         DataManager.removeTeacher(Integer.parseInt(actor.getName()));
                                     }
                                 });
-                                deleteButton.addListener(doAfterChange);
+                                deleteButton.addListener(doAfterAddRemove);
                                 aDataRow.add().width(columnSeparator);
                                 aDataRow.add(deleteButton).width(buttonWidth).height(rowHeight);
                             }
@@ -172,7 +175,7 @@ public class ScreenManager {
                                         DataManager.removeStudent(selectedTeacherIndex, Integer.parseInt(actor.getName()));
                                     }
                                 });
-                                deleteButton.addListener(doAfterChange);
+                                deleteButton.addListener(doAfterAddRemove);
                                 aDataRow.add().width(columnSeparator);
                                 aDataRow.add(deleteButton).width(buttonWidth).height(rowHeight);
                             }
@@ -184,54 +187,48 @@ public class ScreenManager {
                         break;
                 }
                 if (changeVersion) {
-                    selectionTable.add(scrollPane).width(totalWidth).height((rowHeight + rowSeparator) * 5);
+                    selectionTable.add(scrollPane).width(tableWidth).height((rowHeight + rowSeparator) * 5);
                 } else {
-                    selectionTable.add(scrollPane).width(totalWidth).height((rowHeight + rowSeparator) * 6);
+                    selectionTable.add(scrollPane).width(tableWidth).height((rowHeight + rowSeparator) * 6);
                 }
+                break;
+            case HISTORIES:
+                int dateWidth = 400;
+                nameWidth = 500;
+                int numberWidth = 125;
+                columnSeparator = 50;
+                ArrayList<History> histories = DataManager.getHistory(DataManager.getStudents(selectedTeacherIndex).get(selectedStudentIndex));
+                for (int i = 0; i < histories.size(); i++) { // make a data row for each history
+                    aDataRow = new Table();
+                    TextButton aDate = new TextButton(String.valueOf(histories.get(i).getDateString()), AssetManager.textButtonStyle);
+                    TextButton aName = new TextButton(histories.get(i).getGamePlayed(), AssetManager.textButtonStyle);
+                    TextButton aValue = new TextButton(String.valueOf(histories.get(i).getWordsSpelled().size()), AssetManager.textButtonStyle);
+
+                    aDataRow.add(aDate).width(dateWidth).height(rowHeight);
+                    aDataRow.add().width(columnSeparator);
+                    aDataRow.add(aName).width(nameWidth).height(rowHeight);
+                    aDataRow.add().width(columnSeparator);
+                    aDataRow.add(aValue).width(numberWidth).height(rowHeight);
+                    aDataRow.row();
+                    aDataRow.add().height(rowSeparator);
+                    verticalGroup.addActor(aDataRow);
+                }
+                selectionTable.add(scrollPane).width(tableWidth).height((rowHeight + rowSeparator) * 6);
                 break;
         }
         return selectionTable;
     }
 
-    public static Table getNewHistoryTable(SelectionType selectionType) {
-        int totalWidth = 1200;
-        int nameWidth = 600;
-        int columnSeparator = 100;
-        int dataWidth = 300;
-        int rowHeight = 100;
-        int rowSeparator = 25;
-
-        Table historyTable = new Table();
-        switch (selectionType) {
-            case HISTORIES:
-                VerticalGroup verticalGroup = new VerticalGroup();
-                ScrollPane scrollPane = new ScrollPane(verticalGroup, AssetManager.defaultSkin);
-                scrollPane.setScrollingDisabled(true, false);
-                scrollPane.setFadeScrollBars(false);
-
-                ArrayList<History> histories = DataManager.getHistory(DataManager.getStudents(selectedTeacherIndex).get(selectedStudentIndex));
-                for (int i = 0; i < histories.size(); i++) { // make a data row for each history
-                    Table aDataRow = new Table();
-                    TextButton aName = new TextButton(histories.get(i).getGamePlayed(), AssetManager.textButtonStyle);
-                    TextButton aValue = new TextButton(String.valueOf(histories.get(i).getWordsSpelled().size()), AssetManager.textButtonStyle);
-
-                    aDataRow.add(aName).width(nameWidth).height(rowHeight);
-                    aDataRow.add().width(columnSeparator);
-                    aDataRow.add(aValue).width(dataWidth).height(rowHeight);
-                    aDataRow.row();
-                    aDataRow.add().height(rowSeparator);
-                    verticalGroup.addActor(aDataRow);
-                }
-                historyTable.add(scrollPane).width(totalWidth).height((rowHeight + rowSeparator) * 6);
-                break;
-            case GAMES:
-
-                break;
-        }
-        return historyTable;
-    }
-
     public enum SelectionType {
         TEACHERS, STUDENTS, HISTORIES, GAMES
+    }
+
+    public enum Language {
+        ENGLISH("English"), HMONG("Hmong");
+        public final String fileName;
+
+        Language(String fileName) {
+            this.fileName = fileName;
+        }
     }
 }

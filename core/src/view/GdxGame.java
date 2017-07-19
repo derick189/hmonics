@@ -15,7 +15,6 @@ public class GdxGame extends Game {
     public OrthographicCamera camera;
     public ExtendViewport viewport;
     public SpriteBatch batch;
-//    public BitmapFont font;
 
     public void create() {
         camera = new OrthographicCamera();
@@ -23,7 +22,6 @@ public class GdxGame extends Game {
         viewport = new ExtendViewport(WIDTH, HEIGHT, camera);
 
         batch = new SpriteBatch();
-//        font = new BitmapFont();
 
         boolean loaded = false;
         setScreen(new SplashScreen(GdxGame.this));
@@ -39,6 +37,5 @@ public class GdxGame extends Game {
 
     public void dispose() {
         batch.dispose();
-//        font.dispose();
     }
 }
