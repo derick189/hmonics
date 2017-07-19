@@ -52,7 +52,7 @@ public class StudentScreen implements Screen {
     }
 
     private void selectTeachers() {
-        title.setText("Select a teacher:");
+        title.setText("Select a teacher to see their students.");
         String infoText = "";
 
         if (doOnBackButton != null) {
@@ -81,7 +81,7 @@ public class StudentScreen implements Screen {
     }
 
     private void selectStudents() {
-        title.setText("Select a student:");
+        title.setText("Select a student to start a game.");
         String infoText = "";
 
         backButton.removeListener(doOnBackButton);
@@ -108,7 +108,6 @@ public class StudentScreen implements Screen {
     }
 
     private void displayGames() {
-        // TODO
         ScreenManager.nextScreen(new SpellingGameScreen(StudentScreen.this.game));
     }
 

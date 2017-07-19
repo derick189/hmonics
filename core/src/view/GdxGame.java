@@ -23,12 +23,10 @@ public class GdxGame extends Game {
 
         batch = new SpriteBatch();
 
-        boolean loaded = false;
         setScreen(new SplashScreen(GdxGame.this));
 
         AssetManager.init();
         DataManager.populate();
-        loaded = true;
     }
 
     public void render() {

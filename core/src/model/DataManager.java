@@ -27,16 +27,18 @@ public class DataManager {
         wordList.add(new Word("dragon", "zaj", 3));
 
         for (int i = 0; i < 2; i++) {
-            addTeacher(new Teacher("Teacher " + i));
+            addTeacher(new Teacher("Teacher " + (i + 1)));
         }
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 9; i++) {
             Student student;
-            addStudent(0, student = new Student("Student " + i));
+            addStudent(0, student = new Student("Student " + (i + 1)));
             History history;
             student.startNewCurrentHistory(history = new History("Spelling Game"));
             history.addWord("bird");
-            history.addWord("bird");
-            addStudent(1, new Student("Student " + i));
+            history.addWord("cat");
+        }
+        for (int i = 0; i < 2; i++) {
+            addStudent(1, new Student("Student " + (i + 1)));
         }
     }
 
