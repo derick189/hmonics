@@ -33,6 +33,8 @@ public class SpellingGameScreen implements Screen {
     private DragAndDrop dragAndDrop;
     private Music backgroundMusic;
     private Random random;
+
+    private String[] tones = {"koJ", "muS", "kuV", "niaM", "neeG", "siaB", "zoo", "toD"};
     // Actors added to the screen are drawn in the order they were added. Actors drawn later are drawn on top of everything before.
     // These groups are used to add actors to the screen in the right order. All actors added to groups are drawn when the group is drawn.
     // These are added in this order in setStage. All actors are added to these groups and not the screen directly.
@@ -90,7 +92,6 @@ public class SpellingGameScreen implements Screen {
                 ScreenManager.nextScreen(new StudentScreen(SpellingGameScreen.this.game));
             }
         });
-
         mainTable.add(backButton).size(backButtonSize).left();
         mainTable.row();
         mainTable.add().height(separatorHeight);
@@ -110,7 +111,7 @@ public class SpellingGameScreen implements Screen {
         pictureTable.add(pictureContainer = new Container<Image>().size(pictureSize));
         letterSpaces = new ArrayList<Container<Letter>>();
 
-        spellingGameStateMachine = new SpellingGameStateMachine(this, ScreenManager.Language.ENGLISH);
+        spellingGameStateMachine = new SpellingGameStateMachine(this, ScreenManager.Language.HMONG);
 
     }
 
@@ -145,25 +146,37 @@ public class SpellingGameScreen implements Screen {
                 }
                 return;
             case HMONG:
-                letterButtonSize = 60;
-                pictureSize = 300;
-                String[] consonants = {"c", "ch", "d", "dh", "dl", "f", "g", "h", "hl", "hm", "hml", "hn", "hny",
+                letterButtonSize = 80;
+                String[] consonants = {"c", "ch", "d", "dh", "dl", "f", "h", "hl", "hm", "hml", "hn", "hny",
                         "k", "kh", "l", "m", "ml", "n", "nc", "nch", "ndl", "nk", "nkh", "np", "nph", "npl", "nplh", "nq",
                         "nqh", "nr", "nrh", "nt", "nth", "nts", "ntsh", "ntx", "ntxh", "ny", "p", "ph", "pl", "plh", "q",
                         "qh", "r", "rh", "s", "t", "th", "ts", "tsh", "tx", "txh", "v", "x", "xy", "y", "z"};
                 String[] vowels = {"a", "aa", "ai", "au", "aw", "e", "ee", "i", "ia", "o", "oo", "u", "ua", "w"};
-                letterIndex = 0;
-                for (int i = 0; i < 3; i++) { // row
-                    for (int j = 0; j < 30; j++) { // column
-                        if (letterIndex < consonants.length + vowels.length) {
-                            final Letter letter;
-                            if (letterIndex < consonants.length) {
-                                letter = new Letter(consonants[letterIndex++]);
-                            } else { // vowel
-                                letter = new Letter(vowels[(letterIndex++) - consonants.length]);
-                            }
-                            letter.getLabel().setFontScale(.8f);
 
+                letterIndex = 0;
+                for (int i = 0; i < 4; i++) { // row
+                    for (int j = 0; j < 20; j++) { // column
+                        if (letterIndex < consonants.length + vowels.length + tones.length) {
+                            final Letter letter;
+                            if (letterIndex < consonants.length) { // consonant
+                                letter = new Letter(consonants[letterIndex++]);
+//                                for (Character ch : consonants[letterIndex-1].toCharArray()) { // for each character in consonant
+//                                    Letter l = new Letter(ch.toString());
+//                                    setLetterAsDraggable(l); // drop each char into a space
+//                                }
+                            } else if (letterIndex < consonants.length + vowels.length){ // vowel
+                                letter = new Letter(vowels[(letterIndex++) - consonants.length]);
+//                                for (Character ch : vowels[letterIndex - consonants.length -1].toCharArray()) { // for each character in vowel
+//                                    Letter l = new Letter(ch.toString());
+//                                    setLetterAsDraggable(l); // drop each char into a space
+//                                }
+                            } else { // tone
+                                letter = new Letter(tones[(letterIndex++) - (consonants.length + vowels.length)]);
+                                letter.setIsTone();
+//                                Letter l = new Letter(letter.getName().substring(letter.getName().length() - 1));
+//                                setLetterAsDraggable(l);// just drop the last char into a space
+                            }
+                            letter.getLabel().setFontScale(.5f);
                             letterTable.add(new Container<Letter>(letter).size(letterButtonSize)).size(letterButtonSize);
                             setLetterAsDraggable(letter);
                         }
@@ -174,7 +187,9 @@ public class SpellingGameScreen implements Screen {
         }
     }
 
-    // Creates a copy when letter is dragged from the alphabet. The copy does not create a copy when moved.
+    /**
+     * Creates a copy when letter is dragged from the alphabet. The copy does not create a copy when moved.
+     */
     private void setLetterAsDraggable(Letter letter) {
         dragAndDrop.addSource(new DragAndDrop.Source(letter) {
             public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
@@ -234,6 +249,23 @@ public class SpellingGameScreen implements Screen {
                             letterContainer.setActor(null);
                         }
                     }
+
+//                    if (spellingGameStateMachine.language == SpellingGameStateMachine.Language.HMONG) {
+//                        Container<Letter> newParent = (Container<Letter>) getActor();
+//                        Letter letter = (Letter) payload.getDragActor();
+//                        if (letter.isTone()) { // just drop last character in tone string
+//                            letter.setName(letter.getName().substring(letter.getName().length() - 1));
+//                            newParent.setActor(letter);
+//                            SpellingGameScreen.this.spellingGameStateMachine.doEvent(SpellingGameStateMachine.Event.DROPPED_LETTER, payload.getDragActor());
+//                        } else {
+//                            for (Character ch : payload.getDragActor().getName().toCharArray()) { // for each character in consonant or vowel
+//                                Letter l = new Letter(ch.toString());
+//                                Container<Letter> newParent2 = (Container<Letter>) getActor();
+//                                newParent2.setActor(l);
+//                                SpellingGameScreen.this.spellingGameStateMachine.doEvent(SpellingGameStateMachine.Event.DROPPED_LETTER, payload.getDragActor());
+//                            }
+//                        }
+//                    }
                     Container<Letter> newParent = (Container<Letter>) getActor();
                     newParent.setActor((Letter) payload.getDragActor());
                     SpellingGameScreen.this.spellingGameStateMachine.doEvent(SpellingGameStateMachine.Event.DROPPED_LETTER, payload.getDragActor());
@@ -251,6 +283,13 @@ public class SpellingGameScreen implements Screen {
                 currentString += " ";
             }
         }
+            // If the hmong word contains a tone, trim tone letter to 1 lowercase character
+            for (String tone : tones) {
+                if (currentString.contains(tone)) {
+                    int startIndex = currentString.indexOf(tone);
+                    currentString = currentString.substring(0, startIndex) + tone.substring(tone.length()-1).toLowerCase();
+                }
+            }
         return currentString;
     }
 
