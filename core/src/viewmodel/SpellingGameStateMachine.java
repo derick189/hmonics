@@ -2,6 +2,7 @@ package viewmodel;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import model.DataManager;
 import model.History;
 import model.Student;
@@ -33,40 +34,49 @@ public class SpellingGameStateMachine {
         this.currentStudent.startNewCurrentHistory(new History("Spelling Game"));
 
         // Set game language (set in screen manager for now)
-        // TODO create language button option in game
+        // TODO: create language button option in game
         spellingGameScreen.setDisplayLanguage(currentLanguage);
         // Set the amount of spaces for word
         spellingGameScreen.setPictureAndSpaceLength(currentWord.getWordId(), currentWord.getSpaces());
     }
 
-    public void doEvent(Event event, Actor actor) {
+    public void doEvent(Event event, final Actor actor) {
         switch (state) {
             case ANIMATION:
-                break;
+                return;
             case COMPLETING_WORD:
                 switch (event) {
                     case DROPPED_LETTER:
                         System.out.println("Current word: " + spellingGameScreen.getWordInSpaces());
-                        if (wordIsCorrect()) {
-                            // TODO special animation for correct word
-//                            spellingGameScreen.playWord(currentLanguage.fileName, currentWord);
-                            spellingGameScreen.playLetter(currentLanguage.fileName, (Letter) actor);
+                        if (wordIsCorrect()) { // TODO: special animation for correct word
                             recordWord();
-                            if (sessionWordList.size() > 1) {
-                                changeToNextWord();
-                            } else {
-                                gameComplete();
-                            }
+                            actor.addAction(Actions.sequence(
+                                    Actions.run(new Runnable() {
+                                        public void run() {
+                                            spellingGameScreen.confettiEffect(actor, "gem");
+                                            spellingGameScreen.playLetter(currentLanguage.fileName, (Letter) actor);
+//                                            spellingGameScreen.playWord(currentLanguage.fileName, currentWord);
+                                        }
+                                    }),
+                                    Actions.delay(2f),
+                                    Actions.run(new Runnable() {
+                                        public void run() {
+                                            recordWord();
+                                            if (sessionWordList.size() > 1) {
+                                                changeToNextWord();
+                                            } else {
+                                                gameComplete();
+                                            }
+                                        }
+                                    })
+                            ));
                         } else {
-                            spellingGameScreen.playLetter(currentLanguage.fileName, (Letter) actor);
                             spellingGameScreen.confettiEffect(actor, "gem");
+                            spellingGameScreen.playLetter(currentLanguage.fileName, (Letter) actor);
                         }
                         break;
                 }
-                break;
-            case GAME_COMPLETE:
-
-                break;
+                return;
         }
     }
 
@@ -101,7 +111,7 @@ public class SpellingGameStateMachine {
     }
 
     public enum State {
-        ANIMATION, COMPLETING_WORD, GAME_COMPLETE
+        ANIMATION, COMPLETING_WORD
     }
 
     public enum Event {

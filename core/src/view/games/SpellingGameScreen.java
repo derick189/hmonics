@@ -34,7 +34,7 @@ public class SpellingGameScreen implements Screen {
     private Music backgroundMusic;
     private Random random;
 
-    private String[] tones = {"koJ", "muS", "kuV", "niaM", "neeG", "siaB", "zoo", "toD"};
+    private String[] tones = {"koJ", "muS", "kuV", "niaM", "neeG", "siaB", "zoO", "toD"};
     // Actors added to the screen are drawn in the order they were added. Actors drawn later are drawn on top of everything before.
     // These groups are used to add actors to the screen in the right order. All actors added to groups are drawn when the group is drawn.
     // These are added in this order in setStage. All actors are added to these groups and not the screen directly.
@@ -67,7 +67,7 @@ public class SpellingGameScreen implements Screen {
 
     private void setStage() {
         backgroundMusic = AssetManager.getMusic("spellingGameMusic");
-        backgroundMusic.play();
+//        backgroundMusic.play();
 
         stage.addActor(backgroundGroup = new Group());
         stage.addActor(actorsGroup = new Group());
@@ -78,7 +78,6 @@ public class SpellingGameScreen implements Screen {
         backgroundGroup.addActor(backgroundImage);
 
         Table mainTable = new Table();
-//        mainTable.setDebug(true);
         mainTable.setBounds(0, 0, GdxGame.WIDTH, GdxGame.HEIGHT);
         actorsGroup.addActor(mainTable);
 
@@ -117,7 +116,7 @@ public class SpellingGameScreen implements Screen {
 
     public void setDisplayLanguage(ScreenManager.Language language) {
         setAlphabet(language);
-        // TODO: change letterSpaces to length of word in new language (optional?)
+        // TODO: change letterSpaces to new length of word on language change
     }
 
     /**
@@ -164,7 +163,7 @@ public class SpellingGameScreen implements Screen {
 //                                    Letter l = new Letter(ch.toString());
 //                                    setLetterAsDraggable(l); // drop each char into a space
 //                                }
-                            } else if (letterIndex < consonants.length + vowels.length){ // vowel
+                            } else if (letterIndex < consonants.length + vowels.length) { // vowel
                                 letter = new Letter(vowels[(letterIndex++) - consonants.length]);
 //                                for (Character ch : vowels[letterIndex - consonants.length -1].toCharArray()) { // for each character in vowel
 //                                    Letter l = new Letter(ch.toString());
@@ -238,18 +237,12 @@ public class SpellingGameScreen implements Screen {
                 }
 
                 @Override
-                public void reset(DragAndDrop.Source source, DragAndDrop.Payload payload) {
-                    super.reset(source, payload);
-                }
-
-                @Override
                 public void drop(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
                     for (Container<Letter> letterContainer : letterSpaces) {
                         if (!letterContainer.hasChildren()) {
                             letterContainer.setActor(null);
                         }
                     }
-
 //                    if (spellingGameStateMachine.language == SpellingGameStateMachine.Language.HMONG) {
 //                        Container<Letter> newParent = (Container<Letter>) getActor();
 //                        Letter letter = (Letter) payload.getDragActor();
@@ -283,13 +276,13 @@ public class SpellingGameScreen implements Screen {
                 currentString += " ";
             }
         }
-            // If the hmong word contains a tone, trim tone letter to 1 lowercase character
-            for (String tone : tones) {
-                if (currentString.contains(tone)) {
-                    int startIndex = currentString.indexOf(tone);
-                    currentString = currentString.substring(0, startIndex) + tone.substring(tone.length()-1).toLowerCase();
-                }
+        // If the hmong word contains a tone, trim tone letter to 1 lowercase character
+        for (String tone : tones) {
+            if (currentString.contains(tone)) {
+                int startIndex = currentString.indexOf(tone);
+                currentString = currentString.substring(0, startIndex) + tone.substring(tone.length() - 1).toLowerCase();
             }
+        }
         return currentString;
     }
 

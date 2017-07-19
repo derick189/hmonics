@@ -43,7 +43,7 @@ public class ScreenManager {
         boolean changeVersion = !infoText.equals("");
 
         Table selectionTable = new Table();
-        selectionTable.background(AssetManager.backplate);
+//        selectionTable.background(AssetManager.backplate);
         Table aDataRow = new Table();
         VerticalGroup verticalGroup = new VerticalGroup();
         verticalGroup.align(Align.topLeft);
@@ -90,14 +90,14 @@ public class ScreenManager {
                             break;
                     }
                     addButton.addListener(doAfterAddRemove);
-                    aDataRow.add(addItemField).width(nameWidth).height(rowHeight);
+                    aDataRow.add(addItemField).width(nameWidth).height(rowHeight).left();
                     aDataRow.add().width(columnSeparator);
                     aDataRow.add(addButton).width(buttonWidth).height(rowHeight);
-                    aDataRow.add().width(10); // scroll bar width
-                    aDataRow.row();
-                    aDataRow.add().height(rowSeparator);
 
+                    aDataRow.background(AssetManager.backplate);
                     selectionTable.add(aDataRow).left();
+                    selectionTable.row();
+                    selectionTable.add().width(tableWidth).height(rowSeparator);
                     selectionTable.row();
                 }
 
@@ -187,8 +187,12 @@ public class ScreenManager {
                         break;
                 }
                 if (changeVersion) {
-                    selectionTable.add(scrollPane).width(tableWidth).height((rowHeight + rowSeparator) * 5);
+                    Table backgroundTable = new Table();
+                    backgroundTable.background(AssetManager.backplate);
+                    backgroundTable.add(scrollPane).width(tableWidth).height((rowHeight + rowSeparator) * 5);
+                    selectionTable.add(backgroundTable);
                 } else {
+                    selectionTable.background(AssetManager.backplate);
                     selectionTable.add(scrollPane).width(tableWidth).height((rowHeight + rowSeparator) * 6);
                 }
                 break;
