@@ -36,11 +36,7 @@ public class AssetManager {
         defaultStyle.down = AssetManager.defaultSkin.getDrawable("buttonDown");
         defaultStyle.over = AssetManager.defaultSkin.getDrawable("buttonOver");
 
-//        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("open-sans/OpenSans-Regular.ttf"));
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("open-sans/OpenSans-Semibold.ttf"));
-//        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("roboto/Roboto-Regular.ttf"));
-//        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("source-sans-pro/SourceSansPro-Regular.otf"));
-//        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("montserrat/Montserrat-Regular.otf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/open-sans/OpenSans-Semibold.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.hinting = FreeTypeFontGenerator.Hinting.Full;
         parameter.color = Color.BLACK;

@@ -18,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import model.Word;
 import view.AssetManager;
 import view.GdxGame;
-import view.actors.AnimatedActor;
 import view.actors.Letter;
 import view.screens.StudentScreen;
 import viewmodel.ScreenManager;
@@ -261,7 +260,7 @@ public class SpellingGameScreen implements Screen {
         float duration = 1f;
         int distance = 300;
         for (int i = 0; i < 10; i++) {
-            Actor explosion = new AnimatedActor(AssetManager.getAnimation(fileName), fileName);
+            Actor explosion = new Image(AssetManager.getTextureRegion(fileName));
             explosion.setTouchable(Touchable.disabled);
             explosion.setBounds(subject.getX(), subject.getY(), size, size);
             explosion.setOrigin(size / 2, size / 2);
