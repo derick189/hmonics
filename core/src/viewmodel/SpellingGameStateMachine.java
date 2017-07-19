@@ -55,10 +55,15 @@ public class SpellingGameStateMachine {
                                         public void run() {
                                             spellingGameScreen.confettiEffect(actor, "gem");
                                             spellingGameScreen.playLetter(currentLanguage.fileName, (Letter) actor);
+                                        }
+                                    }),
+                                    Actions.delay(1f),
+                                    Actions.run(new Runnable() {
+                                        public void run() {
 //                                            spellingGameScreen.playWord(currentLanguage.fileName, currentWord);
                                         }
                                     }),
-                                    Actions.delay(2f),
+                                    Actions.delay(1f),
                                     Actions.run(new Runnable() {
                                         public void run() {
                                             recordWord();

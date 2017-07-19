@@ -47,9 +47,8 @@ public class SpellingGameScreen implements Screen {
     private Container<Image> pictureContainer;
     private ArrayList<Container<Letter>> letterSpaces;
     private SpellingGameStateMachine spellingGameStateMachine;
-    private int separatorHeight = 40;
+    private int separator = 40;
     private int pictureSize = 400;
-    private int backButtonSize = 140;
     private int letterSpaceSize = 140;
     private int letterButtonSize = 110;
 
@@ -67,7 +66,7 @@ public class SpellingGameScreen implements Screen {
 
     private void setStage() {
         backgroundMusic = AssetManager.getMusic("spellingGameMusic");
-//        backgroundMusic.play();
+        backgroundMusic.play();
 
         stage.addActor(backgroundGroup = new Group());
         stage.addActor(actorsGroup = new Group());
@@ -88,24 +87,24 @@ public class SpellingGameScreen implements Screen {
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                backgroundMusic.stop();
                 ScreenManager.nextScreen(new StudentScreen(SpellingGameScreen.this.game));
             }
         });
-        mainTable.add(backButton).size(backButtonSize).left();
+        mainTable.top().left();
         mainTable.row();
-        mainTable.add().height(separatorHeight);
+        mainTable.add(backButton).size(150).top().left().padTop(50).padLeft(75).padRight(25);
+        mainTable.add().height(separator);
+        mainTable.add(letterTable).height(320).padTop(separator);
         mainTable.row();
-        mainTable.add(letterTable).height(letterButtonSize * 2);
+        mainTable.add().height(separator);
         mainTable.row();
-        mainTable.add().height(separatorHeight);
+        mainTable.add(pictureTable).height(pictureSize).colspan(3);
         mainTable.row();
-        mainTable.add(pictureTable).height(pictureSize);
+        mainTable.add().height(separator);
         mainTable.row();
-        mainTable.add().height(separatorHeight);
+        mainTable.add(spaceTable).height(letterSpaceSize).colspan(3);
         mainTable.row();
-        mainTable.add(spaceTable).height(letterSpaceSize);
-        mainTable.row();
-        mainTable.add().height(GdxGame.HEIGHT - ((separatorHeight * 3) + (letterButtonSize * 2) + pictureSize + letterSpaceSize));
 
         pictureTable.add(pictureContainer = new Container<Image>().size(pictureSize));
         letterSpaces = new ArrayList<Container<Letter>>();
@@ -203,11 +202,6 @@ public class SpellingGameScreen implements Screen {
                         DragAndDrop.Payload payload = new DragAndDrop.Payload();
                         payload.setDragActor(getActor());
                         return payload;
-                    }
-
-                    @Override
-                    public void dragStop(InputEvent event, float x, float y, int pointer, DragAndDrop.Payload payload, DragAndDrop.Target target) {
-                        super.dragStop(event, x, y, pointer, payload, target);
                     }
                 });
                 return payload;

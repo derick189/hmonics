@@ -51,7 +51,7 @@ public class TeacherScreen implements Screen {
     }
 
     private void selectTeachers() {
-        title.setText("Select a teacher to see their students\nor change teacher");
+        title.setText("Add or remove teachers. \nSelect a teacher to see their students.");
         String infoText = "<Teacher name>";
 
         if (doOnBackButton != null) {
@@ -81,7 +81,7 @@ public class TeacherScreen implements Screen {
     }
 
     private void selectStudents() {
-        title.setText("Select a student to see their history\nor change student");
+        title.setText("Add or remove students. \nSelect a student to see their history.");
         String infoText = "<Student name>";
 
         backButton.removeListener(doOnBackButton);
@@ -109,7 +109,7 @@ public class TeacherScreen implements Screen {
     }
 
     private void displayHistories() {
-        title.setText("Select a student to see their history\nor change student");
+        title.setText("Student history:");
         String infoText = "";
 
         backButton.removeListener(doOnBackButton);
