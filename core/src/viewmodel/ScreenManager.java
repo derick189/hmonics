@@ -217,6 +217,7 @@ public class ScreenManager {
                     aDataRow.add().height(rowSeparator);
                     verticalGroup.addActor(aDataRow);
                 }
+                selectionTable.background(AssetManager.backplate);
                 selectionTable.add(scrollPane).width(tableWidth).height((rowHeight + rowSeparator) * 6);
                 break;
         }
