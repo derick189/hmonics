@@ -32,8 +32,11 @@ public class SpellingGameStateMachine {
         this.currentStudent = DataManager.getTeachers().get(ScreenManager.selectedTeacherIndex).getStudents().get(ScreenManager.selectedStudentIndex);
         this.currentStudent.startNewCurrentHistory(new History("Spelling Game"));
 
+        // Set game language (set in screen manager for now)
+        // TODO create language button option in game
         spellingGameScreen.setDisplayLanguage(currentLanguage);
-        spellingGameScreen.setPictureAndSpaceLength(currentWord.getWordId(), currentWord.getSpelling(currentLanguage).length());
+        // Set the amount of spaces for word
+        spellingGameScreen.setPictureAndSpaceLength(currentWord.getWordId(), currentWord.getSpaces());
     }
 
     public void doEvent(Event event, Actor actor) {
@@ -78,7 +81,7 @@ public class SpellingGameStateMachine {
     private void changeToNextWord() {
         sessionWordList.remove(currentWord);
         currentWord = getNextWord();
-        spellingGameScreen.setPictureAndSpaceLength(currentWord.getWordId(), currentWord.getSpelling(currentLanguage).length());
+        spellingGameScreen.setPictureAndSpaceLength(currentWord.getWordId(), currentWord.getSpaces());
     }
 
     private Word getNextWord() {
