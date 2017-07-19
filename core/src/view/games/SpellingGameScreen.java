@@ -18,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import model.Word;
 import view.AssetManager;
 import view.GdxGame;
-import view.actors.AnimatedActor;
 import view.actors.Letter;
 import view.screens.StudentScreen;
 import viewmodel.ScreenManager;
@@ -28,26 +27,24 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class SpellingGameScreen implements Screen {
+    public ImageButton backButton;
     private GdxGame game;
     private Stage stage;
     private DragAndDrop dragAndDrop;
     private Music backgroundMusic;
     private Random random;
-
     // Actors added to the screen are drawn in the order they were added. Actors drawn later are drawn on top of everything before.
     // These groups are used to add actors to the screen in the right order. All actors added to groups are drawn when the group is drawn.
     // These are added in this order in setStage. All actors are added to these groups and not the screen directly.
     private Group backgroundGroup;
     private Group actorsGroup;
     private Group animationsGroup;
-
     private Table letterTable;
     private Table pictureTable;
     private Table spaceTable;
     private Container<Image> pictureContainer;
     private ArrayList<Container<Letter>> letterSpaces;
     private SpellingGameStateMachine spellingGameStateMachine;
-
     private int separatorHeight = 40;
     private int pictureSize = 400;
     private int backButtonSize = 140;
@@ -86,7 +83,7 @@ public class SpellingGameScreen implements Screen {
         letterTable = new Table();
         pictureTable = new Table();
         spaceTable = new Table();
-        ImageButton backButton = new ImageButton(AssetManager.backButtonStyle);
+        backButton = new ImageButton(AssetManager.backButtonStyle);
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -113,20 +110,21 @@ public class SpellingGameScreen implements Screen {
         pictureTable.add(pictureContainer = new Container<Image>().size(pictureSize));
         letterSpaces = new ArrayList<Container<Letter>>();
 
-        spellingGameStateMachine = new SpellingGameStateMachine(this);
+        spellingGameStateMachine = new SpellingGameStateMachine(this, ScreenManager.Language.ENGLISH);
 
     }
 
-    public void setDisplayLanguage(SpellingGameStateMachine.Language language) {
+    public void setDisplayLanguage(ScreenManager.Language language) {
         setAlphabet(language);
         // TODO: change letterSpaces to length of word in new language (optional?)
     }
 
     /**
      * Sets up game screen with indicated language and associated alphabet
+     *
      * @param language
      */
-    private void setAlphabet(SpellingGameStateMachine.Language language) {
+    private void setAlphabet(ScreenManager.Language language) {
         letterTable.clearChildren();
         switch (language) {
             case ENGLISH:
@@ -261,7 +259,7 @@ public class SpellingGameScreen implements Screen {
         float duration = 1f;
         int distance = 300;
         for (int i = 0; i < 10; i++) {
-            Actor explosion = new AnimatedActor(AssetManager.getAnimation(fileName), fileName);
+            Actor explosion = new Image(AssetManager.getTextureRegion(fileName));
             explosion.setTouchable(Touchable.disabled);
             explosion.setBounds(subject.getX(), subject.getY(), size, size);
             explosion.setOrigin(size / 2, size / 2);

@@ -1,11 +1,11 @@
 package model;
 
-import viewmodel.SpellingGameStateMachine;
+import viewmodel.ScreenManager.Language;
 
 /**
  * A Word has an english and hmong spelling. The ID associated with a Word is the english spelling.
  */
-public class Word {
+public class Word implements Comparable<String> {
     private String englishSpelling;
     private String hmongSpelling;
 
@@ -18,7 +18,7 @@ public class Word {
         return englishSpelling;
     }
 
-    public String getSpelling(SpellingGameStateMachine.Language language) {
+    public String getSpelling(Language language) {
         switch (language) {
             case ENGLISH:
                 return englishSpelling;
@@ -27,5 +27,10 @@ public class Word {
             default:
                 return null;
         }
+    }
+
+    @Override
+    public int compareTo(String o) {
+        return o.compareTo(this.englishSpelling);
     }
 }

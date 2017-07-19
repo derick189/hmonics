@@ -1,14 +1,21 @@
 package model;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
-public class History { // todo: date
+public class History {
     private String gamePlayed;
     private ArrayList<String> wordsSpelled;
+    private Date date;
+    private String timestamp;
 
     public History(String gamePlayed) {
         this.gamePlayed = gamePlayed;
         wordsSpelled = new ArrayList<String>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd HH:mm");
+        date = new Date();
+        timestamp = dateFormat.format(date);
     }
 
     public String getGamePlayed() {
@@ -17,6 +24,14 @@ public class History { // todo: date
 
     public ArrayList<String> getWordsSpelled() {
         return wordsSpelled;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public String getDateString() {
+        return timestamp;
     }
 
     public void addWord(String wordId) {

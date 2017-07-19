@@ -23,7 +23,7 @@ public class SplashScreen implements Screen {
     }
 
     private void setStage() {
-        Texture introScreenBackground = new Texture(Gdx.files.internal("images/IntroScreenBackground.png"));
+        Texture introScreenBackground = new Texture(Gdx.files.internal("packed-images/IntroScreenBackground.png"));
         Image image = new Image(introScreenBackground);
         image.setSize(GdxGame.WIDTH, GdxGame.HEIGHT);
         stage.addActor(image);
