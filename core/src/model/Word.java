@@ -36,8 +36,20 @@ public class Word implements Comparable<String> {
                 return null;
         }
     }
-    public int getSpaces() {
-        return spaces;
+
+    /**
+     * Returns the number of spaces based on language.
+     * @return
+     */
+    public int getSpaces(Language language) {
+        switch (language) {
+            case ENGLISH:
+                return englishSpelling.length();
+            case HMONG:
+                return spaces;
+            default:
+                return 0;
+        }
     }
 
     public void setSpaces(int spaces) {
