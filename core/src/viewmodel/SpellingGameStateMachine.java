@@ -37,7 +37,7 @@ public class SpellingGameStateMachine {
         // TODO: create language button option in game
         spellingGameScreen.setDisplayLanguage(currentLanguage);
         // Set the amount of spaces for word
-        spellingGameScreen.setPictureAndSpaceLength(currentWord.getWordId(), currentWord.getSpaces());
+        spellingGameScreen.setPictureAndSpaceLength(currentWord.getWordId(), currentWord.getSpaces(currentLanguage));
     }
 
     public void doEvent(Event event, final Actor actor) {
@@ -48,19 +48,27 @@ public class SpellingGameStateMachine {
                 switch (event) {
                     case DROPPED_LETTER:
                         System.out.println("Current word: " + spellingGameScreen.getWordInSpaces());
-                        if (wordIsCorrect()) { // TODO: special animation for correct word
+                        if (wordIsCorrect()) {
                             recordWord();
                             actor.addAction(Actions.sequence(
                                     Actions.run(new Runnable() {
                                         public void run() {
-                                            spellingGameScreen.confettiEffect(actor, "gem");
                                             spellingGameScreen.playLetter(currentLanguage.fileName, (Letter) actor);
+                                        }
+                                    }),
+                                    Actions.delay(0.5f),
+                                    Actions.run(new Runnable() {
+                                        public void run() { // Once final correct letter is dropped, say word
+                                            spellingGameScreen.playWord(currentLanguage.fileName, currentWord);
                                         }
                                     }),
                                     Actions.delay(1f),
                                     Actions.run(new Runnable() {
-                                        public void run() {
-//                                            spellingGameScreen.playWord(currentLanguage.fileName, currentWord);
+                                        public void run() { // Then, holy shit, hooray!!!
+                                            // TODO: make confetti come out of every angle or something
+                                            spellingGameScreen.confettiEffect(actor, currentWord.getWordId());
+                                            spellingGameScreen.playWord(currentLanguage.fileName, currentWord);
+                                            spellingGameScreen.playCorrectSFX(currentWord);
                                         }
                                     }),
                                     Actions.delay(1f),
@@ -75,9 +83,11 @@ public class SpellingGameStateMachine {
                                         }
                                     })
                             ));
-                        } else {
-                            spellingGameScreen.confettiEffect(actor, "gem");
+                        } else { // Word isn't correct (yet): Play letter after every drop
                             spellingGameScreen.playLetter(currentLanguage.fileName, (Letter) actor);
+                            if (spellingGameScreen.spacesFull()) { // Spaces full & not correct
+                                spellingGameScreen.playWrongSFX();
+                            }
                         }
                         break;
                 }
@@ -96,7 +106,7 @@ public class SpellingGameStateMachine {
     private void changeToNextWord() {
         sessionWordList.remove(currentWord);
         currentWord = getNextWord();
-        spellingGameScreen.setPictureAndSpaceLength(currentWord.getWordId(), currentWord.getSpaces());
+        spellingGameScreen.setPictureAndSpaceLength(currentWord.getWordId(), currentWord.getSpaces(currentLanguage));
     }
 
     private Word getNextWord() {

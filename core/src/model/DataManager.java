@@ -9,7 +9,6 @@ public class DataManager {
     private static ArrayList<Word> wordList = new ArrayList<Word>();
 
     public static void populate() {
-        // All of the Hmong words happen to require 3 spaces: 1 consonant, 1 vowel, 1 tone
         wordList.add(new Word("apple", "kua", 2));
         wordList.add(new Word("money", "nyiaj", 3));
         wordList.add(new Word("bird", "noog", 3));
@@ -17,12 +16,12 @@ public class DataManager {
         wordList.add(new Word("dog", "aub", 2));
         wordList.add(new Word("boat", "nkoj", 3));
         wordList.add(new Word("fish", "ntses", 3));
-        wordList.add(new Word("deer", "kauv", 3));
+        wordList.add(new Word("deer", "mos lwj", 7));
         wordList.add(new Word("cat", "miv", 3));
         wordList.add(new Word("horse", "nees", 3));
         wordList.add(new Word("flower", "paj", 3));
         wordList.add(new Word("frog", "qav", 3));
-        wordList.add(new Word("pumpkin", "taub", 3));
+        wordList.add(new Word("pumpkin", "taub dag", 7));
         wordList.add(new Word("sheep", "yaj", 3));
         wordList.add(new Word("dragon", "zaj", 3));
 

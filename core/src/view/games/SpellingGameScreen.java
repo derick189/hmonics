@@ -158,21 +158,11 @@ public class SpellingGameScreen implements Screen {
                             final Letter letter;
                             if (letterIndex < consonants.length) { // consonant
                                 letter = new Letter(consonants[letterIndex++]);
-//                                for (Character ch : consonants[letterIndex-1].toCharArray()) { // for each character in consonant
-//                                    Letter l = new Letter(ch.toString());
-//                                    setLetterAsDraggable(l); // drop each char into a space
-//                                }
                             } else if (letterIndex < consonants.length + vowels.length) { // vowel
                                 letter = new Letter(vowels[(letterIndex++) - consonants.length]);
-//                                for (Character ch : vowels[letterIndex - consonants.length -1].toCharArray()) { // for each character in vowel
-//                                    Letter l = new Letter(ch.toString());
-//                                    setLetterAsDraggable(l); // drop each char into a space
-//                                }
                             } else { // tone
                                 letter = new Letter(tones[(letterIndex++) - (consonants.length + vowels.length)]);
                                 letter.setIsTone();
-//                                Letter l = new Letter(letter.getName().substring(letter.getName().length() - 1));
-//                                setLetterAsDraggable(l);// just drop the last char into a space
                             }
                             letter.getLabel().setFontScale(.5f);
                             letterTable.add(new Container<Letter>(letter).size(letterButtonSize)).size(letterButtonSize);
@@ -237,22 +227,6 @@ public class SpellingGameScreen implements Screen {
                             letterContainer.setActor(null);
                         }
                     }
-//                    if (spellingGameStateMachine.language == SpellingGameStateMachine.Language.HMONG) {
-//                        Container<Letter> newParent = (Container<Letter>) getActor();
-//                        Letter letter = (Letter) payload.getDragActor();
-//                        if (letter.isTone()) { // just drop last character in tone string
-//                            letter.setName(letter.getName().substring(letter.getName().length() - 1));
-//                            newParent.setActor(letter);
-//                            SpellingGameScreen.this.spellingGameStateMachine.doEvent(SpellingGameStateMachine.Event.DROPPED_LETTER, payload.getDragActor());
-//                        } else {
-//                            for (Character ch : payload.getDragActor().getName().toCharArray()) { // for each character in consonant or vowel
-//                                Letter l = new Letter(ch.toString());
-//                                Container<Letter> newParent2 = (Container<Letter>) getActor();
-//                                newParent2.setActor(l);
-//                                SpellingGameScreen.this.spellingGameStateMachine.doEvent(SpellingGameStateMachine.Event.DROPPED_LETTER, payload.getDragActor());
-//                            }
-//                        }
-//                    }
                     Container<Letter> newParent = (Container<Letter>) getActor();
                     newParent.setActor((Letter) payload.getDragActor());
                     SpellingGameScreen.this.spellingGameStateMachine.doEvent(SpellingGameStateMachine.Event.DROPPED_LETTER, payload.getDragActor());
@@ -261,6 +235,10 @@ public class SpellingGameScreen implements Screen {
         }
     }
 
+    /**
+     * Gets the string formed by the letters dropped into the spaces
+     * @return string
+     */
     public String getWordInSpaces() {
         String currentString = "";
         for (Container<Letter> letterContainer : letterSpaces) {
@@ -280,6 +258,26 @@ public class SpellingGameScreen implements Screen {
         return currentString;
     }
 
+    /**
+     * Decides whether the spaces are filled with letters
+     * @return
+     */
+    public boolean spacesFull() {
+        for (Container<Letter> letterContainer : letterSpaces) {
+            if (letterContainer.hasChildren()) {
+                continue;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Displays confetti animation
+     * @param subject
+     * @param fileName
+     */
     public void confettiEffect(Actor subject, String fileName) {
         int size = 100;
         float duration = 1f;
@@ -297,14 +295,25 @@ public class SpellingGameScreen implements Screen {
         }
     }
 
-    public void playLetter(String fileName, Letter letter) {
-        Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/" + fileName + "Alphabet/" + letter.getName() + ".mp3"));
+    public void playLetter(String language, Letter letter) {
+        Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/" + language + "Alphabet/" + letter.getName() + ".mp3"));
         sound.play();
     }
 
-    public void playWord(String fileName, Word currentWord) {
-        Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/" + fileName + "Words/" + currentWord.getWordId() + ".mp3"));
+    public void playWord(String language, Word currentWord) {
+        Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/" + language + "Words/" + currentWord.getWordId() + ".mp3"));
         sound.play();
+    }
+
+    public void playCorrectSFX(Word currentWord) {
+        Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/" + currentWord.getWordId() + ".mp3"));
+        sound.play();
+        Sound applause = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/applause.mp3"));
+        applause.play();
+    }
+    public void playWrongSFX() {
+        Sound buzzer = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/buzzer.mp3"));
+        buzzer.play();
     }
 
     @Override
