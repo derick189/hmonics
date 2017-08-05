@@ -2,17 +2,20 @@ package view.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import view.AssetManager;
 import view.GdxGame;
 import viewmodel.ScreenManager;
 
 public class TeamLogoSplashScreen implements Screen {
     private GdxGame game;
     private Stage stage;
+    private static Music backgroundMusic;
 
     public TeamLogoSplashScreen(GdxGame gdxGame) {
         this.game = gdxGame;
@@ -23,6 +26,8 @@ public class TeamLogoSplashScreen implements Screen {
     }
 
     private void setStage() {
+        backgroundMusic = AssetManager.getMusic("IntroMusic");
+        backgroundMusic.play();
         Texture introScreenBackground = new Texture(Gdx.files.internal("packed-images/TeamLogoSplash.png"));
         Image image = new Image(introScreenBackground);
         image.setSize(GdxGame.WIDTH, GdxGame.HEIGHT);
@@ -54,6 +59,10 @@ public class TeamLogoSplashScreen implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
+    }
+
+    public static Music getBackgroundMusic() {
+        return backgroundMusic;
     }
 
     @Override

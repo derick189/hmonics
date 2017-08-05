@@ -20,6 +20,7 @@ import view.AssetManager;
 import view.GdxGame;
 import view.actors.Letter;
 import view.screens.StudentScreen;
+import view.screens.TeamLogoSplashScreen;
 import viewmodel.ScreenManager;
 import viewmodel.SpellingGameStateMachine;
 
@@ -32,6 +33,7 @@ public class SpellingGameScreen implements Screen {
     private Stage stage;
     private DragAndDrop dragAndDrop;
     private Music backgroundMusic;
+    private Sound click;
     private Random random;
 
     private String[] tones = {"koJ", "muS", "kuV", "niaM", "neeG", "siaB", "zoO", "toD"};
@@ -65,8 +67,11 @@ public class SpellingGameScreen implements Screen {
     }
 
     private void setStage() {
-        backgroundMusic = AssetManager.getMusic("spellingGameMusic");
+        TeamLogoSplashScreen.getBackgroundMusic().stop();
+        backgroundMusic = AssetManager.getMusic("GameMusic");
+        backgroundMusic.setVolume(0.05f);
         backgroundMusic.play();
+        click = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/LetterClick.mp3"));
 
         stage.addActor(backgroundGroup = new Group());
         stage.addActor(actorsGroup = new Group());
@@ -88,6 +93,7 @@ public class SpellingGameScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 backgroundMusic.stop();
+                TeamLogoSplashScreen.getBackgroundMusic().play();
                 ScreenManager.nextScreen(new StudentScreen(SpellingGameScreen.this.game));
             }
         });
@@ -305,22 +311,9 @@ public class SpellingGameScreen implements Screen {
         sound.play();
     }
 
-    public void playWordSFX(Word currentWord) {
-        Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/" + currentWord.getWordId() + ".mp3"));
-        sound.play();
-    }
-
-
-
-    public void playCorrectSFX(Word currentWord) {
-        Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/" + currentWord.getWordId() + ".mp3"));
-        sound.play();
-        Sound applause = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/applause.mp3"));
-        applause.play();
-    }
-    public void playWrongSFX() {
-        Sound buzzer = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/buzzer.mp3"));
-        buzzer.play();
+    public void playSFX(String sound) {
+        Sound sfx = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/" + sound + ".mp3"));
+        sfx.play();
     }
 
     @Override

@@ -2,6 +2,7 @@ package view.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -22,6 +23,7 @@ public class StudentScreen implements Screen {
     private ChangeListener doOnBackButton;
     private Label title;
     private Table selectionTable;
+    private Sound sound;
 
     public StudentScreen(GdxGame gdxGame) {
         this.game = gdxGame;
@@ -36,6 +38,7 @@ public class StudentScreen implements Screen {
         mainTable.top().left().setBounds(0, 0, GdxGame.WIDTH, GdxGame.HEIGHT);
         mainTable.setBackground(new TextureRegionDrawable(AssetManager.getTextureRegion("background")));
         stage.addActor(mainTable);
+        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/BigClick.mp3"));
 
         backButton = new ImageButton(AssetManager.backButtonStyle);
         title = new Label("", AssetManager.labelStyle64);
@@ -61,6 +64,7 @@ public class StudentScreen implements Screen {
         backButton.addListener(doOnBackButton = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                sound.play();
                 ScreenManager.nextScreen(new StartScreen(StudentScreen.this.game));
             }
         });
@@ -88,12 +92,16 @@ public class StudentScreen implements Screen {
         backButton.addListener(doOnBackButton = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                sound.play();
                 selectTeachers();
             }
         });
         ChangeListener doAfterSelectName = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                sound.play();
+                sound = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/cheer.mp3"));
+                sound.play();
                 StudentScreen.this.displayGames();
             }
         };

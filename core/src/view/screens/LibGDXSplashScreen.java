@@ -2,6 +2,7 @@ package view.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -13,6 +14,7 @@ import viewmodel.ScreenManager;
 public class LibGDXSplashScreen implements Screen {
     private GdxGame game;
     private Stage stage;
+    private Sound sound;
 
     public LibGDXSplashScreen(GdxGame gdxGame) {
         this.game = gdxGame;
@@ -27,6 +29,8 @@ public class LibGDXSplashScreen implements Screen {
         Image image = new Image(introScreenBackground);
         image.setSize(GdxGame.WIDTH, GdxGame.HEIGHT);
         stage.addActor(image);
+        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/giggles.mp3"));
+        sound.play();
 
         image.addAction(Actions.sequence(
                 Actions.delay(2f),

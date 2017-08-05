@@ -25,9 +25,14 @@ public class DataManager {
         wordList.add(new Word("sheep", "yaj", 3));
         wordList.add(new Word("dragon", "zaj", 3));
 
-        for (int i = 0; i < 2; i++) {
-            addTeacher(new Teacher("Teacher " + (i + 1)));
-        }
+        addTeacher(new Teacher("Mrs. Anderson"));
+        addTeacher(new Teacher("Mr. Johnson"));
+        addTeacher(new Teacher("Mrs. Smith"));
+
+        addStudent(1, new Student("Jared"));
+        addStudent(1, new Student("Derick"));
+        addStudent(1, new Student("Philip"));
+
         for (int i = 0; i < 9; i++) {
             Student student;
             addStudent(0, student = new Student("Student " + (i + 1)));
@@ -35,9 +40,6 @@ public class DataManager {
             student.startNewCurrentHistory(history = new History("Spelling Game"));
             history.addWord("bird");
             history.addWord("cat");
-        }
-        for (int i = 0; i < 2; i++) {
-            addStudent(1, new Student("Student " + (i + 1)));
         }
     }
 
