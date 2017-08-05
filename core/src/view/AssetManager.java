@@ -67,7 +67,7 @@ public class AssetManager {
     public static Music getMusic(String fileName) {
         Music music = Gdx.audio.newMusic(Gdx.files.internal("sounds/" + fileName + ".mp3"));
         music.setLooping(true);
-        music.setVolume(0.5f);
+        music.setVolume(0.1f);
         return music;
     }
 }

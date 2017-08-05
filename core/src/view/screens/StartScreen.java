@@ -2,6 +2,7 @@ package view.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -16,6 +17,7 @@ import viewmodel.ScreenManager;
 public class StartScreen implements Screen {
     private GdxGame game;
     private Stage stage;
+    private Sound sound;
 
     public StartScreen(GdxGame gdxGame) {
         this.game = gdxGame;
@@ -30,6 +32,8 @@ public class StartScreen implements Screen {
         mainTable.setBounds(0, 0, GdxGame.WIDTH, GdxGame.HEIGHT);
         stage.addActor(mainTable);
 
+        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/BigClick.mp3"));
+
         Image background = new Image(view.AssetManager.getTextureRegion("StartScreenBackground"));
         mainTable.setBackground(background.getDrawable());
 
@@ -37,14 +41,16 @@ public class StartScreen implements Screen {
         teacherButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                sound.play();
                 ScreenManager.nextScreen(new TeacherScreen(StartScreen.this.game));
             }
         });
 
-        TextButton studentButton = new TextButton("Student", AssetManager.textButtonStyle);
+        final TextButton studentButton = new TextButton("Student", AssetManager.textButtonStyle);
         studentButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                sound.play();
                 ScreenManager.nextScreen(new StudentScreen(StartScreen.this.game));
             }
         });

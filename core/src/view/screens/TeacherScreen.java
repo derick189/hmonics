@@ -3,6 +3,7 @@ package view.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL30;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -21,6 +22,7 @@ public class TeacherScreen implements Screen {
     private ChangeListener doOnBackButton;
     private Label title;
     private Table selectionTable;
+    private Sound sound;
 
     public TeacherScreen(GdxGame gdxGame) {
         this.game = gdxGame;
@@ -35,6 +37,7 @@ public class TeacherScreen implements Screen {
         mainTable.top().left().setBounds(0, 0, GdxGame.WIDTH, GdxGame.HEIGHT);
         mainTable.setBackground(new TextureRegionDrawable(AssetManager.getTextureRegion("background")));
         stage.addActor(mainTable);
+        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/BigClick.mp3"));
 
         backButton = new ImageButton(AssetManager.backButtonStyle);
         title = new Label("", AssetManager.labelStyle64);
@@ -60,6 +63,7 @@ public class TeacherScreen implements Screen {
         backButton.addListener(doOnBackButton = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                sound.play();
                 ScreenManager.nextScreen(new StartScreen(TeacherScreen.this.game));
             }
         });
@@ -88,19 +92,19 @@ public class TeacherScreen implements Screen {
         backButton.addListener(doOnBackButton = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                sound.play();
                 TeacherScreen.this.selectTeachers();
             }
         });
         ChangeListener doAfterSelectName = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                displayHistories();
+                sound.play(); displayHistories();
             }
         };
         ChangeListener doAfterAddRemove = new ChangeListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                TeacherScreen.this.selectStudents();
+            public void changed(ChangeEvent event, Actor actor) {sound.play(); TeacherScreen.this.selectStudents();
             }
         };
 
@@ -116,6 +120,7 @@ public class TeacherScreen implements Screen {
         backButton.addListener(doOnBackButton = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                sound.play();
                 TeacherScreen.this.selectStudents();
             }
         });

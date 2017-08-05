@@ -47,6 +47,7 @@ public class SpellingGameStateMachine {
             case COMPLETING_WORD:
                 switch (event) {
                     case DROPPED_LETTER:
+                        spellingGameScreen.playSFX("LetterClick");
                         System.out.println("Current word: " + spellingGameScreen.getWordInSpaces());
                         if (wordIsCorrect()) {
                             recordWord();
@@ -64,8 +65,8 @@ public class SpellingGameStateMachine {
                                     }),
                                     Actions.delay(1f),
                                     Actions.run(new Runnable() {
-                                        public void run() {
-                                            spellingGameScreen.playWordSFX(currentWord);
+                                        public void run() { // Then play word SFX
+                                            spellingGameScreen.playSFX(currentWord.getWordId());
                                         }
                                     }),
                                     Actions.delay(1f),
@@ -73,7 +74,8 @@ public class SpellingGameStateMachine {
                                         public void run() { // Then, holy shit, hooray!!!
                                             // TODO: make confetti come out of every angle or something
                                             spellingGameScreen.confettiEffect(actor, currentWord.getWordId());
-                                            spellingGameScreen.playCorrectSFX(currentWord);
+                                            spellingGameScreen.playSFX(currentWord.getWordId());
+                                            spellingGameScreen.playSFX("applause");
                                         }
                                     }),
                                     Actions.delay(1f),
@@ -91,7 +93,7 @@ public class SpellingGameStateMachine {
                         } else { // Word isn't correct (yet): Play letter after every drop
                             spellingGameScreen.playLetter(currentLanguage.fileName, (Letter) actor);
                             if (spellingGameScreen.spacesFull()) { // Spaces full & not correct
-                                spellingGameScreen.playWrongSFX();
+                                spellingGameScreen.playSFX("buzzer");
                             }
                         }
                         break;
