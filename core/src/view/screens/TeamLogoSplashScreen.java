@@ -10,11 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import view.GdxGame;
 import viewmodel.ScreenManager;
 
-public class SplashScreen implements Screen {
+public class TeamLogoSplashScreen implements Screen {
     private GdxGame game;
     private Stage stage;
 
-    public SplashScreen(GdxGame gdxGame) {
+    public TeamLogoSplashScreen(GdxGame gdxGame) {
         this.game = gdxGame;
         stage = new Stage(gdxGame.viewport, gdxGame.batch);
         Gdx.input.setInputProcessor(stage);
@@ -23,7 +23,7 @@ public class SplashScreen implements Screen {
     }
 
     private void setStage() {
-        Texture introScreenBackground = new Texture(Gdx.files.internal("packed-images/IntroScreenBackground.png"));
+        Texture introScreenBackground = new Texture(Gdx.files.internal("packed-images/TeamLogoSplash.png"));
         Image image = new Image(introScreenBackground);
         image.setSize(GdxGame.WIDTH, GdxGame.HEIGHT);
         stage.addActor(image);
@@ -32,7 +32,7 @@ public class SplashScreen implements Screen {
                 Actions.delay(2f),
                 Actions.run(new Runnable() {
                     public void run() {
-                        ScreenManager.start(game, new StartScreen(game));
+                        ScreenManager.start(game, new LibGDXSplashScreen(game));
                     }
                 })
         ));

@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import model.DataManager;
-import view.screens.SplashScreen;
+import view.screens.TeamLogoSplashScreen;
 
 public class GdxGame extends Game {
 
@@ -23,7 +23,7 @@ public class GdxGame extends Game {
 
         batch = new SpriteBatch();
 
-        setScreen(new SplashScreen(GdxGame.this));
+        setScreen(new TeamLogoSplashScreen(GdxGame.this));
 
         AssetManager.init();
         DataManager.populate();
