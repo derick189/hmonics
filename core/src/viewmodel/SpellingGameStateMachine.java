@@ -64,10 +64,15 @@ public class SpellingGameStateMachine {
                                     }),
                                     Actions.delay(1f),
                                     Actions.run(new Runnable() {
+                                        public void run() {
+                                            spellingGameScreen.playWordSFX(currentWord);
+                                        }
+                                    }),
+                                    Actions.delay(1f),
+                                    Actions.run(new Runnable() {
                                         public void run() { // Then, holy shit, hooray!!!
                                             // TODO: make confetti come out of every angle or something
                                             spellingGameScreen.confettiEffect(actor, currentWord.getWordId());
-                                            spellingGameScreen.playWord(currentLanguage.fileName, currentWord);
                                             spellingGameScreen.playCorrectSFX(currentWord);
                                         }
                                     }),

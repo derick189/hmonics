@@ -305,6 +305,13 @@ public class SpellingGameScreen implements Screen {
         sound.play();
     }
 
+    public void playWordSFX(Word currentWord) {
+        Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/" + currentWord.getWordId() + ".mp3"));
+        sound.play();
+    }
+
+
+
     public void playCorrectSFX(Word currentWord) {
         Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/" + currentWord.getWordId() + ".mp3"));
         sound.play();
