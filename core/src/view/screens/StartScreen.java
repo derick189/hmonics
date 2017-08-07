@@ -37,7 +37,7 @@ public class StartScreen implements Screen {
         Image background = new Image(view.AssetManager.getTextureRegion("StartScreenBackground"));
         mainTable.setBackground(background.getDrawable());
 
-        TextButton teacherButton = new TextButton("Teacher", AssetManager.textButtonStyle);
+        TextButton teacherButton = new TextButton("Teacher", AssetManager.textButtonStyle64);
         teacherButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -46,7 +46,7 @@ public class StartScreen implements Screen {
             }
         });
 
-        final TextButton studentButton = new TextButton("Student", AssetManager.textButtonStyle);
+        final TextButton studentButton = new TextButton("Student", AssetManager.textButtonStyle64);
         studentButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

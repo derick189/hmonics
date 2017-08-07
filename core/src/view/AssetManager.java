@@ -23,11 +23,13 @@ public class AssetManager {
     public static ButtonStyle defaultStyle;
     public static Drawable backplate;
     public static BitmapFont font64;
+    public static BitmapFont font32;
     public static LabelStyle labelStyle64;
-    public static TextFieldStyle textFieldStyle;
-    public static TextButtonStyle textButtonStyle;
+    public static TextFieldStyle textFieldStyle64;
+    public static TextButtonStyle textButtonStyle64;
     public static ImageButtonStyle imageButtonStyle;
     public static ImageButtonStyle backButtonStyle;
+    public static TextButtonStyle textButtonStyle32;
 
     public static void init() {
         atlas = new TextureAtlas(Gdx.files.internal("packed-images/pack.atlas"));
@@ -44,11 +46,14 @@ public class AssetManager {
         parameter.color = Color.BLACK;
         parameter.size = 64;
         font64 = generator.generateFont(parameter);
+        parameter.size = 32;
+        font32 = generator.generateFont(parameter);
 
         labelStyle64 = new LabelStyle(font64, Color.BLACK);
         labelStyle64.background = view.AssetManager.backplate;
-        textFieldStyle = new TextFieldStyle(font64, Color.BLACK, defaultStyle.down, defaultStyle.down, defaultStyle.up);
-        textButtonStyle = new TextButtonStyle(defaultStyle.up, defaultStyle.down, defaultStyle.checked, font64);
+        textFieldStyle64 = new TextFieldStyle(font64, Color.BLACK, defaultStyle.down, defaultStyle.down, defaultStyle.up);
+        textButtonStyle64 = new TextButtonStyle(defaultStyle.up, defaultStyle.down, defaultStyle.checked, font64);
+        textButtonStyle32 = new TextButtonStyle(defaultStyle.up, defaultStyle.down, defaultStyle.checked, font32);
 
         imageButtonStyle = new ImageButtonStyle(defaultStyle);
 
