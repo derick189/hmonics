@@ -71,7 +71,7 @@ public class SpellingGameStateMachine {
                                     }),
                                     Actions.delay(1f),
                                     Actions.run(new Runnable() {
-                                        public void run() { // Then, holy shit, hooray!!!
+                                        public void run() { // Hooray!!!
                                             // TODO: make confetti come out of every angle or something
                                             spellingGameScreen.confettiEffect(actor, currentWord.getWordId());
                                             spellingGameScreen.playSFX(currentWord.getWordId());
@@ -103,7 +103,7 @@ public class SpellingGameStateMachine {
     }
 
     private boolean wordIsCorrect() {
-        return currentWord.getSpelling(currentLanguage).equals(spellingGameScreen.getWordInSpaces());
+        return currentWord.getSpelling(currentLanguage).equalsIgnoreCase(spellingGameScreen.getWordInSpaces());
     }
 
     private void recordWord() {

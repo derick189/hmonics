@@ -56,7 +56,7 @@ public class ScreenManager {
             case STUDENTS:
                 // first row for adding an item
                 if (changeVersion) {
-                    final TextField addItemField = new TextField(infoText, AssetManager.textFieldStyle);
+                    final TextField addItemField = new TextField(infoText, AssetManager.textFieldStyle64);
                     addItemField.addListener(new ClickListener() {
                         boolean firstClick = true;
 
@@ -68,7 +68,7 @@ public class ScreenManager {
                         }
                     });
                     // button for adding a teacher or student
-                    TextButton addButton = new TextButton("Add", AssetManager.textButtonStyle);
+                    TextButton addButton = new TextButton("Add", AssetManager.textButtonStyle64);
                     switch (selectionType) {
                         case TEACHERS:
                             addButton.addListener(new ChangeListener() {
@@ -109,7 +109,7 @@ public class ScreenManager {
                             aDataRow = new Table();
                             aDataRow.setName(String.valueOf(i));
                             // button for selecting a teacher
-                            TextButton aName = new TextButton(teachers.get(i).getName(), AssetManager.textButtonStyle);
+                            TextButton aName = new TextButton(teachers.get(i).getName(), AssetManager.textButtonStyle64);
                             aName.setName(String.valueOf(i)); // name stores index for button
                             aName.getLabel().setAlignment(Align.left);
                             aName.addListener(new ChangeListener() {
@@ -125,7 +125,7 @@ public class ScreenManager {
 
                             if (changeVersion) {
                                 // button for removing a teacher
-                                TextButton deleteButton = new TextButton("Delete", AssetManager.textButtonStyle);
+                                TextButton deleteButton = new TextButton("Delete", AssetManager.textButtonStyle64);
                                 deleteButton.setName(String.valueOf(i)); // name stores index for button
                                 deleteButton.addListener(new ChangeListener() {
                                     @Override
@@ -150,7 +150,7 @@ public class ScreenManager {
                             aDataRow = new Table();
                             aDataRow.setName(String.valueOf(i));
                             // button for selecting a student
-                            TextButton aName = new TextButton(students.get(i).getName(), AssetManager.textButtonStyle);
+                            TextButton aName = new TextButton(students.get(i).getName(), AssetManager.textButtonStyle64);
                             aName.setName(String.valueOf(i)); // name stores index for button
                             aName.getLabel().setAlignment(Align.left);
                             aName.addListener(new ChangeListener() {
@@ -166,7 +166,7 @@ public class ScreenManager {
 
                             if (changeVersion) {
                                 // button for removing a student
-                                TextButton deleteButton = new TextButton("Delete", AssetManager.textButtonStyle);
+                                TextButton deleteButton = new TextButton("Delete", AssetManager.textButtonStyle64);
                                 deleteButton.setName(String.valueOf(i)); // name stores index for button
                                 deleteButton.addListener(new ChangeListener() {
                                     @Override
@@ -204,9 +204,9 @@ public class ScreenManager {
                 ArrayList<History> histories = DataManager.getHistory(DataManager.getStudents(selectedTeacherIndex).get(selectedStudentIndex));
                 for (int i = 0; i < histories.size(); i++) { // make a data row for each history
                     aDataRow = new Table();
-                    TextButton aDate = new TextButton(String.valueOf(histories.get(i).getDateString()), AssetManager.textButtonStyle);
-                    TextButton aName = new TextButton(histories.get(i).getGamePlayed(), AssetManager.textButtonStyle);
-                    TextButton aValue = new TextButton(String.valueOf(histories.get(i).getWordsSpelled().size()), AssetManager.textButtonStyle);
+                    TextButton aDate = new TextButton(String.valueOf(histories.get(i).getDateString()), AssetManager.textButtonStyle64);
+                    TextButton aName = new TextButton(histories.get(i).getGamePlayed(), AssetManager.textButtonStyle64);
+                    TextButton aValue = new TextButton(String.valueOf(histories.get(i).getWordsSpelled().size()), AssetManager.textButtonStyle64);
 
                     aDataRow.add(aDate).width(dateWidth).height(rowHeight);
                     aDataRow.add().width(columnSeparator);
