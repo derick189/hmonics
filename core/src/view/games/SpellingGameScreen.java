@@ -20,13 +20,13 @@ import view.GdxGame;
 import view.actors.Letter;
 import view.screens.StudentScreen;
 import view.screens.TeamLogoSplashScreen;
+import viewmodel.ScreenManager;
 import viewmodel.SpellingGameStateMachine;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import static viewmodel.ScreenManager.Language;
-import static viewmodel.ScreenManager.nextScreen;
+import static viewmodel.ScreenManager.setScreen;
 
 public class SpellingGameScreen implements Screen {
     private GdxGame game;
@@ -37,6 +37,10 @@ public class SpellingGameScreen implements Screen {
     private Sound click;
     private Random random;
     public TextButton skipButton;
+    // Actors added to the screen are drawn in the order they were added. Actors drawn later are drawn on top of everything before.
+    // These groups are used to add actors to the screen in the right order. All actors added to groups are drawn when the group is drawn.
+    // Because these groups are added in this order in setStage, if all actors are added to these groups and not the screen directly then
+    private Group backgroundGroup;
     private Group actorsGroup;
     private Group animationsGroup;
 
@@ -48,11 +52,6 @@ public class SpellingGameScreen implements Screen {
     private SpellingGameStateMachine spellingGameStateMachine;
     public TextButton hintButton;
     public Label hintPopup;
-    private Language language;
-    // Actors added to the screen are drawn in the order they were added. Actors drawn later are drawn on top of everything before.
-    // These groups are used to add actors to the screen in the right order. All actors added to groups are drawn when the group is drawn.
-    // Because these groups are added in this order in setStage, if all actors are added to these groups and not the screen directly then
-    private Group backgroundGroup;
     private int letterTableHeight = 360;
     private int pictureSize = 400;
     private int letterSpaceWidth = 150;
@@ -61,10 +60,9 @@ public class SpellingGameScreen implements Screen {
     private int buttonWidth = 300;
     private int buttonHeight = 150;
 
-    public SpellingGameScreen(GdxGame gdxGame, Language language) {
+    public SpellingGameScreen(GdxGame gdxGame) {
         this.game = gdxGame;
         stage = new Stage(gdxGame.viewport, gdxGame.batch);
-        this.language = language;
         Gdx.input.setInputProcessor(stage);
         dragAndDrop = new DragAndDrop();
         dragAndDrop.setDragTime(0);
@@ -117,7 +115,7 @@ public class SpellingGameScreen implements Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 backgroundMusic.stop();
                 TeamLogoSplashScreen.getBackgroundMusic().play();
-                nextScreen(new StudentScreen(SpellingGameScreen.this.game));
+                setScreen(new StudentScreen(SpellingGameScreen.this.game));
             }
         });
         backButton.setSize(buttonHeight, buttonHeight);
@@ -157,10 +155,10 @@ public class SpellingGameScreen implements Screen {
         mainTable.addActor(hintPopup);
 
         // Start complementary state machine last
-        spellingGameStateMachine = new SpellingGameStateMachine(this, language);
+        spellingGameStateMachine = new SpellingGameStateMachine(this);
     }
 
-    public void setDisplayLanguage(Language language) {
+    public void setDisplayLanguage(ScreenManager.Language language) {
         setAlphabet(language);
     }
 
@@ -169,14 +167,14 @@ public class SpellingGameScreen implements Screen {
      *
      * @param language
      */
-    private void setAlphabet(Language language) {
+    private void setAlphabet(ScreenManager.Language language) {
         int numRows;
         int letterSelectSize;
         letterTable.clearChildren();
         switch (language) {
             case ENGLISH:
                 numRows = 2;
-                letterSelectSize = 180;
+                letterSelectSize = 120;
                 String[] alphabet = {
                         "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
                         "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
@@ -200,13 +198,13 @@ public class SpellingGameScreen implements Screen {
                 String[] tones = {"koJ", "muS", "kuV", "niaM", "neeG", "siaB", "zoO", "toD"};
 
                 Table consonantsTable = new Table();
-                consonantsTable.setBackground(AssetManager.backplate);
+                consonantsTable.setBackground(AssetManager.backPlate);
                 letterTable.add(consonantsTable);
                 Table vowelsTable = new Table();
-                vowelsTable.setBackground(AssetManager.backplate);
+                vowelsTable.setBackground(AssetManager.backPlate);
                 letterTable.add(vowelsTable);
                 Table tonesTable = new Table();
-                tonesTable.setBackground(AssetManager.backplate);
+                tonesTable.setBackground(AssetManager.backPlate);
                 letterTable.add(tonesTable);
 
                 for (int i = 0; i < numRows; i++) { // row

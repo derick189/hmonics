@@ -22,19 +22,16 @@ public class SpellingGameStateMachine {
     private Word currentWord;
     private Student currentStudent;
 
-    public SpellingGameStateMachine(SpellingGameScreen spellingGameScreen, ScreenManager.Language currentLanguage) {
+    public SpellingGameStateMachine(SpellingGameScreen spellingGameScreen) {
         this.random = new Random(System.currentTimeMillis());
         this.spellingGameScreen = spellingGameScreen;
         this.state = State.COMPLETING_WORD;
-        this.currentLanguage = currentLanguage;
+        this.currentLanguage = ScreenManager.selectedLanguage;
         this.sessionWordList = new ArrayList<Word>(DataManager.getWordList());
-
 
         this.currentStudent = DataManager.getTeachers().get(ScreenManager.selectedTeacherIndex).getStudents().get(ScreenManager.selectedStudentIndex);
         this.currentStudent.startNewCurrentHistory(new History("Spelling Game"));
 
-        // Set game language (set in screen manager for now)
-        // TODO: create language button option in game
         spellingGameScreen.setDisplayLanguage(currentLanguage);
 
         changeToNextWord();

@@ -42,7 +42,7 @@ public class StartScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 sound.play();
-                ScreenManager.nextScreen(new TeacherScreen(StartScreen.this.game));
+                ScreenManager.setScreen(new TeacherScreen(StartScreen.this.game));
             }
         });
 
@@ -51,7 +51,7 @@ public class StartScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 sound.play();
-                ScreenManager.nextScreen(new StudentScreen(StartScreen.this.game));
+                ScreenManager.setScreen(new StudentScreen(StartScreen.this.game));
             }
         });
 

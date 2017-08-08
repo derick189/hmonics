@@ -47,7 +47,7 @@ public class TeacherScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 clickSound.play();
-                ScreenManager.nextScreen(new StartScreen(TeacherScreen.this.game));
+                ScreenManager.setScreen(new StartScreen(TeacherScreen.this.game));
             }
         };
         ChangeListener doAfterSelectItem = new ChangeListener() {
@@ -67,7 +67,7 @@ public class TeacherScreen implements Screen {
         };
 
         mainTable.clearChildren();
-        mainTable.addActor(ScreenManager.screenFactory(ScreenManager.SelectionType.TEACHERS, titleText, doOnBackButton, doAfterSelectItem, addItemInfoText, doAfterAddRemove));
+        mainTable.addActor(ScreenManager.screenFactory(ScreenManager.ScreenType.TEACHERS, titleText, doOnBackButton, doAfterSelectItem, addItemInfoText, doAfterAddRemove));
     }
 
     private void selectStudents() {
@@ -97,7 +97,7 @@ public class TeacherScreen implements Screen {
         };
 
         mainTable.clearChildren();
-        mainTable.addActor(ScreenManager.screenFactory(ScreenManager.SelectionType.STUDENTS, titleText, doOnBackButton, doAfterSelectItem, addItemInfoText, doAfterAddRemove));
+        mainTable.addActor(ScreenManager.screenFactory(ScreenManager.ScreenType.STUDENTS, titleText, doOnBackButton, doAfterSelectItem, addItemInfoText, doAfterAddRemove));
     }
 
     private void displayHistories() {
@@ -109,15 +109,9 @@ public class TeacherScreen implements Screen {
                 TeacherScreen.this.selectStudents();
             }
         };
-        ChangeListener doAfterSelectItem = new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-
-            }
-        };
 
         mainTable.clearChildren();
-        mainTable.addActor(ScreenManager.screenFactory(ScreenManager.SelectionType.HISTORIES, titleText, doOnBackButton, doAfterSelectItem, null, null));
+        mainTable.addActor(ScreenManager.screenFactory(ScreenManager.ScreenType.HISTORIES, titleText, doOnBackButton, null, null, null));
     }
 
     @Override

@@ -48,7 +48,7 @@ public class StudentScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 clickSound.play();
-                ScreenManager.nextScreen(new StartScreen(StudentScreen.this.game));
+                ScreenManager.setScreen(new StartScreen(StudentScreen.this.game));
             }
         };
         ChangeListener doAfterSelectItem = new ChangeListener() {
@@ -60,7 +60,7 @@ public class StudentScreen implements Screen {
         };
 
         mainTable.clearChildren();
-        mainTable.addActor(ScreenManager.screenFactory(ScreenManager.SelectionType.TEACHERS, titleText, doOnBackButton, doAfterSelectItem, null, null));
+        mainTable.addActor(ScreenManager.screenFactory(ScreenManager.ScreenType.TEACHERS, titleText, doOnBackButton, doAfterSelectItem, null, null));
     }
 
     private void selectStudents() {
@@ -81,7 +81,7 @@ public class StudentScreen implements Screen {
         };
 
         mainTable.clearChildren();
-        mainTable.addActor(ScreenManager.screenFactory(ScreenManager.SelectionType.STUDENTS, titleText, doOnBackButton, doAfterSelectItem, null, null));
+        mainTable.addActor(ScreenManager.screenFactory(ScreenManager.ScreenType.STUDENTS, titleText, doOnBackButton, doAfterSelectItem, null, null));
     }
 
     private void displayGames() {
@@ -99,12 +99,12 @@ public class StudentScreen implements Screen {
                 clickSound.play();
                 clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/cheer.mp3"));
                 clickSound.play();
-                ScreenManager.nextScreen(new SpellingGameScreen(StudentScreen.this.game, ScreenManager.Language.HMONG));
+                ScreenManager.setScreen(new SpellingGameScreen(StudentScreen.this.game));
             }
         };
 
         mainTable.clearChildren();
-        mainTable.addActor(ScreenManager.screenFactory(ScreenManager.SelectionType.GAMES, titleText, doOnBackButton, doAfterSelectItem, null, null));
+        mainTable.addActor(ScreenManager.screenFactory(ScreenManager.ScreenType.GAMES, titleText, doOnBackButton, doAfterSelectItem, null, null));
     }
 
     @Override
