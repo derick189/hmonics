@@ -1,6 +1,8 @@
 package view;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -10,16 +12,21 @@ import view.screens.TeamLogoSplashScreen;
 public class GdxGame extends Game {
 
     public static final int WIDTH = 1920;
-    public static final int HEIGHT = 1080;
+    public static int height = 1080;
 
     public OrthographicCamera camera;
     public ExtendViewport viewport;
     public SpriteBatch batch;
 
     public void create() {
+        if (Gdx.app.getType() == Application.ApplicationType.iOS) {
+            height = 1440;
+        }
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, WIDTH, HEIGHT);
-        viewport = new ExtendViewport(WIDTH, HEIGHT, camera);
+        camera.viewportHeight = height;
+        camera.viewportWidth = WIDTH;
+        camera.setToOrtho(false, WIDTH, height);
+        viewport = new ExtendViewport(WIDTH, height, WIDTH, 1440, camera);
 
         batch = new SpriteBatch();
 

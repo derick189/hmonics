@@ -27,7 +27,7 @@ public class LibGDXSplashScreen implements Screen {
     private void setStage() {
         Texture introScreenBackground = new Texture(Gdx.files.internal("packed-images/libGDXSplash.jpg"));
         Image image = new Image(introScreenBackground);
-        image.setSize(GdxGame.WIDTH, GdxGame.HEIGHT);
+        image.setSize(GdxGame.WIDTH, GdxGame.height);
         stage.addActor(image);
         sound = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/giggles.mp3"));
         sound.play();

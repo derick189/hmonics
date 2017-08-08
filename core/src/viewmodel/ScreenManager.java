@@ -54,7 +54,7 @@ public class ScreenManager {
         int backButtonSize = 150;
 
         Table mainTable = new Table();
-        mainTable.setBounds(0, 0, GdxGame.WIDTH, GdxGame.HEIGHT);
+        mainTable.setBounds(0, 0, GdxGame.WIDTH, GdxGame.height);
         Label titleLabel = new Label(titleText, AssetManager.labelStyle64);
         titleLabel.setBounds(300, 850, mainTable.getWidth() - 600, 200);
         mainTable.addActor(titleLabel);

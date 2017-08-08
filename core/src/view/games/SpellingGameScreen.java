@@ -1,5 +1,6 @@
 package view.games;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
@@ -73,7 +74,7 @@ public class SpellingGameScreen implements Screen {
     }
 
     /**
-     * Screen size in virtual pixels: WIDTH = 1920 HEIGHT = 1080;
+     * Screen size in virtual pixels: WIDTH = 1920 height = 1080;
      */
     private void setStage() {
         TeamLogoSplashScreen.getBackgroundMusic().stop();
@@ -87,11 +88,11 @@ public class SpellingGameScreen implements Screen {
         stage.addActor(animationsGroup = new Group());
 
         Image backgroundImage = new Image(view.AssetManager.getTextureRegion("background"));
-        backgroundImage.setSize(GdxGame.WIDTH, GdxGame.HEIGHT);
+        backgroundImage.setSize(GdxGame.WIDTH, GdxGame.height);
         backgroundGroup.addActor(backgroundImage);
 
         Table mainTable = new Table();
-        mainTable.setBounds(0, 0, GdxGame.WIDTH, GdxGame.HEIGHT);
+        mainTable.setBounds(0, 0, GdxGame.WIDTH, GdxGame.height);
         actorsGroup.addActor(mainTable);
 
         letterTable = new Table();
@@ -168,13 +169,17 @@ public class SpellingGameScreen implements Screen {
      * @param language
      */
     private void setAlphabet(ScreenManager.Language language) {
-        int numRows;
-        int letterSelectSize;
+        int numRows = 2;
+        int letterSelectSize = 89;
+        if (Gdx.app.getType() == Application.ApplicationType.iOS) {
+            letterSelectSize += 20;
+            numRows +=2;
+        }
         letterTable.clearChildren();
         switch (language) {
             case ENGLISH:
                 numRows = 2;
-                letterSelectSize = 120;
+                letterSelectSize += 31;
                 String[] alphabet = {
                         "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
                         "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
@@ -188,8 +193,7 @@ public class SpellingGameScreen implements Screen {
                 }
                 return;
             case HMONG:
-                numRows = 4;
-                letterSelectSize = 89;
+                numRows +=2;
                 String[] consonants = {"c", "ch", "d", "dh", "dl", "f", "h", "hl", "hm", "hml", "hn", "hny",
                         "k", "kh", "l", "m", "ml", "n", "nc", "nch", "ndl", "nk", "nkh", "np", "nph", "npl", "nplh", "nq",
                         "nqh", "nr", "nrh", "nt", "nth", "nts", "ntsh", "ntx", "ntxh", "ny", "p", "ph", "pl", "plh", "q",
@@ -208,9 +212,9 @@ public class SpellingGameScreen implements Screen {
                 letterTable.add(tonesTable);
 
                 for (int i = 0; i < numRows; i++) { // row
-                    for (int j = 0; j < 15; j++) { // column
-                        if ((i * 15) + j < consonants.length) { // leaves empty spaces
-                            Letter letter = new Letter(consonants[(i * 15) + j], letterSelectSize);
+                    for (int j = 0; j < 10; j++) { // column
+                        if ((i * 10) + j < consonants.length) { // leaves empty spaces
+                            Letter letter = new Letter(consonants[(i * 10) + j], letterSelectSize-10);
                             consonantsTable.add(new Container<Letter>(letter).size(letterSelectSize));
                             setLetterAsDraggable(letter);
                         }
@@ -218,7 +222,7 @@ public class SpellingGameScreen implements Screen {
                     consonantsTable.row();
                     for (int j = 0; j < 4; j++) { // column
                         if ((i * 4) + j < vowels.length) { // leaves empty spaces
-                            Letter letter = new Letter(vowels[(i * 4) + j], letterSelectSize);
+                            Letter letter = new Letter(vowels[(i * 4) + j], letterSelectSize-10);
                             vowelsTable.add(new Container<Letter>(letter).size(letterSelectSize));
                             setLetterAsDraggable(letter);
                         }
@@ -226,7 +230,7 @@ public class SpellingGameScreen implements Screen {
                     vowelsTable.row();
                     for (int j = 0; j < 2; j++) { // column
                         if ((i * 2) + j < tones.length) { // leaves empty spaces
-                            Letter letter = new Letter(tones[(i * 2) + j], letterSelectSize);
+                            Letter letter = new Letter(tones[(i * 2) + j], letterSelectSize-10);
                             letter.setIsTone();
                             tonesTable.add(new Container<Letter>(letter).size(letterSelectSize));
                             setLetterAsDraggable(letter);
