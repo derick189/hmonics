@@ -3,7 +3,6 @@ package view;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -63,10 +62,6 @@ public class AssetManager {
 
     public static TextureRegion getTextureRegion(String fileName) {
         return new TextureRegion(AssetManager.atlas.findRegion(fileName));
-    }
-
-    public static Animation<TextureRegion> getAnimation(String fileName) {
-        return new Animation<TextureRegion>(0.33f, AssetManager.atlas.findRegions(fileName));
     }
 
     public static Music getMusic(String fileName) {

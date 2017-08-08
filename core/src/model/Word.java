@@ -9,12 +9,12 @@ import viewmodel.ScreenManager.Language;
 public class Word implements Comparable<String> {
     private String englishSpelling;
     private String hmongSpelling;
-    private int spaces;
+    private int hmongSpaceLength;
 
-    public Word(String englishSpelling, String hmongSpelling, int spaces) {
+    public Word(String englishSpelling, String hmongSpelling, int hmongSpaceLength) {
         this.englishSpelling = englishSpelling;
         this.hmongSpelling = hmongSpelling;
-        this.spaces = spaces;
+        this.hmongSpaceLength = hmongSpaceLength;
     }
 
     public String getWordId() {
@@ -23,6 +23,7 @@ public class Word implements Comparable<String> {
 
     /**
      * Simply returns a string based on what language
+     *
      * @param language
      * @return
      */
@@ -39,21 +40,22 @@ public class Word implements Comparable<String> {
 
     /**
      * Returns the number of spaces based on language.
+     *
      * @return
      */
-    public int getSpaces(Language language) {
+    public int getSpaceLength(Language language) {
         switch (language) {
             case ENGLISH:
                 return englishSpelling.length();
             case HMONG:
-                return spaces;
+                return hmongSpaceLength;
             default:
                 return 0;
         }
     }
 
-    public void setSpaces(int spaces) {
-        this.spaces = spaces;
+    public void setHmongSpaceLength(int hmongSpaceLength) {
+        this.hmongSpaceLength = hmongSpaceLength;
     }
 
     @Override

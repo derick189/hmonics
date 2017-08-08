@@ -34,7 +34,7 @@ public class History {
         return timestamp;
     }
 
-    public void addWord(String wordId) {
-        wordsSpelled.add(wordId);
+    public void addWord(String word) {
+        wordsSpelled.add(word);
     }
 }
