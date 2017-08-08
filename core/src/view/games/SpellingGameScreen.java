@@ -174,11 +174,13 @@ public class SpellingGameScreen implements Screen {
      * @param language
      */
     private void setAlphabet(ScreenManager.Language language) {
-        int numRows = 2;
+        int numRows = 3;
+        int iosCol = 5;
         int letterSelectSize = 89;
         if (Gdx.app.getType() == Application.ApplicationType.iOS) {
             letterSelectSize += 20;
-            numRows +=2;
+            numRows +=1;
+            iosCol -= 5;
         }
         letterTable.clearChildren();
         switch (language) {
@@ -198,7 +200,7 @@ public class SpellingGameScreen implements Screen {
                 }
                 return;
             case HMONG:
-                numRows +=2;
+                numRows +=1;
                 String[] consonants = {"c", "ch", "d", "dh", "dl", "f", "h", "hl", "hm", "hml", "hn", "hny",
                         "k", "kh", "l", "m", "ml", "n", "nc", "nch", "ndl", "nk", "nkh", "np", "nph", "npl", "nplh", "nq",
                         "nqh", "nr", "nrh", "nt", "nth", "nts", "ntsh", "ntx", "ntxh", "ny", "p", "ph", "pl", "plh", "q",
@@ -217,9 +219,9 @@ public class SpellingGameScreen implements Screen {
                 letterTable.add(tonesTable);
 
                 for (int i = 0; i < numRows; i++) { // row
-                    for (int j = 0; j < 10; j++) { // column
-                        if ((i * 10) + j < consonants.length) { // leaves empty spaces
-                            Letter letter = new Letter(consonants[(i * 10) + j], letterSelectSize-10);
+                    for (int j = 0; j < 10 + iosCol; j++) { // column
+                        if ((i * (10+iosCol)) + j < consonants.length) { // leaves empty spaces
+                            Letter letter = new Letter(consonants[(i * (10+iosCol)) + j], letterSelectSize-10);
                             consonantsTable.add(new Container<Letter>(letter).size(letterSelectSize));
                             setLetterAsDraggable(letter);
                         }
