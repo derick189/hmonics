@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL30;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -29,12 +30,13 @@ public class StartScreen implements Screen {
 
     private void setStage() {
         Table mainTable = new Table();
-        mainTable.setBounds(0, 0, GdxGame.WIDTH, GdxGame.HEIGHT);
+        mainTable.setBounds(0, 0, GdxGame.WIDTH, GdxGame.height);
         stage.addActor(mainTable);
 
         sound = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/BigClick.mp3"));
 
-        Image background = new Image(view.AssetManager.getTextureRegion("StartScreenBackground"));
+        Texture backgroundImage= new Texture(Gdx.files.internal("packed-images/StartScreenBackground.png"));
+        Image background = new Image(backgroundImage);
         mainTable.setBackground(background.getDrawable());
 
         TextButton teacherButton = new TextButton("Teacher", AssetManager.textButtonStyle64);
