@@ -100,6 +100,11 @@ public class SpellingGameScreen implements Screen {
         mainTable.addActor(letterTable);
         pictureTable = new Table();
         pictureTable.setBounds(mainTable.getWidth() / 2, ((mainTable.getHeight() - pictureSize) / 2) - 60, 0, pictureSize);
+        // Move picture table to fit the Hmong alphabet
+        if (Gdx.app.getType() == Application.ApplicationType.iOS && ScreenManager.selectedLanguage == ScreenManager.Language.HMONG) {
+            pictureTable.setBounds(mainTable.getWidth() / 2, ((mainTable.getHeight() - pictureSize)/4) + 60, 0, pictureSize);
+            letterTable.setBounds(mainTable.getWidth() / 2, (mainTable.getHeight() - letterTableHeight) - 170, 0, letterTableHeight);
+        }
         mainTable.addActor(pictureTable);
         spaceTable = new Table();
         spaceTable.setBounds(mainTable.getWidth() / 2, 50, 0, letterSpaceHeight);
