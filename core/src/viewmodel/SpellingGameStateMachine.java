@@ -22,22 +22,19 @@ public class SpellingGameStateMachine {
     private Word currentWord;
     private Student currentStudent;
 
-    public SpellingGameStateMachine(SpellingGameScreen spellingGameScreen, ScreenManager.Language currentLanguage) {
+    public SpellingGameStateMachine(SpellingGameScreen spellingGameScreen) {
         this.random = new Random(System.currentTimeMillis());
         this.spellingGameScreen = spellingGameScreen;
         this.state = State.COMPLETING_WORD;
-        this.currentLanguage = currentLanguage;
+        this.currentLanguage = ScreenManager.selectedLanguage;
         this.sessionWordList = new ArrayList<Word>(DataManager.getWordList());
-        this.currentWord = getNextWord();
 
         this.currentStudent = DataManager.getTeachers().get(ScreenManager.selectedTeacherIndex).getStudents().get(ScreenManager.selectedStudentIndex);
         this.currentStudent.startNewCurrentHistory(new History("Spelling Game"));
 
-        // Set game language (set in screen manager for now)
-        // TODO: create language button option in game
         spellingGameScreen.setDisplayLanguage(currentLanguage);
-        // Set the amount of spaces for word
-        spellingGameScreen.setPictureAndSpaceLength(currentWord.getWordId(), currentWord.getSpaces(currentLanguage));
+
+        changeToNextWord();
     }
 
     public void doEvent(Event event, final Actor actor) {
@@ -59,11 +56,19 @@ public class SpellingGameStateMachine {
                                     }),
                                     Actions.delay(0.5f),
                                     Actions.run(new Runnable() {
+                                        public void run() { // Hooray!!!
+                                            // TODO: make confetti come out of every angle or something
+                                            spellingGameScreen.winConfetti(currentWord.getWordId());
+//                                            spellingGameScreen.playSFX(currentWord.getWordId());
+                                        }
+                                    }),
+                                    Actions.delay(0.5f),
+                                    Actions.run(new Runnable() {
                                         public void run() { // Once final correct letter is dropped, say word
                                             spellingGameScreen.playWord(currentLanguage.fileName, currentWord);
                                         }
                                     }),
-                                    Actions.delay(1f),
+                                    Actions.delay(2f),
                                     Actions.run(new Runnable() {
                                         public void run() { // Then play word SFX
                                             spellingGameScreen.playSFX(currentWord.getWordId());
@@ -71,16 +76,8 @@ public class SpellingGameStateMachine {
                                     }),
                                     Actions.delay(1f),
                                     Actions.run(new Runnable() {
-                                        public void run() { // Hooray!!!
-                                            // TODO: make confetti come out of every angle or something
-                                            spellingGameScreen.confettiEffect(actor, currentWord.getWordId());
-                                            spellingGameScreen.playSFX(currentWord.getWordId());
-                                            spellingGameScreen.playSFX("applause");
-                                        }
-                                    }),
-                                    Actions.delay(1f),
-                                    Actions.run(new Runnable() {
                                         public void run() {
+                                            spellingGameScreen.playSFX("applause");
                                             recordWord();
                                             if (sessionWordList.size() > 1) {
                                                 changeToNextWord();
@@ -107,13 +104,15 @@ public class SpellingGameStateMachine {
     }
 
     private void recordWord() {
-        DataManager.getStudents(ScreenManager.selectedTeacherIndex).get(ScreenManager.selectedStudentIndex).addToCurrentHistory(currentWord.getWordId());
+        DataManager.getStudents(ScreenManager.selectedTeacherIndex).get(ScreenManager.selectedStudentIndex).addToCurrentHistory(currentWord.getSpelling(currentLanguage));
     }
 
-    private void changeToNextWord() {
+    public void changeToNextWord() {
         sessionWordList.remove(currentWord);
         currentWord = getNextWord();
-        spellingGameScreen.setPictureAndSpaceLength(currentWord.getWordId(), currentWord.getSpaces(currentLanguage));
+        // Set the amount of spaces for word
+        spellingGameScreen.setPictureAndSpaceLength(currentWord.getWordId(), currentWord.getSpaceLength(currentLanguage));
+        spellingGameScreen.hintPopup.setText(currentWord.getSpelling(currentLanguage));
     }
 
     private Word getNextWord() {

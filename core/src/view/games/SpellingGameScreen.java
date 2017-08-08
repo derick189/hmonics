@@ -6,15 +6,14 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import model.Word;
 import view.AssetManager;
 import view.GdxGame;
@@ -27,33 +26,39 @@ import viewmodel.SpellingGameStateMachine;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static viewmodel.ScreenManager.setScreen;
+
 public class SpellingGameScreen implements Screen {
-    public ImageButton backButton;
     private GdxGame game;
     private Stage stage;
+    public ImageButton backButton;
     private DragAndDrop dragAndDrop;
     private Music backgroundMusic;
     private Sound click;
     private Random random;
-
-    int backButtonSize = 150;
+    public TextButton skipButton;
+    // Actors added to the screen are drawn in the order they were added. Actors drawn later are drawn on top of everything before.
+    // These groups are used to add actors to the screen in the right order. All actors added to groups are drawn when the group is drawn.
+    // Because these groups are added in this order in setStage, if all actors are added to these groups and not the screen directly then
+    private Group backgroundGroup;
     private Group actorsGroup;
     private Group animationsGroup;
+
     private Table letterTable;
     private Table pictureTable;
     private Table spaceTable;
     private Container<Image> pictureContainer;
     private ArrayList<Container<Letter>> letterSpaces;
     private SpellingGameStateMachine spellingGameStateMachine;
-    int letterTableHeight = 360;
-    int pictureSize = 400;
-    int letterSpaceWidth = 150;
-    int letterSpaceHeight = 195;
-    int letterSize = 140;
-    // Actors added to the screen are drawn in the order they were added. Actors drawn later are drawn on top of everything before.
-    // These groups are used to add actors to the screen in the right order. All actors added to groups are drawn when the group is drawn.
-    // Because these groups are added in this order in setStage, if all actors are added to these groups and not the screen directly then
-    private Group backgroundGroup;
+    public TextButton hintButton;
+    public Label hintPopup;
+    private int letterTableHeight = 360;
+    private int pictureSize = 400;
+    private int letterSpaceWidth = 150;
+    private int letterSpaceHeight = 195;
+    private int letterSize = 140;
+    private int buttonWidth = 300;
+    private int buttonHeight = 150;
 
     public SpellingGameScreen(GdxGame gdxGame) {
         this.game = gdxGame;
@@ -90,38 +95,67 @@ public class SpellingGameScreen implements Screen {
         actorsGroup.addActor(mainTable);
 
         letterTable = new Table();
-        pictureTable = new Table();
-        spaceTable = new Table();
-        backButton = new ImageButton(AssetManager.backButtonStyle);
-        backButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                backgroundMusic.stop();
-                TeamLogoSplashScreen.getBackgroundMusic().play();
-                ScreenManager.nextScreen(new StudentScreen(SpellingGameScreen.this.game));
-            }
-        });
-
-//        letterTable.setDebug(true);
-//        pictureTable.setDebug(true);
-//        spaceTable.setDebug(true);
-        backButton.setBounds(0, 0, backButtonSize, backButtonSize);
-        backButton.setSize(backButtonSize, backButtonSize);
-        mainTable.addActor(backButton);
-
         letterTable.setBounds(mainTable.getWidth() / 2, (mainTable.getHeight() - letterTableHeight) - 20, 0, letterTableHeight);
         mainTable.addActor(letterTable);
-
+        pictureTable = new Table();
         pictureTable.setBounds(mainTable.getWidth() / 2, ((mainTable.getHeight() - pictureSize) / 2) - 60, 0, pictureSize);
         mainTable.addActor(pictureTable);
-
+        spaceTable = new Table();
         spaceTable.setBounds(mainTable.getWidth() / 2, 50, 0, letterSpaceHeight);
         mainTable.addActor(spaceTable);
 
         pictureTable.add(pictureContainer = new Container<Image>().size(pictureSize));
         letterSpaces = new ArrayList<Container<Letter>>();
 
-        spellingGameStateMachine = new SpellingGameStateMachine(this, ScreenManager.Language.HMONG);
+        // Back button
+        backButton = new ImageButton(AssetManager.backButtonStyle);
+        backButton.setBounds(50, 50, buttonHeight, buttonHeight);
+        backButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                backgroundMusic.stop();
+                TeamLogoSplashScreen.getBackgroundMusic().play();
+                setScreen(new StudentScreen(SpellingGameScreen.this.game));
+            }
+        });
+        backButton.setSize(buttonHeight, buttonHeight);
+        mainTable.addActor(backButton);
+
+        // Skip button
+        skipButton = new TextButton("Skip", AssetManager.textButtonStyle64);
+        skipButton.setBounds(mainTable.getWidth() - buttonWidth - 50, 50, buttonWidth, buttonHeight);
+        skipButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                SpellingGameScreen.this.spellingGameStateMachine.changeToNextWord();
+            }
+        });
+        mainTable.addActor(skipButton);
+
+        // Hint button
+        hintButton = new TextButton("Hint", AssetManager.textButtonStyle64);
+        hintButton.setBounds(mainTable.getWidth() - buttonWidth - 50, buttonHeight + 50, buttonWidth, buttonHeight);
+        hintButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                hintPopup.clearActions();
+                hintPopup.addAction(Actions.sequence(
+                        Actions.fadeIn(2),
+                        Actions.delay(2),
+                        Actions.fadeOut(2)
+                ));
+            }
+        });
+        mainTable.addActor(hintButton);
+
+        hintPopup = new Label("", AssetManager.labelStyle64);
+        hintPopup.setBounds(mainTable.getWidth() - buttonWidth - 50, buttonHeight * 2 + 50, buttonWidth, buttonHeight);
+        hintPopup.getColor().a = 0;
+        hintPopup.setAlignment(Align.center);
+        mainTable.addActor(hintPopup);
+
+        // Start complementary state machine last
+        spellingGameStateMachine = new SpellingGameStateMachine(this);
     }
 
     public void setDisplayLanguage(ScreenManager.Language language) {
@@ -140,7 +174,7 @@ public class SpellingGameScreen implements Screen {
         switch (language) {
             case ENGLISH:
                 numRows = 2;
-                letterSelectSize = letterTableHeight / 3;
+                letterSelectSize = 120;
                 String[] alphabet = {
                         "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
                         "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
@@ -155,7 +189,7 @@ public class SpellingGameScreen implements Screen {
                 return;
             case HMONG:
                 numRows = 4;
-                letterSelectSize = letterTableHeight / numRows;
+                letterSelectSize = 89;
                 String[] consonants = {"c", "ch", "d", "dh", "dl", "f", "h", "hl", "hm", "hml", "hn", "hny",
                         "k", "kh", "l", "m", "ml", "n", "nc", "nch", "ndl", "nk", "nkh", "np", "nph", "npl", "nplh", "nq",
                         "nqh", "nr", "nrh", "nt", "nth", "nts", "ntsh", "ntx", "ntxh", "ny", "p", "ph", "pl", "plh", "q",
@@ -164,13 +198,13 @@ public class SpellingGameScreen implements Screen {
                 String[] tones = {"koJ", "muS", "kuV", "niaM", "neeG", "siaB", "zoO", "toD"};
 
                 Table consonantsTable = new Table();
-//                consonantsTable.setBackground(AssetManager.backplate);
+                consonantsTable.setBackground(AssetManager.backPlate);
                 letterTable.add(consonantsTable);
                 Table vowelsTable = new Table();
-//                vowelsTable.setBackground(AssetManager.backplate);
+                vowelsTable.setBackground(AssetManager.backPlate);
                 letterTable.add(vowelsTable);
                 Table tonesTable = new Table();
-//                tonesTable.setBackground(AssetManager.backplate);
+                tonesTable.setBackground(AssetManager.backPlate);
                 letterTable.add(tonesTable);
 
                 for (int i = 0; i < numRows; i++) { // row
@@ -200,25 +234,6 @@ public class SpellingGameScreen implements Screen {
                     }
                     tonesTable.row();
                 }
-//                for (int i = 0; i < 4; i++) { // row
-//                    for (int j = 0; j < 20; j++) { // column
-//                        if (letterIndex < consonants.length + vowels.length + tones.length) {
-//                            final Letter letter;
-//                            if (letterIndex < consonants.length) { // consonant
-//                                letter = new Letter(consonants[letterIndex++]);
-//                            } else if (letterIndex < consonants.length + vowels.length) { // vowel
-//                                letter = new Letter(vowels[(letterIndex++) - consonants.length]);
-//                            } else { // tone
-//                                letter = new Letter(tones[(letterIndex++) - (consonants.length + vowels.length)]);
-//                                letter.setIsTone();
-//                            }
-//                            letter.getLabel().setFontScale(.5f);
-//                            letterTable.add(new Container<Letter>(letter).size(letterSelectSize)).size(letterSelectSize);
-//                            setLetterAsDraggable(letter);
-//                        }
-//                    }
-//                    letterTable.row();
-//                }
                 return;
         }
     }
@@ -258,10 +273,10 @@ public class SpellingGameScreen implements Screen {
             Container<Letter> letterContainer = new Container<Letter>();
             letterContainer.setTouchable(Touchable.enabled);
             letterContainer.setBackground(new TextureRegionDrawable(view.AssetManager.getTextureRegion("underline")));
-            spaceTable.add(letterContainer.size(letterSize, letterSize)).size(letterSpaceWidth, letterSpaceHeight); // offset for underline size
+            spaceTable.add(letterContainer.size(letterSize, letterSize)).size(letterSpaceWidth, letterSpaceHeight);
             letterSpaces.add(letterContainer);
 
-            dragAndDrop.addTarget(new DragAndDrop.Target(letterContainer) { //TODO: flickering after drag
+            dragAndDrop.addTarget(new DragAndDrop.Target(letterContainer) { // TODO: flickering after drag
                 @Override
                 public boolean drag(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
                     return true;
@@ -296,13 +311,6 @@ public class SpellingGameScreen implements Screen {
                 currentString += " ";
             }
         }
-        // If the hmong word contains a tone, trim tone letter to 1 lowercase character
-//        for (String tone : tones) {
-//            if (currentString.contains(tone)) {
-//                int startIndex = currentString.indexOf(tone);
-//                currentString = currentString.substring(0, startIndex) + tone.substring(tone.length() - 1).toLowerCase();
-//            }
-//        }
         return currentString;
     }
 
@@ -322,23 +330,33 @@ public class SpellingGameScreen implements Screen {
         return true;
     }
 
+    public void winConfetti(String fileName) {
+        for (Container<Letter> letterContainer : letterSpaces) {
+            if (letterContainer.hasChildren()) {
+                confettiEffect(letterContainer.getActor(), fileName);
+            }
+        }
+    }
+
     /**
-     * Displays confetti animation
+     * Confetti animation from the center of the subject actor.
      *
      * @param subject
      * @param fileName
      */
     public void confettiEffect(Actor subject, String fileName) {
         int size = 100;
-        float duration = 1f;
+        float duration = 1.5f;
         int distance = 300;
+        Vector2 vector2 = subject.localToStageCoordinates(new Vector2(subject.getX(), subject.getY()));
         for (int i = 0; i < 10; i++) {
             Actor explosion = new Image(AssetManager.getTextureRegion(fileName));
             explosion.setTouchable(Touchable.disabled);
-            explosion.setBounds(subject.getX(), subject.getY(), size, size);
-            explosion.setOrigin(size / 2, size / 2);
             animationsGroup.addActor(explosion);
-            explosion.addAction(Actions.moveTo(subject.getX() + (random.nextBoolean() ? random.nextInt(distance) : -random.nextInt(distance)) + random.nextInt(distance), subject.getY() + random.nextInt(distance),
+
+            explosion.setBounds(vector2.x, vector2.y, size, size);
+            explosion.setOrigin(size / 2, size / 2);
+            explosion.addAction(Actions.moveTo(vector2.x + (random.nextBoolean() ? random.nextInt(distance) : -random.nextInt(distance)) + random.nextInt(distance), vector2.y + random.nextInt(distance),
                     duration, Interpolation.smooth));
             explosion.addAction(Actions.rotateBy(random.nextBoolean() ? random.nextInt(270) : -random.nextInt(270), duration));
             explosion.addAction(Actions.fadeOut(duration));

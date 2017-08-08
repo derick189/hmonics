@@ -3,7 +3,6 @@ package view;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -21,15 +20,16 @@ public class AssetManager {
     public static TextureAtlas atlas;
     public static Skin defaultSkin;
     public static ButtonStyle defaultStyle;
-    public static Drawable backplate;
+    public static Drawable backPlate;
     public static BitmapFont font64;
     public static BitmapFont font32;
     public static LabelStyle labelStyle64;
     public static TextFieldStyle textFieldStyle64;
+    public static TextButtonStyle textButtonStyle64Checked;
     public static TextButtonStyle textButtonStyle64;
+    public static TextButtonStyle textButtonStyle32;
     public static ImageButtonStyle imageButtonStyle;
     public static ImageButtonStyle backButtonStyle;
-    public static TextButtonStyle textButtonStyle32;
 
     public static void init() {
         atlas = new TextureAtlas(Gdx.files.internal("packed-images/pack.atlas"));
@@ -37,8 +37,9 @@ public class AssetManager {
         defaultStyle = new ButtonStyle();
         defaultStyle.up = AssetManager.defaultSkin.getDrawable("button-c");
         defaultStyle.down = AssetManager.defaultSkin.getDrawable("button-pressed-over-c");
+        defaultStyle.checked = AssetManager.defaultSkin.getDrawable("button-pressed-over-c");
         defaultStyle.over = AssetManager.defaultSkin.getDrawable("button-over-c");
-        backplate = AssetManager.defaultSkin.getDrawable("button-c-clear");
+        backPlate = AssetManager.defaultSkin.getDrawable("button-c-clear");
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/open-sans/OpenSans-Semibold.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -50,10 +51,12 @@ public class AssetManager {
         font32 = generator.generateFont(parameter);
 
         labelStyle64 = new LabelStyle(font64, Color.BLACK);
-        labelStyle64.background = view.AssetManager.backplate;
+        labelStyle64.background = view.AssetManager.backPlate;
         textFieldStyle64 = new TextFieldStyle(font64, Color.BLACK, defaultStyle.down, defaultStyle.down, defaultStyle.up);
-        textButtonStyle64 = new TextButtonStyle(defaultStyle.up, defaultStyle.down, defaultStyle.checked, font64);
-        textButtonStyle32 = new TextButtonStyle(defaultStyle.up, defaultStyle.down, defaultStyle.checked, font32);
+
+        textButtonStyle64Checked = new TextButtonStyle(defaultStyle.up, defaultStyle.down, defaultStyle.checked, font64);
+        textButtonStyle64 = new TextButtonStyle(defaultStyle.up, defaultStyle.down, defaultStyle.over, font64);
+        textButtonStyle32 = new TextButtonStyle(defaultStyle.up, defaultStyle.down, defaultStyle.over, font32);
 
         imageButtonStyle = new ImageButtonStyle(defaultStyle);
 
@@ -63,10 +66,6 @@ public class AssetManager {
 
     public static TextureRegion getTextureRegion(String fileName) {
         return new TextureRegion(AssetManager.atlas.findRegion(fileName));
-    }
-
-    public static Animation<TextureRegion> getAnimation(String fileName) {
-        return new Animation<TextureRegion>(0.33f, AssetManager.atlas.findRegions(fileName));
     }
 
     public static Music getMusic(String fileName) {

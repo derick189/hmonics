@@ -6,8 +6,6 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -16,14 +14,14 @@ import view.GdxGame;
 import view.games.SpellingGameScreen;
 import viewmodel.ScreenManager;
 
+/**
+ *
+ */
 public class StudentScreen implements Screen {
     private GdxGame game;
     private Stage stage;
-    private ImageButton backButton;
-    private ChangeListener doOnBackButton;
-    private Label title;
-    private Table selectionTable;
-    private Sound sound;
+    private Table mainTable;
+    private Sound clickSound;
 
     public StudentScreen(GdxGame gdxGame) {
         this.game = gdxGame;
@@ -34,89 +32,79 @@ public class StudentScreen implements Screen {
     }
 
     private void setStage() {
-        Table mainTable = new Table();
+        mainTable = new Table();
         mainTable.top().left().setBounds(0, 0, GdxGame.WIDTH, GdxGame.HEIGHT);
         mainTable.setBackground(new TextureRegionDrawable(AssetManager.getTextureRegion("background")));
         stage.addActor(mainTable);
-        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/BigClick.mp3"));
 
-        backButton = new ImageButton(AssetManager.backButtonStyle);
-        title = new Label("", AssetManager.labelStyle64);
-        selectionTable = new Table();
-
-        mainTable.add(backButton).size(150).top().left().padTop(50).padLeft(75).padRight(75);
-        mainTable.add(title).padTop(20).expandX().fillX().fillY();
-        mainTable.add().size(150).top().right().padTop(50).padLeft(75).padRight(75);
-        mainTable.row();
-        mainTable.add().height(50).row();
-        mainTable.add(selectionTable).colspan(3);
+        clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/BigClick.mp3"));
 
         selectTeachers();
     }
 
     private void selectTeachers() {
-        title.setText("Select a teacher to see their students.");
-        String infoText = "";
-
-        if (doOnBackButton != null) {
-            backButton.removeListener(doOnBackButton);
-        }
-        backButton.addListener(doOnBackButton = new ChangeListener() {
+        String titleText = "Select a teacher.";
+        ChangeListener doOnBackButton = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                sound.play();
-                ScreenManager.nextScreen(new StartScreen(StudentScreen.this.game));
+                clickSound.play();
+                ScreenManager.setScreen(new StartScreen(StudentScreen.this.game));
             }
-        });
-        ChangeListener doAfterSelectName = new ChangeListener() {
+        };
+        ChangeListener doAfterSelectItem = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                clickSound.play();
                 StudentScreen.this.selectStudents();
             }
         };
-        ChangeListener doAfterAddRemove = new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-            }
-        };
 
-        selectionTable.clearChildren();
-        selectionTable.add(ScreenManager.getNewSelectionTable(ScreenManager.SelectionType.TEACHERS, infoText, doAfterSelectName, doAfterAddRemove));
+        mainTable.clearChildren();
+        mainTable.addActor(ScreenManager.screenFactory(ScreenManager.ScreenType.TEACHERS, titleText, doOnBackButton, doAfterSelectItem, null, null));
     }
 
     private void selectStudents() {
-        title.setText("Select a student to start a game.");
-        String infoText = "";
-
-        backButton.removeListener(doOnBackButton);
-        backButton.addListener(doOnBackButton = new ChangeListener() {
+        String titleText = "Select a student.";
+        ChangeListener doOnBackButton = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                sound.play();
+                clickSound.play();
                 selectTeachers();
             }
-        });
-        ChangeListener doAfterSelectName = new ChangeListener() {
+        };
+        ChangeListener doAfterSelectItem = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                sound.play();
-                sound = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/cheer.mp3"));
-                sound.play();
+                clickSound.play();
                 StudentScreen.this.displayGames();
             }
         };
-        ChangeListener doAfterAddRemove = new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-            }
-        };
 
-        selectionTable.clearChildren();
-        selectionTable.add(ScreenManager.getNewSelectionTable(ScreenManager.SelectionType.STUDENTS, infoText, doAfterSelectName, doAfterAddRemove));
+        mainTable.clearChildren();
+        mainTable.addActor(ScreenManager.screenFactory(ScreenManager.ScreenType.STUDENTS, titleText, doOnBackButton, doAfterSelectItem, null, null));
     }
 
     private void displayGames() {
-        ScreenManager.nextScreen(new SpellingGameScreen(StudentScreen.this.game));
+        String titleText = "Select a game.";
+        ChangeListener doOnBackButton = new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                clickSound.play();
+                selectStudents();
+            }
+        };
+        ChangeListener doAfterSelectItem = new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                clickSound.play();
+                clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/cheer.mp3"));
+                clickSound.play();
+                ScreenManager.setScreen(new SpellingGameScreen(StudentScreen.this.game));
+            }
+        };
+
+        mainTable.clearChildren();
+        mainTable.addActor(ScreenManager.screenFactory(ScreenManager.ScreenType.GAMES, titleText, doOnBackButton, doAfterSelectItem, null, null));
     }
 
     @Override
@@ -151,6 +139,7 @@ public class StudentScreen implements Screen {
 
     @Override
     public void dispose() {
+        clickSound.dispose();
         stage.dispose();
     }
 }

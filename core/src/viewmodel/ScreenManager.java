@@ -13,14 +13,20 @@ import model.Student;
 import model.Teacher;
 import view.AssetManager;
 import view.GdxGame;
+import view.screens.TeacherScreen;
 
 import java.util.ArrayList;
 
+/**
+ * Creates screens and manages the current screen and the global state variables.
+ */
 public class ScreenManager {
-    static int selectedTeacherIndex;
-    static String selectedTeacherName;
-    static int selectedStudentIndex;
-    static String selectedStudentName;
+    public static Language selectedLanguage = Language.HMONG;
+    public static int selectedTeacherIndex;
+    public static String selectedTeacherName;
+    public static int selectedStudentIndex;
+    public static String selectedStudentName;
+
     private static GdxGame game;
 
     public static void start(GdxGame gdxGame, Screen firstScreen) {
@@ -28,35 +34,62 @@ public class ScreenManager {
         game.setScreen(firstScreen);
     }
 
-    public static void nextScreen(Screen next) {
+    public static void setScreen(Screen next) {
         game.setScreen(next);
-        // destroy screens
     }
 
-    public static Table getNewSelectionTable(SelectionType selectionType, String infoText, ChangeListener doAfterSelectName, ChangeListener doAfterAddRemove) {
-        int tableWidth = 1150;
-        int nameWidth = 800;
-        int columnSeparator = 75;
-        int buttonWidth = 250;
-        int rowHeight = 100;
-        int rowSeparator = 25;
-        boolean changeVersion = !infoText.equals("");
+    /**
+     * Creates a table that is all parts of the non-game screens.
+     *
+     * @param screenType        What kind of screen.
+     * @param titleText         Text for the title of the screen.
+     * @param doOnBackButton    Do this after back button is pressed.
+     * @param doAfterSelectItem Do this after an item is selected.
+     * @param addItemInfoText   Info text for the default name in the add item field.
+     * @param doAfterAddRemove  Do this after an item has been added or removed.
+     * @return A table to be used as a screen.
+     */
+    public static Table screenFactory(ScreenType screenType, String titleText, ChangeListener doOnBackButton, ChangeListener doAfterSelectItem, String addItemInfoText, ChangeListener doAfterAddRemove) {
+        boolean allowChanges = !(addItemInfoText == null);
+        int backButtonSize = 150;
 
-        Table selectionTable = new Table();
-//        selectionTable.background(AssetManager.backplate);
-        Table aDataRow = new Table();
+        Table mainTable = new Table();
+        mainTable.setBounds(0, 0, GdxGame.WIDTH, GdxGame.HEIGHT);
+        Label titleLabel = new Label(titleText, AssetManager.labelStyle64);
+        titleLabel.setBounds(300, 850, mainTable.getWidth() - 600, 200);
+        mainTable.addActor(titleLabel);
+        Table bodyTable = new Table();
+        bodyTable.setBounds(300, 75, mainTable.getWidth() - 600, 750);
+        mainTable.addActor(bodyTable);
         VerticalGroup verticalGroup = new VerticalGroup();
         verticalGroup.align(Align.topLeft);
         ScrollPane scrollPane = new ScrollPane(verticalGroup, AssetManager.defaultSkin);
         scrollPane.setScrollingDisabled(true, false);
         scrollPane.setFadeScrollBars(false);
 
-        switch (selectionType) {
+        ImageButton backButton = new ImageButton(AssetManager.backButtonStyle);
+        backButton.setBounds(50, 50, backButtonSize, backButtonSize);
+        backButton.setSize(backButtonSize, backButtonSize);
+        backButton.addListener(doOnBackButton);
+        mainTable.addActor(backButton);
+
+        int rowHeight = 100;
+        int rowSeparator = 25;
+        Table aDataRow = new Table();
+
+        switch (screenType) {
             case TEACHERS:
             case STUDENTS:
-                // first row for adding an item
-                if (changeVersion) {
-                    final TextField addItemField = new TextField(infoText, AssetManager.textFieldStyle64);
+                int nameWidth = 800;
+                int columnSeparator = 75;
+                int buttonWidth = 300;
+
+                // If the screen allows changes to entries, have first row be the add entry row.
+                if (allowChanges) {
+                    aDataRow.background(AssetManager.backPlate);
+                    aDataRow.pad(10);
+
+                    final TextField addItemField = new TextField(addItemInfoText, AssetManager.textFieldStyle64);
                     addItemField.addListener(new ClickListener() {
                         boolean firstClick = true;
 
@@ -67,14 +100,14 @@ public class ScreenManager {
                             firstClick = false;
                         }
                     });
-                    // button for adding a teacher or student
+
+                    // Button will add a new teacher or student with the string in the text field as the name.
                     TextButton addButton = new TextButton("Add", AssetManager.textButtonStyle64);
-                    switch (selectionType) {
+                    switch (screenType) {
                         case TEACHERS:
                             addButton.addListener(new ChangeListener() {
                                 @Override
                                 public void changed(ChangeEvent event, Actor actor) {
-                                    System.out.println("add teacher: " + addItemField.getText());
                                     DataManager.addTeacher(new Teacher(addItemField.getText()));
                                 }
                             });
@@ -83,54 +116,48 @@ public class ScreenManager {
                             addButton.addListener(new ChangeListener() {
                                 @Override
                                 public void changed(ChangeEvent event, Actor actor) {
-                                    System.out.println("add student: " + addItemField.getText());
                                     DataManager.addStudent(selectedTeacherIndex, new Student(addItemField.getText()));
                                 }
                             });
                             break;
                     }
                     addButton.addListener(doAfterAddRemove);
+
                     aDataRow.add(addItemField).width(nameWidth).height(rowHeight).left();
                     aDataRow.add().width(columnSeparator);
                     aDataRow.add(addButton).width(buttonWidth).height(rowHeight);
-
-                    aDataRow.background(AssetManager.backplate);
-                    selectionTable.add(aDataRow).left();
-                    selectionTable.row();
-                    selectionTable.add().width(tableWidth).height(rowSeparator);
-                    selectionTable.row();
+                    bodyTable.add(aDataRow).left();
+                    bodyTable.row();
                 }
 
-                // rest of rows of items
-                switch (selectionType) {
+                // Make a row for each entry of either teachers or students.
+                switch (screenType) {
                     case TEACHERS:
                         final ArrayList<Teacher> teachers = DataManager.getTeachers();
-                        for (int i = 0; i < teachers.size(); i++) { // make a data row for each teacher
+                        for (int i = 0; i < teachers.size(); i++) { // Make a data row for each teacher.
                             aDataRow = new Table();
-                            aDataRow.setName(String.valueOf(i));
-                            // button for selecting a teacher
-                            TextButton aName = new TextButton(teachers.get(i).getName(), AssetManager.textButtonStyle64);
-                            aName.setName(String.valueOf(i)); // name stores index for button
-                            aName.getLabel().setAlignment(Align.left);
-                            aName.addListener(new ChangeListener() {
+
+                            // Button for selecting a teacher.
+                            TextButton nameButton = new TextButton(teachers.get(i).getName(), AssetManager.textButtonStyle64);
+                            nameButton.setName(String.valueOf(i)); // Name is the list index for this button.
+                            nameButton.getLabel().setAlignment(Align.left);
+                            nameButton.addListener(new ChangeListener() {
                                 @Override
                                 public void changed(ChangeEvent event, Actor actor) {
                                     selectedTeacherIndex = Integer.parseInt(actor.getName());
                                     selectedTeacherName = DataManager.getTeachers().get(selectedTeacherIndex).getName();
-                                    System.out.println("pressed: " + selectedTeacherName);
                                 }
                             });
-                            aName.addListener(doAfterSelectName);
-                            aDataRow.add(aName).width(nameWidth).height(rowHeight);
+                            nameButton.addListener(doAfterSelectItem);
+                            aDataRow.add(nameButton).width(nameWidth).height(rowHeight);
 
-                            if (changeVersion) {
-                                // button for removing a teacher
+                            // Button for removing a teacher.
+                            if (allowChanges) {
                                 TextButton deleteButton = new TextButton("Delete", AssetManager.textButtonStyle64);
-                                deleteButton.setName(String.valueOf(i)); // name stores index for button
+                                deleteButton.setName(String.valueOf(i)); // Name is the list index for this button.
                                 deleteButton.addListener(new ChangeListener() {
                                     @Override
                                     public void changed(ChangeEvent event, Actor actor) {
-                                        System.out.println("remove: " + Integer.parseInt(actor.getName()));
                                         DataManager.removeTeacher(Integer.parseInt(actor.getName()));
                                     }
                                 });
@@ -146,32 +173,30 @@ public class ScreenManager {
                         break;
                     case STUDENTS:
                         final ArrayList<Student> students = DataManager.getStudents(selectedTeacherIndex);
-                        for (int i = 0; i < students.size(); i++) { // make a data row for each student
+                        for (int i = 0; i < students.size(); i++) { // Make a data row for each student.
                             aDataRow = new Table();
-                            aDataRow.setName(String.valueOf(i));
-                            // button for selecting a student
-                            TextButton aName = new TextButton(students.get(i).getName(), AssetManager.textButtonStyle64);
-                            aName.setName(String.valueOf(i)); // name stores index for button
-                            aName.getLabel().setAlignment(Align.left);
-                            aName.addListener(new ChangeListener() {
+
+                            // Button for selecting a student.
+                            TextButton nameButton = new TextButton(students.get(i).getName(), AssetManager.textButtonStyle64);
+                            nameButton.setName(String.valueOf(i)); // Name is the list index for this button.
+                            nameButton.getLabel().setAlignment(Align.left);
+                            nameButton.addListener(new ChangeListener() {
                                 @Override
                                 public void changed(ChangeEvent event, Actor actor) {
                                     selectedStudentIndex = Integer.parseInt(actor.getName());
                                     selectedStudentName = DataManager.getStudents(selectedTeacherIndex).get(selectedStudentIndex).getName();
-                                    System.out.println("pressed: " + selectedStudentName);
                                 }
                             });
-                            aName.addListener(doAfterSelectName);
-                            aDataRow.add(aName).width(nameWidth).height(rowHeight);
+                            nameButton.addListener(doAfterSelectItem);
+                            aDataRow.add(nameButton).width(nameWidth).height(rowHeight);
 
-                            if (changeVersion) {
-                                // button for removing a student
+                            // Button for removing a student.
+                            if (allowChanges) {
                                 TextButton deleteButton = new TextButton("Delete", AssetManager.textButtonStyle64);
-                                deleteButton.setName(String.valueOf(i)); // name stores index for button
+                                deleteButton.setName(String.valueOf(i)); // Name is the list index for this button.
                                 deleteButton.addListener(new ChangeListener() {
                                     @Override
                                     public void changed(ChangeEvent event, Actor actor) {
-                                        System.out.println("remove: " + DataManager.getStudents(selectedTeacherIndex).get(Integer.parseInt(actor.getName())).getName());
                                         DataManager.removeStudent(selectedTeacherIndex, Integer.parseInt(actor.getName()));
                                     }
                                 });
@@ -186,45 +211,117 @@ public class ScreenManager {
                         }
                         break;
                 }
-                if (changeVersion) {
-                    Table backgroundTable = new Table();
-                    backgroundTable.background(AssetManager.backplate);
-                    backgroundTable.add(scrollPane).width(tableWidth).height((rowHeight + rowSeparator) * 5);
-                    selectionTable.add(backgroundTable);
+
+                Table backgroundTable = new Table();
+                backgroundTable.background(AssetManager.backPlate);
+                backgroundTable.pad(10);
+                bodyTable.add(backgroundTable);
+                if (allowChanges) {
+                    backgroundTable.add(scrollPane).width(nameWidth + columnSeparator + buttonWidth + 20).height((rowHeight + rowSeparator) * 5);
                 } else {
-                    selectionTable.background(AssetManager.backplate);
-                    selectionTable.add(scrollPane).width(tableWidth).height((rowHeight + rowSeparator) * 6);
+                    backgroundTable.add(scrollPane).width(nameWidth + 20).height((rowHeight + rowSeparator) * 6);
                 }
                 break;
             case HISTORIES:
                 int dateWidth = 400;
-                nameWidth = 500;
-                int numberWidth = 125;
+                int gameNameWidth = 500;
+                int numberWidth = 150;
                 columnSeparator = 50;
-                ArrayList<History> histories = DataManager.getHistory(DataManager.getStudents(selectedTeacherIndex).get(selectedStudentIndex));
-                for (int i = 0; i < histories.size(); i++) { // make a data row for each history
-                    aDataRow = new Table();
-                    TextButton aDate = new TextButton(String.valueOf(histories.get(i).getDateString()), AssetManager.textButtonStyle64);
-                    TextButton aName = new TextButton(histories.get(i).getGamePlayed(), AssetManager.textButtonStyle64);
-                    TextButton aValue = new TextButton(String.valueOf(histories.get(i).getWordsSpelled().size()), AssetManager.textButtonStyle64);
 
-                    aDataRow.add(aDate).width(dateWidth).height(rowHeight);
+                final ArrayList<History> histories = DataManager.getHistory(DataManager.getStudents(selectedTeacherIndex).get(selectedStudentIndex));
+                for (int i = 0; i < histories.size(); i++) { // Make a data row for each history.
+                    aDataRow = new Table();
+                    Label dateLabel = new Label(String.valueOf(histories.get(i).getDateString()), AssetManager.labelStyle64);
+                    dateLabel.setAlignment(Align.center);
+                    Label gameNameLabel = new Label(histories.get(i).getGamePlayed(), AssetManager.labelStyle64);
+                    gameNameLabel.setAlignment(Align.center);
+                    TextButton numberOfWordsButton = new TextButton(String.valueOf(histories.get(i).getWordsSpelled().size()), AssetManager.textButtonStyle64);
+                    numberOfWordsButton.setName(String.valueOf(i)); // Name is the list index for this button.
+                    numberOfWordsButton.addListener(new ChangeListener() {
+                        @Override
+                        public void changed(ChangeEvent event, Actor actor) {
+                            StringBuilder wordList = new StringBuilder();
+                            for (String word : histories.get(Integer.parseInt(actor.getName())).getWordsSpelled()) {
+                                wordList.append(word).append("\n");
+                            }
+
+                            Dialog dialog = new Dialog("Words Spelled", AssetManager.defaultSkin);
+                            dialog.text(wordList.toString());
+                            dialog.button("OK");
+                            dialog.show(TeacherScreen.stage);
+                        }
+                    });
+
+                    aDataRow.add(dateLabel).width(dateWidth).height(rowHeight);
                     aDataRow.add().width(columnSeparator);
-                    aDataRow.add(aName).width(nameWidth).height(rowHeight);
+                    aDataRow.add(gameNameLabel).width(gameNameWidth).height(rowHeight);
                     aDataRow.add().width(columnSeparator);
-                    aDataRow.add(aValue).width(numberWidth).height(rowHeight);
+                    aDataRow.add(numberOfWordsButton).width(numberWidth).height(rowHeight);
                     aDataRow.row();
                     aDataRow.add().height(rowSeparator);
                     verticalGroup.addActor(aDataRow);
                 }
-                selectionTable.background(AssetManager.backplate);
-                selectionTable.add(scrollPane).width(tableWidth).height((rowHeight + rowSeparator) * 6);
+
+                backgroundTable = new Table();
+                backgroundTable.background(AssetManager.backPlate);
+                backgroundTable.pad(10);
+                bodyTable.add(backgroundTable);
+                backgroundTable.add(scrollPane).width(dateWidth + gameNameWidth + numberWidth + columnSeparator * 2).height((rowHeight + rowSeparator) * 6);
+                break;
+            case GAMES:
+                gameNameWidth = 500;
+                int gameNameHeight = 300;
+                columnSeparator = 75;
+
+                bodyTable.background(AssetManager.backPlate);
+                Table gamesList = new Table();
+                bodyTable.add(gamesList);
+                bodyTable.add().width(columnSeparator);
+
+                TextButton spellingGameButton = new TextButton("Spelling Game", AssetManager.textButtonStyle64);
+                spellingGameButton.addListener(doAfterSelectItem);
+                gamesList.add(spellingGameButton).width(gameNameWidth).height(gameNameHeight);
+
+                Table languageSelectList = new Table();
+                bodyTable.add(languageSelectList);
+
+                TextButton englishButton = new TextButton("English", AssetManager.textButtonStyle64Checked);
+                englishButton.addListener(new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        ScreenManager.selectedLanguage = Language.ENGLISH;
+                    }
+                });
+                languageSelectList.add(englishButton).width(gameNameWidth).height(gameNameHeight);
+                languageSelectList.row();
+                TextButton hmongButton = new TextButton("Hmong", AssetManager.textButtonStyle64Checked);
+                hmongButton.addListener(new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        ScreenManager.selectedLanguage = Language.HMONG;
+                    }
+                });
+                languageSelectList.add(hmongButton).width(gameNameWidth).height(gameNameHeight);
+
+                switch (selectedLanguage) {
+                    case ENGLISH:
+                        englishButton.setChecked(true);
+                        break;
+                    case HMONG:
+                        hmongButton.setChecked(true);
+                        break;
+                }
+                ButtonGroup<TextButton> buttonGroup = new ButtonGroup<TextButton>();
+                buttonGroup.setMaxCheckCount(1);
+                buttonGroup.setMinCheckCount(1);
+                buttonGroup.add(englishButton);
+                buttonGroup.add(hmongButton);
                 break;
         }
-        return selectionTable;
+        return mainTable;
     }
 
-    public enum SelectionType {
+    public enum ScreenType {
         TEACHERS, STUDENTS, HISTORIES, GAMES
     }
 

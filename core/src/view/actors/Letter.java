@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import view.AssetManager;
 
 public class Letter extends TextButton {
-    // Can have special spelling for tones
+    // Can have special spelling for tones.
     private String spelling;
 
     public Letter(String name, int size) {
@@ -22,7 +22,7 @@ public class Letter extends TextButton {
         spelling = letter.spelling;
     }
 
-    // If is a tone, trim actual spelling to 1 lowercase character
+    // If tone, trim actual spelling to last lowercase character.
     public void setIsTone() {
         spelling = getName().substring(getName().length() - 1).toLowerCase();
     }

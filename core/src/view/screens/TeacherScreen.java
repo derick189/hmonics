@@ -2,12 +2,10 @@ package view.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -15,14 +13,14 @@ import view.AssetManager;
 import view.GdxGame;
 import viewmodel.ScreenManager;
 
+/**
+ *
+ */
 public class TeacherScreen implements Screen {
     private GdxGame game;
-    private Stage stage;
-    private ImageButton backButton;
-    private ChangeListener doOnBackButton;
-    private Label title;
-    private Table selectionTable;
-    private Sound sound;
+    public static Stage stage;
+    private Table mainTable;
+    private Sound clickSound;
 
     public TeacherScreen(GdxGame gdxGame) {
         this.game = gdxGame;
@@ -33,46 +31,34 @@ public class TeacherScreen implements Screen {
     }
 
     private void setStage() {
-        Table mainTable = new Table();
+        mainTable = new Table();
         mainTable.top().left().setBounds(0, 0, GdxGame.WIDTH, GdxGame.HEIGHT);
         mainTable.setBackground(new TextureRegionDrawable(AssetManager.getTextureRegion("background")));
         stage.addActor(mainTable);
-        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/BigClick.mp3"));
 
-        backButton = new ImageButton(AssetManager.backButtonStyle);
-        title = new Label("", AssetManager.labelStyle64);
-        selectionTable = new Table();
-
-        mainTable.add(backButton).size(150).top().left().padTop(50).padLeft(75).padRight(75);
-        mainTable.add(title).padTop(20).expandX().fillX().fillY();
-        mainTable.add().size(150).top().right().padTop(50).padLeft(75).padRight(75);
-        mainTable.row();
-        mainTable.add().height(50).row();
-        mainTable.add(selectionTable).colspan(3);
+        clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/BigClick.mp3"));
 
         selectTeachers();
     }
 
     private void selectTeachers() {
-        title.setText("Add or remove teachers. \nSelect a teacher to see their students.");
-        String infoText = "<Teacher name>";
-
-        if (doOnBackButton != null) {
-            backButton.removeListener(doOnBackButton);
-        }
-        backButton.addListener(doOnBackButton = new ChangeListener() {
+        String titleText = "Add or remove teachers. \nSelect a teacher to see their students.";
+        ChangeListener doOnBackButton = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                sound.play();
-                ScreenManager.nextScreen(new StartScreen(TeacherScreen.this.game));
+                clickSound.play();
+                ScreenManager.setScreen(new StartScreen(TeacherScreen.this.game));
             }
-        });
-        ChangeListener doAfterSelectName = new ChangeListener() {
+        };
+        ChangeListener doAfterSelectItem = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                clickSound.play();
                 TeacherScreen.this.selectStudents();
             }
         };
+
+        String addItemInfoText = "<Teacher name>";
         ChangeListener doAfterAddRemove = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -80,53 +66,52 @@ public class TeacherScreen implements Screen {
             }
         };
 
-        selectionTable.clearChildren();
-        selectionTable.add(ScreenManager.getNewSelectionTable(ScreenManager.SelectionType.TEACHERS, infoText, doAfterSelectName, doAfterAddRemove));
+        mainTable.clearChildren();
+        mainTable.addActor(ScreenManager.screenFactory(ScreenManager.ScreenType.TEACHERS, titleText, doOnBackButton, doAfterSelectItem, addItemInfoText, doAfterAddRemove));
     }
 
     private void selectStudents() {
-        title.setText("Add or remove students. \nSelect a student to see their history.");
-        String infoText = "<Student name>";
-
-        backButton.removeListener(doOnBackButton);
-        backButton.addListener(doOnBackButton = new ChangeListener() {
+        String titleText = "Add or remove students. \nSelect a student to see their history.";
+        ChangeListener doOnBackButton = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                sound.play();
+                clickSound.play();
                 TeacherScreen.this.selectTeachers();
             }
-        });
-        ChangeListener doAfterSelectName = new ChangeListener() {
+        };
+        ChangeListener doAfterSelectItem = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                sound.play(); displayHistories();
-            }
-        };
-        ChangeListener doAfterAddRemove = new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {sound.play(); TeacherScreen.this.selectStudents();
+                clickSound.play();
+                displayHistories();
             }
         };
 
-        selectionTable.clearChildren();
-        selectionTable.add(ScreenManager.getNewSelectionTable(ScreenManager.SelectionType.STUDENTS, infoText, doAfterSelectName, doAfterAddRemove));
+        String addItemInfoText = "<Student name>";
+        ChangeListener doAfterAddRemove = new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                clickSound.play();
+                TeacherScreen.this.selectStudents();
+            }
+        };
+
+        mainTable.clearChildren();
+        mainTable.addActor(ScreenManager.screenFactory(ScreenManager.ScreenType.STUDENTS, titleText, doOnBackButton, doAfterSelectItem, addItemInfoText, doAfterAddRemove));
     }
 
     private void displayHistories() {
-        title.setText("Student history:");
-        String infoText = "";
-
-        backButton.removeListener(doOnBackButton);
-        backButton.addListener(doOnBackButton = new ChangeListener() {
+        String titleText = "Student's game history:";
+        ChangeListener doOnBackButton = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                sound.play();
+                clickSound.play();
                 TeacherScreen.this.selectStudents();
             }
-        });
+        };
 
-        selectionTable.clearChildren();
-        selectionTable.add(ScreenManager.getNewSelectionTable(ScreenManager.SelectionType.HISTORIES, infoText, null, null));
+        mainTable.clearChildren();
+        mainTable.addActor(ScreenManager.screenFactory(ScreenManager.ScreenType.HISTORIES, titleText, doOnBackButton, null, null, null));
     }
 
     @Override
@@ -161,6 +146,7 @@ public class TeacherScreen implements Screen {
 
     @Override
     public void dispose() {
+        clickSound.dispose();
         stage.dispose();
     }
 }
