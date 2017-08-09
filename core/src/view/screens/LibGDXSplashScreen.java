@@ -4,17 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL30;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import view.AssetManager;
 import view.GdxGame;
 import viewmodel.ScreenManager;
 
 public class LibGDXSplashScreen implements Screen {
     private GdxGame game;
     private Stage stage;
-    private Sound sound;
+    private Sound giggles;
 
     public LibGDXSplashScreen(GdxGame gdxGame) {
         this.game = gdxGame;
@@ -25,12 +25,12 @@ public class LibGDXSplashScreen implements Screen {
     }
 
     private void setStage() {
-        Texture introScreenBackground = new Texture(Gdx.files.internal("packed-images/libGDXSplash.jpg"));
-        Image image = new Image(introScreenBackground);
+        Image image = new Image(AssetManager.getTextureRegion("libGDXSplash"));
         image.setSize(GdxGame.WIDTH, GdxGame.height);
         stage.addActor(image);
-        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/giggles.mp3"));
-        sound.play();
+
+        giggles = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/giggles.mp3"));
+        giggles.play();
 
         image.addAction(Actions.sequence(
                 Actions.delay(2f),

@@ -14,7 +14,7 @@ import view.GdxGame;
 import viewmodel.ScreenManager;
 
 /**
- *
+ * Screen for the teacher to use.
  */
 public class TeacherScreen implements Screen {
     private GdxGame game;
@@ -41,8 +41,11 @@ public class TeacherScreen implements Screen {
         selectTeachers();
     }
 
+    /**
+     * Shows all of the teachers.
+     */
     private void selectTeachers() {
-        String titleText = "Add or remove teachers. \nSelect a teacher to see their students.";
+        String titleText = "Select a teacher to see their students.";
         ChangeListener doOnBackButton = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -70,8 +73,11 @@ public class TeacherScreen implements Screen {
         mainTable.addActor(ScreenManager.screenFactory(ScreenManager.ScreenType.TEACHERS, titleText, doOnBackButton, doAfterSelectItem, addItemInfoText, doAfterAddRemove));
     }
 
+    /**
+     * Shows the students under the selected teacher.
+     */
     private void selectStudents() {
-        String titleText = "Add or remove students. \nSelect a student to see their history.";
+        String titleText = "Select a student to see their history.";
         ChangeListener doOnBackButton = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -100,6 +106,9 @@ public class TeacherScreen implements Screen {
         mainTable.addActor(ScreenManager.screenFactory(ScreenManager.ScreenType.STUDENTS, titleText, doOnBackButton, doAfterSelectItem, addItemInfoText, doAfterAddRemove));
     }
 
+    /**
+     * Shows histories of the selected student.
+     */
     private void displayHistories() {
         String titleText = "Student's game history:";
         ChangeListener doOnBackButton = new ChangeListener() {

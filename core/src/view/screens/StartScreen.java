@@ -4,13 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL30;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import view.AssetManager;
 import view.GdxGame;
 import viewmodel.ScreenManager;
@@ -18,7 +19,7 @@ import viewmodel.ScreenManager;
 public class StartScreen implements Screen {
     private GdxGame game;
     private Stage stage;
-    private Sound sound;
+    private Sound clickSound;
 
     public StartScreen(GdxGame gdxGame) {
         this.game = gdxGame;
@@ -33,26 +34,29 @@ public class StartScreen implements Screen {
         mainTable.setBounds(0, 0, GdxGame.WIDTH, GdxGame.height);
         stage.addActor(mainTable);
 
-        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/BigClick.mp3"));
+        clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/BigClick.mp3"));
 
-        Texture backgroundImage= new Texture(Gdx.files.internal("packed-images/StartScreenBackground.png"));
-        Image background = new Image(backgroundImage);
+        Image background = new Image(AssetManager.getTextureRegion("StartScreenBackground"));
         mainTable.setBackground(background.getDrawable());
 
-        TextButton teacherButton = new TextButton("Teacher", AssetManager.textButtonStyle64);
+//        TextButton teacherButton = new TextButton("Teacher", AssetManager.textButtonStyle64);
+        Drawable drawable = new TextureRegionDrawable(AssetManager.getTextureRegion("TeacherButtonSkin"));
+        ImageButton teacherButton = new ImageButton(drawable);
         teacherButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                sound.play();
+                clickSound.play();
                 ScreenManager.setScreen(new TeacherScreen(StartScreen.this.game));
             }
         });
 
-        final TextButton studentButton = new TextButton("Student", AssetManager.textButtonStyle64);
+//        TextButton studentButton = new TextButton("Student", AssetManager.textButtonStyle64);
+        drawable = new TextureRegionDrawable(AssetManager.getTextureRegion("StudentButtonSkin"));
+        ImageButton studentButton = new ImageButton(drawable);
         studentButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                sound.play();
+                clickSound.play();
                 ScreenManager.setScreen(new StudentScreen(StartScreen.this.game));
             }
         });

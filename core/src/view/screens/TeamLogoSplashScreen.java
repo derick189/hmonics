@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL30;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -26,12 +25,12 @@ public class TeamLogoSplashScreen implements Screen {
     }
 
     private void setStage() {
-        backgroundMusic = AssetManager.getMusic("IntroMusic");
-        backgroundMusic.play();
-        Texture introScreenBackground = new Texture(Gdx.files.internal("packed-images/TeamLogoSplash.png"));
-        Image image = new Image(introScreenBackground);
+        Image image = new Image(AssetManager.getTextureRegion("TeamLogoSplash"));
         image.setSize(GdxGame.WIDTH, GdxGame.height);
         stage.addActor(image);
+
+        backgroundMusic = AssetManager.getMusic("IntroMusic");
+        backgroundMusic.play();
 
         image.addAction(Actions.sequence(
                 Actions.delay(2f),

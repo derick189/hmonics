@@ -9,6 +9,9 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import model.DataManager;
 import view.screens.TeamLogoSplashScreen;
 
+/**
+ * Used by libGDX to draw everything on the currently set screen.
+ */
 public class GdxGame extends Game {
 
     public static final int WIDTH = 1920;
@@ -27,13 +30,12 @@ public class GdxGame extends Game {
         camera.viewportWidth = WIDTH;
         camera.setToOrtho(false, WIDTH, height);
         viewport = new ExtendViewport(WIDTH, height, WIDTH, 1440, camera);
-
         batch = new SpriteBatch();
-
-        setScreen(new TeamLogoSplashScreen(GdxGame.this));
 
         AssetManager.init();
         DataManager.populate();
+
+        setScreen(new TeamLogoSplashScreen(GdxGame.this));
     }
 
     public void render() {

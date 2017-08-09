@@ -18,7 +18,8 @@ import view.screens.TeacherScreen;
 import java.util.ArrayList;
 
 /**
- * Creates screens and manages the current screen and the global state variables.
+ * Creates screens and manages the global state variables
+ * Stores a previous screen when necessary.
  */
 public class ScreenManager {
     public static Language selectedLanguage = Language.HMONG;
@@ -28,6 +29,7 @@ public class ScreenManager {
     public static String selectedStudentName;
 
     private static GdxGame game;
+    private static Screen previousScreen;
 
     public static void start(GdxGame gdxGame, Screen firstScreen) {
         ScreenManager.game = gdxGame;
@@ -38,8 +40,17 @@ public class ScreenManager {
         game.setScreen(next);
     }
 
+    public static void setPreviousScreen(Screen previousScreen) {
+        ScreenManager.previousScreen = previousScreen;
+    }
+
+    public static Screen getPreviousScreen() {
+        return previousScreen;
+    }
+
     /**
      * Creates a table that is all parts of the non-game screens.
+     * The name of each button is the list index for that button's function.
      *
      * @param screenType        What kind of screen.
      * @param titleText         Text for the title of the screen.
@@ -50,12 +61,11 @@ public class ScreenManager {
      * @return A table to be used as a screen.
      */
     public static Table screenFactory(ScreenType screenType, String titleText, ChangeListener doOnBackButton, ChangeListener doAfterSelectItem, String addItemInfoText, ChangeListener doAfterAddRemove) {
-        boolean allowChanges = !(addItemInfoText == null);
         int backButtonSize = 150;
 
         Table mainTable = new Table();
         mainTable.setBounds(0, 0, GdxGame.WIDTH, GdxGame.height);
-        Label titleLabel = new Label(titleText, AssetManager.labelStyle64);
+        Label titleLabel = new Label(titleText, AssetManager.labelStyle64Clear);
         titleLabel.setBounds(300, 850, mainTable.getWidth() - 600, 200);
         mainTable.addActor(titleLabel);
         Table bodyTable = new Table();
@@ -80,6 +90,7 @@ public class ScreenManager {
         switch (screenType) {
             case TEACHERS:
             case STUDENTS:
+                boolean allowChanges = !(addItemInfoText == null);
                 int nameWidth = 800;
                 int columnSeparator = 75;
                 int buttonWidth = 300;
@@ -139,7 +150,7 @@ public class ScreenManager {
 
                             // Button for selecting a teacher.
                             TextButton nameButton = new TextButton(teachers.get(i).getName(), AssetManager.textButtonStyle64);
-                            nameButton.setName(String.valueOf(i)); // Name is the list index for this button.
+                            nameButton.setName(String.valueOf(i));
                             nameButton.getLabel().setAlignment(Align.left);
                             nameButton.addListener(new ChangeListener() {
                                 @Override
@@ -154,7 +165,7 @@ public class ScreenManager {
                             // Button for removing a teacher.
                             if (allowChanges) {
                                 TextButton deleteButton = new TextButton("Delete", AssetManager.textButtonStyle64);
-                                deleteButton.setName(String.valueOf(i)); // Name is the list index for this button.
+                                deleteButton.setName(String.valueOf(i));
                                 deleteButton.addListener(new ChangeListener() {
                                     @Override
                                     public void changed(ChangeEvent event, Actor actor) {
@@ -178,7 +189,7 @@ public class ScreenManager {
 
                             // Button for selecting a student.
                             TextButton nameButton = new TextButton(students.get(i).getName(), AssetManager.textButtonStyle64);
-                            nameButton.setName(String.valueOf(i)); // Name is the list index for this button.
+                            nameButton.setName(String.valueOf(i));
                             nameButton.getLabel().setAlignment(Align.left);
                             nameButton.addListener(new ChangeListener() {
                                 @Override
@@ -193,7 +204,7 @@ public class ScreenManager {
                             // Button for removing a student.
                             if (allowChanges) {
                                 TextButton deleteButton = new TextButton("Delete", AssetManager.textButtonStyle64);
-                                deleteButton.setName(String.valueOf(i)); // Name is the list index for this button.
+                                deleteButton.setName(String.valueOf(i));
                                 deleteButton.addListener(new ChangeListener() {
                                     @Override
                                     public void changed(ChangeEvent event, Actor actor) {
@@ -231,23 +242,31 @@ public class ScreenManager {
                 final ArrayList<History> histories = DataManager.getHistory(DataManager.getStudents(selectedTeacherIndex).get(selectedStudentIndex));
                 for (int i = 0; i < histories.size(); i++) { // Make a data row for each history.
                     aDataRow = new Table();
-                    Label dateLabel = new Label(String.valueOf(histories.get(i).getDateString()), AssetManager.labelStyle64);
+                    Label dateLabel = new Label(String.valueOf(histories.get(i).getDateString()), AssetManager.labelStyle64Clear);
                     dateLabel.setAlignment(Align.center);
-                    Label gameNameLabel = new Label(histories.get(i).getGamePlayed(), AssetManager.labelStyle64);
+                    Label gameNameLabel = new Label(histories.get(i).getGamePlayed(), AssetManager.labelStyle64Clear);
                     gameNameLabel.setAlignment(Align.center);
+
+                    // Button that shows a dialog of what words were spelled.
                     TextButton numberOfWordsButton = new TextButton(String.valueOf(histories.get(i).getWordsSpelled().size()), AssetManager.textButtonStyle64);
-                    numberOfWordsButton.setName(String.valueOf(i)); // Name is the list index for this button.
+                    numberOfWordsButton.setName(String.valueOf(i));
                     numberOfWordsButton.addListener(new ChangeListener() {
                         @Override
                         public void changed(ChangeEvent event, Actor actor) {
                             StringBuilder wordList = new StringBuilder();
-                            for (String word : histories.get(Integer.parseInt(actor.getName())).getWordsSpelled()) {
-                                wordList.append(word).append("\n");
+                            wordList.append("Words Spelled:\n");
+                            ArrayList<String> wordsSpelled = histories.get(Integer.parseInt(actor.getName())).getWordsSpelled();
+                            for (int j = 0; j < wordsSpelled.size(); j++) {
+                                String word = wordsSpelled.get(j);
+                                wordList.append(word);
+                                if (j < wordsSpelled.size() - 1) wordList.append(", ");
+                                if (j % 5 != 0) wordList.append("\n");
                             }
-
-                            Dialog dialog = new Dialog("Words Spelled", AssetManager.defaultSkin);
-                            dialog.text(wordList.toString());
-                            dialog.button("OK");
+                            Dialog dialog = new Dialog("", AssetManager.defaultSkin);
+                            dialog.getBackground().setMinWidth(500);
+                            dialog.getBackground().setMinHeight(300);
+                            dialog.text(new Label(wordList.toString(), AssetManager.labelStyle64Solid));
+                            dialog.button(new TextButton("OK", AssetManager.textButtonStyle64));
                             dialog.show(TeacherScreen.stage);
                         }
                     });
@@ -269,9 +288,9 @@ public class ScreenManager {
                 backgroundTable.add(scrollPane).width(dateWidth + gameNameWidth + numberWidth + columnSeparator * 2).height((rowHeight + rowSeparator) * 6);
                 break;
             case GAMES:
-                gameNameWidth = 500;
-                int gameNameHeight = 300;
-                columnSeparator = 75;
+                gameNameWidth = 450;
+                int gameNameHeight = 200;
+                columnSeparator = 100;
 
                 bodyTable.background(AssetManager.backPlate);
                 Table gamesList = new Table();
@@ -285,6 +304,7 @@ public class ScreenManager {
                 Table languageSelectList = new Table();
                 bodyTable.add(languageSelectList);
 
+                // Button to select English as the language for the game.
                 TextButton englishButton = new TextButton("English", AssetManager.textButtonStyle64Checked);
                 englishButton.addListener(new ChangeListener() {
                     @Override
@@ -294,6 +314,8 @@ public class ScreenManager {
                 });
                 languageSelectList.add(englishButton).width(gameNameWidth).height(gameNameHeight);
                 languageSelectList.row();
+
+                // Button to select Hmong as the language for the game.
                 TextButton hmongButton = new TextButton("Hmong", AssetManager.textButtonStyle64Checked);
                 hmongButton.addListener(new ChangeListener() {
                     @Override
@@ -321,10 +343,17 @@ public class ScreenManager {
         return mainTable;
     }
 
+
+    /**
+     * Screen types that can be created by screenFactory.
+     */
     public enum ScreenType {
         TEACHERS, STUDENTS, HISTORIES, GAMES
     }
 
+    /**
+     * Currently supported languages.
+     */
     public enum Language {
         ENGLISH("English"), HMONG("Hmong");
         public final String fileName;
