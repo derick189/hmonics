@@ -40,7 +40,8 @@
     </array>
     <key>UISupportedInterfaceOrientations</key>
     <array>
-
+        <string>UIInterfaceOrientationPortrait</string>
+        <string>UIInterfaceOrientationPortraitUpsideDown</string>
         <string>UIInterfaceOrientationLandscapeLeft</string>
         <string>UIInterfaceOrientationLandscapeRight</string>
     </array>
@@ -51,6 +52,7 @@
             <key>CFBundleIconFiles</key>
             <array>
                 <string>Icon</string>
+                <string>Icon-60</string>
                 <string>Icon-72</string>
             </array>
         </dict>
