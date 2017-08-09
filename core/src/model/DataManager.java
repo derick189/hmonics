@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * Handles Teachers, Students, and Words storage.
+ */
 public class DataManager {
     private static ArrayList<Teacher> teachers = new ArrayList<Teacher>();
     private static ArrayList<Word> wordList = new ArrayList<Word>();
@@ -25,23 +28,24 @@ public class DataManager {
         wordList.add(new Word("sheep", "yaj", 3));
         wordList.add(new Word("dragon", "zaj", 3));
 
-        addTeacher(new Teacher("Mrs. Anderson"));
-        addTeacher(new Teacher("Mr. Johnson"));
-        addTeacher(new Teacher("Mrs. Smith"));
-
-        addStudent(1, new Student("Jared"));
-        addStudent(1, new Student("Derick"));
-        addStudent(1, new Student("Philip"));
-
-        for (int i = 0; i < 9; i++) {
-            Student student;
-            addStudent(0, student = new Student("Student " + (i + 1)));
-            History history;
-            student.startNewCurrentHistory(history = new History("Spelling Game"));
-            history.addWord("bird");
-            history.addWord("cat");
-            history.addWord("dog");
-        }
+        // TESTING
+//        addTeacher(new Teacher("Mrs. Anderson"));
+//        addTeacher(new Teacher("Mr. Johnson"));
+//        addTeacher(new Teacher("Mrs. Smith"));
+//
+//        addStudent(1, new Student("Jared"));
+//        addStudent(1, new Student("Derick"));
+//        addStudent(1, new Student("Philip"));
+//
+//        for (int i = 0; i < 9; i++) {
+//            Student student;
+//            addStudent(0, student = new Student("Student " + (i + 1)));
+//            History history;
+//            student.startNewCurrentHistory(history = new History("Spelling Game"));
+//            history.addWord("bird");
+//            history.addWord("cat");
+//            history.addWord("dog");
+//        }
     }
 
     public static ArrayList<Word> getWordList() {

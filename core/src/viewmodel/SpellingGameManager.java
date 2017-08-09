@@ -13,12 +13,15 @@ import view.games.SpellingGameScreen;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * This class handles each letter drop in the Spelling Game.
+ */
 public class SpellingGameManager {
     private Random random;
     private SpellingGameScreen spellingGameScreen;
     private ScreenManager.Language currentLanguage;
     private Student currentStudent;
-    public ArrayList<Word> sessionWordList;
+    private ArrayList<Word> sessionWordList;
     private Word currentWord;
 
     public SpellingGameManager(SpellingGameScreen spellingGameScreen) {
@@ -49,9 +52,7 @@ public class SpellingGameManager {
                     Actions.delay(0.5f),
                     Actions.run(new Runnable() {
                         public void run() { // Hooray!!!
-                            // TODO: make confetti come out of every angle or something
                             spellingGameScreen.winConfetti(currentWord.getWordId());
-//                                            spellingGameScreen.playSFX(currentWord.getWordId());
                         }
                     }),
                     Actions.delay(0.5f),
@@ -90,6 +91,9 @@ public class SpellingGameManager {
         ScreenManager.getSelectedStudent().addToCurrentHistory(currentWord.getSpelling(currentLanguage));
     }
 
+    /**
+     * Change word until all 15 words have been either spelled or skipped over
+     */
     public void changeToNextWord() {
         if (sessionWordList.size() > 1) {
             sessionWordList.remove(currentWord);
