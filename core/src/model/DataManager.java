@@ -105,5 +105,4 @@ public class DataManager {
     public static void removeStudent(int teacherIndex, int studentIndex) {
         teachers.get(teacherIndex).getStudents().remove(studentIndex);
     }
-
 }

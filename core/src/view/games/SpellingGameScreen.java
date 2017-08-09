@@ -28,15 +28,11 @@ import java.util.Random;
 public class SpellingGameScreen implements Screen {
     private GdxGame game;
     private Stage stage;
-    public ImageButton backButton;
     private DragAndDrop dragAndDrop;
-    private Music backgroundMusic;
-    private Sound click;
     private Random random;
-    public TextButton skipButton;
+
     // Actors added to the screen are drawn in the order they were added. Actors drawn later are drawn on top of everything before.
     // These groups are used to add actors to the screen in the right order. All actors added to groups are drawn when the group is drawn.
-    // Because these groups are added in this order in setStage, if all actors are added to these groups and not the screen directly then
     private Group backgroundGroup;
     private Group actorsGroup;
     private Group animationsGroup;
@@ -46,10 +42,14 @@ public class SpellingGameScreen implements Screen {
     private Table spaceTable;
     private Container<Image> pictureContainer;
     private ArrayList<Container<Letter>> letterSpaces;
-    private SpellingGameManager spellingGameManager;
-    public TextButton hintButton;
+    public ImageButton backButton;
     public Label hintPopup;
-    private int letterTableHeight = 360;
+    private TextButton skipButton;
+    private TextButton hintButton;
+    private SpellingGameManager spellingGameManager;
+    private Music backgroundMusic;
+    private Sound clickSound;
+
     private int pictureSize = 400;
     private int letterSpaceWidth = 150;
     private int letterSpaceHeight = 195;
@@ -77,7 +77,7 @@ public class SpellingGameScreen implements Screen {
         backgroundMusic = AssetManager.getMusic("GameMusic");
         backgroundMusic.setVolume(0.05f);
         backgroundMusic.play();
-        click = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/LetterClick.mp3"));
+        clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/LetterClick.mp3"));
 
         stage.addActor(backgroundGroup = new Group());
         stage.addActor(actorsGroup = new Group());
@@ -92,10 +92,6 @@ public class SpellingGameScreen implements Screen {
         actorsGroup.addActor(mainTable);
 
         // Move picture table to fit the Hmong alphabet
-//        if (view.GdxGame.isResolution43 && ScreenManager.selectedLanguage == ScreenManager.Language.HMONG) {
-//            pictureTable.setBounds(mainTable.getWidth() / 2, ((mainTable.getHeight() - pictureSize) / 4) + 60, 0, pictureSize);
-//            letterTable.setBounds(mainTable.getWidth() / 2, (mainTable.getHeight() - letterTableHeight) - 170, 0, letterTableHeight);
-//        }
         spaceTable = new Table();
         spaceTable.setBounds(mainTable.getWidth() / 2, 50, 0, letterSpaceHeight);
         mainTable.addActor(spaceTable);
@@ -103,7 +99,6 @@ public class SpellingGameScreen implements Screen {
         pictureTable.setBounds(mainTable.getWidth() / 2, 50 + letterSpaceHeight + 20, 0, pictureSize);
         mainTable.addActor(pictureTable);
         letterTable = new Table();
-//        letterTable.setBounds(mainTable.getWidth() / 2, GdxGame.virtualHeight - letterTableHeight, 0, 0);
         mainTable.add(letterTable).expand().top().padTop(20);
 
         pictureTable.add(pictureContainer = new Container<Image>().size(pictureSize));
@@ -166,8 +161,6 @@ public class SpellingGameScreen implements Screen {
 
     /**
      * Sets up game screen with indicated language and associated alphabet
-     *
-     * @param language
      */
     private void setAlphabet(ScreenManager.Language language) {
         int numRows = 3;
@@ -306,8 +299,6 @@ public class SpellingGameScreen implements Screen {
 
     /**
      * Gets the string formed by the letters dropped into the spaces
-     *
-     * @return string
      */
     public String getWordInSpaces() {
         String currentString = "";
@@ -322,9 +313,7 @@ public class SpellingGameScreen implements Screen {
     }
 
     /**
-     * Decides whether the spaces are filled with letters
-     *
-     * @return
+     * Decides whether the spaces are filled with letter
      */
     public boolean spacesFull() {
         for (Container<Letter> letterContainer : letterSpaces) {
@@ -347,9 +336,6 @@ public class SpellingGameScreen implements Screen {
 
     /**
      * Confetti animation from the center of the subject actor.
-     *
-     * @param subject
-     * @param fileName
      */
     public void confettiEffect(Actor subject, String fileName) {
         int size = 100;
