@@ -99,6 +99,7 @@ public class StudentScreen implements Screen {
                 clickSound.play();
                 clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/cheer.mp3"));
                 clickSound.play();
+                ScreenManager.setPreviousScreen(StudentScreen.this);
                 ScreenManager.setScreen(new SpellingGameScreen(StudentScreen.this.game));
             }
         };

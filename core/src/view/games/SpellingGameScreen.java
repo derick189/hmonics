@@ -19,15 +19,12 @@ import model.Word;
 import view.AssetManager;
 import view.GdxGame;
 import view.actors.Letter;
-import view.screens.StudentScreen;
 import view.screens.TeamLogoSplashScreen;
 import viewmodel.ScreenManager;
 import viewmodel.SpellingGameStateMachine;
 
 import java.util.ArrayList;
 import java.util.Random;
-
-import static viewmodel.ScreenManager.setScreen;
 
 public class SpellingGameScreen implements Screen {
     private GdxGame game;
@@ -102,7 +99,7 @@ public class SpellingGameScreen implements Screen {
         pictureTable.setBounds(mainTable.getWidth() / 2, ((mainTable.getHeight() - pictureSize) / 2) - 60, 0, pictureSize);
         // Move picture table to fit the Hmong alphabet
         if (Gdx.app.getType() == Application.ApplicationType.iOS && ScreenManager.selectedLanguage == ScreenManager.Language.HMONG) {
-            pictureTable.setBounds(mainTable.getWidth() / 2, ((mainTable.getHeight() - pictureSize)/4) + 60, 0, pictureSize);
+            pictureTable.setBounds(mainTable.getWidth() / 2, ((mainTable.getHeight() - pictureSize) / 4) + 60, 0, pictureSize);
             letterTable.setBounds(mainTable.getWidth() / 2, (mainTable.getHeight() - letterTableHeight) - 170, 0, letterTableHeight);
         }
         mainTable.addActor(pictureTable);
@@ -121,7 +118,7 @@ public class SpellingGameScreen implements Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 backgroundMusic.stop();
                 TeamLogoSplashScreen.getBackgroundMusic().play();
-                setScreen(new StudentScreen(SpellingGameScreen.this.game));
+                ScreenManager.setScreen(ScreenManager.getPreviousScreen());
             }
         });
         backButton.setSize(buttonHeight, buttonHeight);
@@ -154,7 +151,7 @@ public class SpellingGameScreen implements Screen {
         });
         mainTable.addActor(hintButton);
 
-        hintPopup = new Label("", AssetManager.labelStyle64);
+        hintPopup = new Label("", AssetManager.labelStyle64Clear);
         hintPopup.setBounds(mainTable.getWidth() - buttonWidth - 50, buttonHeight * 2 + 50, buttonWidth, buttonHeight);
         hintPopup.getColor().a = 0;
         hintPopup.setAlignment(Align.center);
@@ -179,7 +176,7 @@ public class SpellingGameScreen implements Screen {
         int letterSelectSize = 89;
         if (Gdx.app.getType() == Application.ApplicationType.iOS) {
             letterSelectSize += 20;
-            numRows +=1;
+            numRows += 1;
             iosCol -= 5;
         }
         letterTable.clearChildren();
@@ -200,7 +197,7 @@ public class SpellingGameScreen implements Screen {
                 }
                 return;
             case HMONG:
-                numRows +=1;
+                numRows += 1;
                 String[] consonants = {"c", "ch", "d", "dh", "dl", "f", "h", "hl", "hm", "hml", "hn", "hny",
                         "k", "kh", "l", "m", "ml", "n", "nc", "nch", "ndl", "nk", "nkh", "np", "nph", "npl", "nplh", "nq",
                         "nqh", "nr", "nrh", "nt", "nth", "nts", "ntsh", "ntx", "ntxh", "ny", "p", "ph", "pl", "plh", "q",
@@ -220,8 +217,8 @@ public class SpellingGameScreen implements Screen {
 
                 for (int i = 0; i < numRows; i++) { // row
                     for (int j = 0; j < 10 + iosCol; j++) { // column
-                        if ((i * (10+iosCol)) + j < consonants.length) { // leaves empty spaces
-                            Letter letter = new Letter(consonants[(i * (10+iosCol)) + j], letterSelectSize-10);
+                        if ((i * (10 + iosCol)) + j < consonants.length) { // leaves empty spaces
+                            Letter letter = new Letter(consonants[(i * (10 + iosCol)) + j], letterSelectSize - 10);
                             consonantsTable.add(new Container<Letter>(letter).size(letterSelectSize));
                             setLetterAsDraggable(letter);
                         }
@@ -229,7 +226,7 @@ public class SpellingGameScreen implements Screen {
                     consonantsTable.row();
                     for (int j = 0; j < 4; j++) { // column
                         if ((i * 4) + j < vowels.length) { // leaves empty spaces
-                            Letter letter = new Letter(vowels[(i * 4) + j], letterSelectSize-10);
+                            Letter letter = new Letter(vowels[(i * 4) + j], letterSelectSize - 10);
                             vowelsTable.add(new Container<Letter>(letter).size(letterSelectSize));
                             setLetterAsDraggable(letter);
                         }
@@ -237,7 +234,7 @@ public class SpellingGameScreen implements Screen {
                     vowelsTable.row();
                     for (int j = 0; j < 2; j++) { // column
                         if ((i * 2) + j < tones.length) { // leaves empty spaces
-                            Letter letter = new Letter(tones[(i * 2) + j], letterSelectSize-10);
+                            Letter letter = new Letter(tones[(i * 2) + j], letterSelectSize - 10);
                             letter.setIsTone();
                             tonesTable.add(new Container<Letter>(letter).size(letterSelectSize));
                             setLetterAsDraggable(letter);
@@ -287,7 +284,7 @@ public class SpellingGameScreen implements Screen {
             spaceTable.add(letterContainer.size(letterSize, letterSize)).size(letterSpaceWidth, letterSpaceHeight);
             letterSpaces.add(letterContainer);
 
-            dragAndDrop.addTarget(new DragAndDrop.Target(letterContainer) { // TODO: flickering after drag
+            dragAndDrop.addTarget(new DragAndDrop.Target(letterContainer) {
                 @Override
                 public boolean drag(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
                     return true;
