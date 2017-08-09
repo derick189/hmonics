@@ -32,7 +32,7 @@ public class TeacherScreen implements Screen {
 
     private void setStage() {
         mainTable = new Table();
-        mainTable.top().left().setBounds(0, 0, GdxGame.WIDTH, GdxGame.height);
+        mainTable.top().left().setBounds(0, 0, GdxGame.virtualWidth, GdxGame.virtualHeight);
         mainTable.setBackground(new TextureRegionDrawable(AssetManager.getTextureRegion("background")));
         stage.addActor(mainTable);
 

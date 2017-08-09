@@ -26,7 +26,7 @@ public class TeamLogoSplashScreen implements Screen {
 
     private void setStage() {
         Image image = new Image(AssetManager.getTextureRegion("TeamLogoSplash"));
-        image.setSize(GdxGame.WIDTH, GdxGame.height);
+        image.setSize(GdxGame.virtualWidth, GdxGame.virtualHeight);
         stage.addActor(image);
 
         backgroundMusic = AssetManager.getMusic("IntroMusic");

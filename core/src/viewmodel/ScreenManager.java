@@ -18,22 +18,23 @@ import view.screens.TeacherScreen;
 import java.util.ArrayList;
 
 /**
- * Creates screens and manages the global state variables
- * Stores a previous screen when necessary.
+ * Creates screens and manages the global state variables.
+ * Stores a previous screen when appropriate.
  */
 public class ScreenManager {
-    public static Language selectedLanguage = Language.HMONG;
-    public static int selectedTeacherIndex;
-    public static String selectedTeacherName;
-    public static int selectedStudentIndex;
-    public static String selectedStudentName;
+    public static Language selectedLanguage;
 
     private static GdxGame game;
     private static Screen previousScreen;
+    private static int selectedTeacherIndex;
+    private static String selectedTeacherName;
+    private static int selectedStudentIndex;
+    private static String selectedStudentName;
 
     public static void start(GdxGame gdxGame, Screen firstScreen) {
         ScreenManager.game = gdxGame;
-        game.setScreen(firstScreen);
+        selectedLanguage = Language.HMONG;
+        setScreen(firstScreen);
     }
 
     public static void setScreen(Screen next) {
@@ -46,6 +47,14 @@ public class ScreenManager {
 
     public static Screen getPreviousScreen() {
         return previousScreen;
+    }
+
+    public static Teacher getSelectedTeacher() {
+        return DataManager.getTeachers().get(selectedTeacherIndex);
+    }
+
+    public static Student getSelectedStudent() {
+        return DataManager.getStudents(ScreenManager.selectedTeacherIndex).get(ScreenManager.selectedStudentIndex);
     }
 
     /**
@@ -64,12 +73,12 @@ public class ScreenManager {
         int backButtonSize = 150;
 
         Table mainTable = new Table();
-        mainTable.setBounds(0, 0, GdxGame.WIDTH, GdxGame.height);
+        mainTable.setBounds(0, 0, GdxGame.virtualWidth, GdxGame.virtualHeight);
         Label titleLabel = new Label(titleText, AssetManager.labelStyle64Clear);
-        titleLabel.setBounds(300, 850, mainTable.getWidth() - 600, 200);
+        titleLabel.setBounds(300, mainTable.getHeight() - 220, mainTable.getWidth() - 600, 200);
         mainTable.addActor(titleLabel);
         Table bodyTable = new Table();
-        bodyTable.setBounds(300, 75, mainTable.getWidth() - 600, 750);
+        bodyTable.setBounds(300, mainTable.getHeight() - 750 - 250, mainTable.getWidth() - 600, 750);
         mainTable.addActor(bodyTable);
         VerticalGroup verticalGroup = new VerticalGroup();
         verticalGroup.align(Align.topLeft);
@@ -256,16 +265,17 @@ public class ScreenManager {
                             StringBuilder wordList = new StringBuilder();
                             wordList.append("Words Spelled:\n");
                             ArrayList<String> wordsSpelled = histories.get(Integer.parseInt(actor.getName())).getWordsSpelled();
-                            for (int j = 0; j < wordsSpelled.size(); j++) {
-                                String word = wordsSpelled.get(j);
-                                wordList.append(word);
-                                if (j < wordsSpelled.size() - 1) wordList.append(", ");
-                                if (j % 5 != 0) wordList.append("\n");
+                            for (int j = 1; j <= wordsSpelled.size(); j++) {
+                                wordList.append(wordsSpelled.get(j - 1));
+                                if (j != wordsSpelled.size()) wordList.append(", "); // last item, do not add a comma
+                                if (j % 3 == 0) wordList.append("\n"); // every third, add a new line
                             }
                             Dialog dialog = new Dialog("", AssetManager.defaultSkin);
                             dialog.getBackground().setMinWidth(500);
                             dialog.getBackground().setMinHeight(300);
-                            dialog.text(new Label(wordList.toString(), AssetManager.labelStyle64Solid));
+                            Label label = new Label(wordList.toString(), AssetManager.labelStyle64Solid);
+                            label.setAlignment(Align.center);
+                            dialog.text(label);
                             dialog.button(new TextButton("OK", AssetManager.textButtonStyle64));
                             dialog.show(TeacherScreen.stage);
                         }
@@ -288,7 +298,7 @@ public class ScreenManager {
                 backgroundTable.add(scrollPane).width(dateWidth + gameNameWidth + numberWidth + columnSeparator * 2).height((rowHeight + rowSeparator) * 6);
                 break;
             case GAMES:
-                gameNameWidth = 450;
+                gameNameWidth = 500;
                 int gameNameHeight = 200;
                 columnSeparator = 100;
 
@@ -342,7 +352,6 @@ public class ScreenManager {
         }
         return mainTable;
     }
-
 
     /**
      * Screen types that can be created by screenFactory.
