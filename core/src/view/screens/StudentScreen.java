@@ -15,7 +15,7 @@ import view.games.SpellingGameScreen;
 import viewmodel.ScreenManager;
 
 /**
- *
+ * Screen for the student to use.
  */
 public class StudentScreen implements Screen {
     private GdxGame game;
@@ -42,8 +42,11 @@ public class StudentScreen implements Screen {
         selectTeachers();
     }
 
+    /**
+     * Shows all of the teachers.
+     */
     private void selectTeachers() {
-        String titleText = "Select a teacher.";
+        String titleText = "Select a teacher to see their students.";
         ChangeListener doOnBackButton = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -63,8 +66,11 @@ public class StudentScreen implements Screen {
         mainTable.addActor(ScreenManager.screenFactory(ScreenManager.ScreenType.TEACHERS, titleText, doOnBackButton, doAfterSelectItem, null, null));
     }
 
+    /**
+     * Shows the students under the selected teacher.
+     */
     private void selectStudents() {
-        String titleText = "Select a student.";
+        String titleText = "Select a student to record the history of.";
         ChangeListener doOnBackButton = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -84,8 +90,11 @@ public class StudentScreen implements Screen {
         mainTable.addActor(ScreenManager.screenFactory(ScreenManager.ScreenType.STUDENTS, titleText, doOnBackButton, doAfterSelectItem, null, null));
     }
 
+    /**
+     * Shows the games and languages available.
+     */
     private void displayGames() {
-        String titleText = "Select a game.";
+        String titleText = "Select a language and a game.";
         ChangeListener doOnBackButton = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
