@@ -70,7 +70,7 @@ public class StudentScreen implements Screen {
      * Shows the students under the selected teacher.
      */
     private void selectStudents() {
-        String titleText = "Select a student to record the history of.";
+        String titleText = "Select a student to record a history for.";
         ChangeListener doOnBackButton = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

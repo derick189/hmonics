@@ -288,9 +288,9 @@ public class ScreenManager {
                 backgroundTable.add(scrollPane).width(dateWidth + gameNameWidth + numberWidth + columnSeparator * 2).height((rowHeight + rowSeparator) * 6);
                 break;
             case GAMES:
-                gameNameWidth = 500;
-                int gameNameHeight = 300;
-                columnSeparator = 75;
+                gameNameWidth = 450;
+                int gameNameHeight = 200;
+                columnSeparator = 100;
 
                 bodyTable.background(AssetManager.backPlate);
                 Table gamesList = new Table();

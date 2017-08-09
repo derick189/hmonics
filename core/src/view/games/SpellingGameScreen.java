@@ -21,7 +21,7 @@ import view.GdxGame;
 import view.actors.Letter;
 import view.screens.TeamLogoSplashScreen;
 import viewmodel.ScreenManager;
-import viewmodel.SpellingGameStateMachine;
+import viewmodel.SpellingGameManager;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -47,7 +47,7 @@ public class SpellingGameScreen implements Screen {
     private Table spaceTable;
     private Container<Image> pictureContainer;
     private ArrayList<Container<Letter>> letterSpaces;
-    private SpellingGameStateMachine spellingGameStateMachine;
+    private SpellingGameManager spellingGameManager;
     public TextButton hintButton;
     public Label hintPopup;
     private int letterTableHeight = 360;
@@ -130,7 +130,7 @@ public class SpellingGameScreen implements Screen {
         skipButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                SpellingGameScreen.this.spellingGameStateMachine.changeToNextWord();
+                SpellingGameScreen.this.spellingGameManager.changeToNextWord();
             }
         });
         mainTable.addActor(skipButton);
@@ -158,7 +158,7 @@ public class SpellingGameScreen implements Screen {
         mainTable.addActor(hintPopup);
 
         // Start complementary state machine last
-        spellingGameStateMachine = new SpellingGameStateMachine(this);
+        spellingGameManager = new SpellingGameManager(this);
     }
 
     public void setDisplayLanguage(ScreenManager.Language language) {
@@ -299,7 +299,7 @@ public class SpellingGameScreen implements Screen {
                     }
                     Container<Letter> newParent = (Container<Letter>) getActor();
                     newParent.setActor((Letter) payload.getDragActor());
-                    SpellingGameScreen.this.spellingGameStateMachine.doEvent(SpellingGameStateMachine.Event.DROPPED_LETTER, payload.getDragActor());
+                    SpellingGameScreen.this.spellingGameManager.droppedLetter(payload.getDragActor());
                 }
             });
         }
