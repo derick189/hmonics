@@ -3,7 +3,9 @@ package model;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
+/**
+ * Each Student creates a History object after every game played.
+ */
 public class History {
     private String gamePlayed;
     private ArrayList<String> wordsSpelled;

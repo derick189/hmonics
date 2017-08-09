@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import model.DataManager;
 import view.AssetManager;
 import view.GdxGame;
 import view.games.SpellingGameScreen;
@@ -47,6 +48,9 @@ public class StudentScreen implements Screen {
      */
     private void selectTeachers() {
         String titleText = "Select a teacher to see their students.";
+        if (DataManager.getTeachers().size() == 0) {
+            titleText = "No teachers. Go back and create teacher.";
+        }
         ChangeListener doOnBackButton = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -70,7 +74,10 @@ public class StudentScreen implements Screen {
      * Shows the students under the selected teacher.
      */
     private void selectStudents() {
-        String titleText = "Select a student to record a history for.";
+        String titleText = "Select your name and let's play a game!";
+        if (ScreenManager.getSelectedTeacher().getStudents().size() == 0) {
+            titleText = "No students. Go back and add a student.";
+        }
         ChangeListener doOnBackButton = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
