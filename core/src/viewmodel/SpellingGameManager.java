@@ -28,7 +28,7 @@ public class SpellingGameManager {
         this.currentLanguage = ScreenManager.selectedLanguage;
         spellingGameScreen.setDisplayLanguage(currentLanguage);
 
-        this.currentStudent = DataManager.getTeachers().get(ScreenManager.selectedTeacherIndex).getStudents().get(ScreenManager.selectedStudentIndex);
+        this.currentStudent = ScreenManager.getSelectedStudent();
         this.currentStudent.startNewCurrentHistory(new History("Spelling Game"));
 
         this.sessionWordList = new ArrayList<Word>(DataManager.getWordList());
@@ -87,7 +87,7 @@ public class SpellingGameManager {
     }
 
     private void recordWord() {
-        DataManager.getStudents(ScreenManager.selectedTeacherIndex).get(ScreenManager.selectedStudentIndex).addToCurrentHistory(currentWord.getSpelling(currentLanguage));
+        ScreenManager.getSelectedStudent().addToCurrentHistory(currentWord.getSpelling(currentLanguage));
     }
 
     public void changeToNextWord() {

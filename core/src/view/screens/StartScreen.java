@@ -31,7 +31,7 @@ public class StartScreen implements Screen {
 
     private void setStage() {
         Table mainTable = new Table();
-        mainTable.setBounds(0, 0, GdxGame.WIDTH, GdxGame.height);
+        mainTable.setBounds(0, 0, GdxGame.virtualWidth, GdxGame.virtualHeight);
         stage.addActor(mainTable);
 
         clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/BigClick.mp3"));
@@ -63,9 +63,9 @@ public class StartScreen implements Screen {
 
         mainTable.add().height(425);
         mainTable.row();
-        mainTable.add(teacherButton).width(450).height(200);
+        mainTable.add(teacherButton).width(500).height(300);
         mainTable.add().width(350);
-        mainTable.add(studentButton).width(450).height(200);
+        mainTable.add(studentButton).width(500).height(300);
     }
 
     @Override

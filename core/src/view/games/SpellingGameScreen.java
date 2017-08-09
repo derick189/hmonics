@@ -1,6 +1,5 @@
 package view.games;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
@@ -71,7 +70,7 @@ public class SpellingGameScreen implements Screen {
     }
 
     /**
-     * Screen size in virtual pixels: WIDTH = 1920 height = 1080;
+     * Screen size in virtual pixels: virtualWidth = 1920 virtualHeight = 1080;
      */
     private void setStage() {
         TeamLogoSplashScreen.getBackgroundMusic().stop();
@@ -85,27 +84,27 @@ public class SpellingGameScreen implements Screen {
         stage.addActor(animationsGroup = new Group());
 
         Image backgroundImage = new Image(view.AssetManager.getTextureRegion("background"));
-        backgroundImage.setSize(GdxGame.WIDTH, GdxGame.height);
+        backgroundImage.setSize(GdxGame.virtualWidth, GdxGame.virtualHeight);
         backgroundGroup.addActor(backgroundImage);
 
         Table mainTable = new Table();
-        mainTable.setBounds(0, 0, GdxGame.WIDTH, GdxGame.height);
+        mainTable.setBounds(0, 0, GdxGame.virtualWidth, GdxGame.virtualHeight);
         actorsGroup.addActor(mainTable);
 
-        letterTable = new Table();
-        letterTable.setBounds(mainTable.getWidth() / 2, (mainTable.getHeight() - letterTableHeight) - 20, 0, letterTableHeight);
-        mainTable.addActor(letterTable);
-        pictureTable = new Table();
-        pictureTable.setBounds(mainTable.getWidth() / 2, ((mainTable.getHeight() - pictureSize) / 2) - 60, 0, pictureSize);
         // Move picture table to fit the Hmong alphabet
-        if (Gdx.app.getType() == Application.ApplicationType.iOS && ScreenManager.selectedLanguage == ScreenManager.Language.HMONG) {
-            pictureTable.setBounds(mainTable.getWidth() / 2, ((mainTable.getHeight() - pictureSize) / 4) + 60, 0, pictureSize);
-            letterTable.setBounds(mainTable.getWidth() / 2, (mainTable.getHeight() - letterTableHeight) - 170, 0, letterTableHeight);
-        }
-        mainTable.addActor(pictureTable);
+//        if (view.GdxGame.isResolution43 && ScreenManager.selectedLanguage == ScreenManager.Language.HMONG) {
+//            pictureTable.setBounds(mainTable.getWidth() / 2, ((mainTable.getHeight() - pictureSize) / 4) + 60, 0, pictureSize);
+//            letterTable.setBounds(mainTable.getWidth() / 2, (mainTable.getHeight() - letterTableHeight) - 170, 0, letterTableHeight);
+//        }
         spaceTable = new Table();
         spaceTable.setBounds(mainTable.getWidth() / 2, 50, 0, letterSpaceHeight);
         mainTable.addActor(spaceTable);
+        pictureTable = new Table();
+        pictureTable.setBounds(mainTable.getWidth() / 2, 50 + letterSpaceHeight + 20, 0, pictureSize);
+        mainTable.addActor(pictureTable);
+        letterTable = new Table();
+//        letterTable.setBounds(mainTable.getWidth() / 2, GdxGame.virtualHeight - letterTableHeight, 0, 0);
+        mainTable.add(letterTable).expand().top().padTop(20);
 
         pictureTable.add(pictureContainer = new Container<Image>().size(pictureSize));
         letterSpaces = new ArrayList<Container<Letter>>();
@@ -172,12 +171,12 @@ public class SpellingGameScreen implements Screen {
      */
     private void setAlphabet(ScreenManager.Language language) {
         int numRows = 3;
-        int iosCol = 5;
+        int numCol = 5;
         int letterSelectSize = 89;
-        if (Gdx.app.getType() == Application.ApplicationType.iOS) {
+        if (GdxGame.isResolution43) {
             letterSelectSize += 20;
-            numRows += 1;
-            iosCol -= 5;
+            numRows += 2;
+            numCol -= 5;
         }
         letterTable.clearChildren();
         switch (language) {
@@ -216,9 +215,9 @@ public class SpellingGameScreen implements Screen {
                 letterTable.add(tonesTable);
 
                 for (int i = 0; i < numRows; i++) { // row
-                    for (int j = 0; j < 10 + iosCol; j++) { // column
-                        if ((i * (10 + iosCol)) + j < consonants.length) { // leaves empty spaces
-                            Letter letter = new Letter(consonants[(i * (10 + iosCol)) + j], letterSelectSize - 10);
+                    for (int j = 0; j < 10 + numCol; j++) { // column
+                        if ((i * (10 + numCol)) + j < consonants.length) { // leaves empty spaces
+                            Letter letter = new Letter(consonants[(i * (10 + numCol)) + j], letterSelectSize - 10);
                             consonantsTable.add(new Container<Letter>(letter).size(letterSelectSize));
                             setLetterAsDraggable(letter);
                         }

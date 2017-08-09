@@ -40,6 +40,7 @@ public class DataManager {
             student.startNewCurrentHistory(history = new History("Spelling Game"));
             history.addWord("bird");
             history.addWord("cat");
+            history.addWord("dog");
         }
     }
 
