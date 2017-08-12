@@ -29,23 +29,16 @@ public class DataManager {
         wordList.add(new Word("dragon", "zaj", 3));
 
         // TESTING
-//        addTeacher(new Teacher("Mrs. Anderson"));
-//        addTeacher(new Teacher("Mr. Johnson"));
-//        addTeacher(new Teacher("Mrs. Smith"));
-//
-//        addStudent(1, new Student("Jared"));
-//        addStudent(1, new Student("Derick"));
-//        addStudent(1, new Student("Philip"));
-//
-//        for (int i = 0; i < 9; i++) {
-//            Student student;
-//            addStudent(0, student = new Student("Student " + (i + 1)));
-//            History history;
-//            student.startNewCurrentHistory(history = new History("Spelling Game"));
-//            history.addWord("bird");
-//            history.addWord("cat");
-//            history.addWord("dog");
-//        }
+        addTeacher(new Teacher("Teacher"));
+
+        Student student = new Student("Student");
+        addStudent(0, student);
+
+        History history = new History("Spelling Game");
+        student.startNewCurrentHistory(history);
+        history.addWord("cat");
+        history.addWord("bird");
+        history.addWord("dog");
     }
 
     public static ArrayList<Word> getWordList() {
