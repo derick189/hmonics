@@ -23,13 +23,13 @@ import java.util.ArrayList;
  */
 public class ScreenManager {
     public static Language selectedLanguage;
+    public static int selectedTeacherIndex;
+    public static String selectedTeacherName;
+    public static int selectedStudentIndex;
+    public static String selectedStudentName;
 
     private static GdxGame game;
     private static Screen previousScreen;
-    private static int selectedTeacherIndex;
-    private static String selectedTeacherName;
-    private static int selectedStudentIndex;
-    private static String selectedStudentName;
 
     public static void start(GdxGame gdxGame, Screen firstScreen) {
         ScreenManager.game = gdxGame;

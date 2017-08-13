@@ -23,9 +23,6 @@ public class Word implements Comparable<String> {
 
     /**
      * Simply returns a string based on what language
-     *
-     * @param language
-     * @return
      */
     public String getSpelling(Language language) {
         switch (language) {

@@ -39,7 +39,6 @@ public class StartScreen implements Screen {
         Image background = new Image(AssetManager.getTextureRegion("StartScreenBackground"));
         mainTable.setBackground(background.getDrawable());
 
-//        TextButton teacherButton = new TextButton("Teacher", AssetManager.textButtonStyle64);
         Drawable drawable = new TextureRegionDrawable(AssetManager.getTextureRegion("TeacherButtonSkin"));
         ImageButton teacherButton = new ImageButton(drawable);
         teacherButton.addListener(new ChangeListener() {
@@ -50,7 +49,6 @@ public class StartScreen implements Screen {
             }
         });
 
-//        TextButton studentButton = new TextButton("Student", AssetManager.textButtonStyle64);
         drawable = new TextureRegionDrawable(AssetManager.getTextureRegion("StudentButtonSkin"));
         ImageButton studentButton = new ImageButton(drawable);
         studentButton.addListener(new ChangeListener() {

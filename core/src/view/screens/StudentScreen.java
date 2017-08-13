@@ -113,8 +113,8 @@ public class StudentScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 clickSound.play();
-                clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/cheer.mp3"));
-                clickSound.play();
+                Sound cheerSound = Gdx.audio.newSound(Gdx.files.internal("sounds/SFX/cheer.mp3"));
+                cheerSound.play();
                 ScreenManager.setPreviousScreen(StudentScreen.this);
                 ScreenManager.setScreen(new SpellingGameScreen(StudentScreen.this.game));
             }
