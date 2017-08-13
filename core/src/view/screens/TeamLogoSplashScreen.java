@@ -11,6 +11,10 @@ import view.AssetManager;
 import view.GdxGame;
 import viewmodel.ScreenManager;
 
+/**
+ * Team All Day Every Day credit.
+ * @authors Derick Lenvik, Jared Johnson
+ */
 public class TeamLogoSplashScreen implements Screen {
     private GdxGame game;
     private Stage stage;

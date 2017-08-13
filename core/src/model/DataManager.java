@@ -1,17 +1,25 @@
 package model;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.utils.Json;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
 /**
- * Handles Teachers, Students, and Words storage.
+ * Utility class that persists data and handles Teachers, Students, and Words storage and population.
+ * @authors Derick Lenvik, Jared Johnson
  */
 public class DataManager {
     private static ArrayList<Teacher> teachers = new ArrayList<Teacher>();
     private static ArrayList<Word> wordList = new ArrayList<Word>();
+    private static Preferences prefs= Gdx.app.getPreferences("My Preferences");
+
+    private DataManager() {} // Constructor prevents outside instantiation
 
     public static void populate() {
+        load();
         wordList.add(new Word("apple", "kua", 2));
         wordList.add(new Word("money", "nyiaj", 3));
         wordList.add(new Word("bird", "noog", 3));
@@ -27,18 +35,15 @@ public class DataManager {
         wordList.add(new Word("pumpkin", "taub dag", 7));
         wordList.add(new Word("sheep", "yaj", 3));
         wordList.add(new Word("dragon", "zaj", 3));
-
         // TESTING
-        addTeacher(new Teacher("Teacher"));
-
-        Student student = new Student("Student");
-        addStudent(0, student);
-
-        History history = new History("Spelling Game");
-        student.startNewCurrentHistory(history);
-        history.addWord("cat");
-        history.addWord("bird");
-        history.addWord("dog");
+//        addTeacher(new Teacher("Teacher"));
+//        Student student = new Student("Student");
+//        addStudent(0, student);
+//        History history = new History("Spelling Game");
+//        student.startNewCurrentHistory(history);
+//        history.addWord("cat");
+//        history.addWord("bird");
+//        history.addWord("dog");
     }
 
     public static ArrayList<Word> getWordList() {
@@ -85,17 +90,31 @@ public class DataManager {
 
     public static void addTeacher(Teacher teacher) {
         teachers.add(teacher);
+        save();
     }
 
     public static void removeTeacher(int teacherIndex) {
         teachers.remove(teacherIndex);
+        save();
     }
 
     public static void addStudent(int teacherIndex, Student student) {
         teachers.get(teacherIndex).getStudents().add(student);
+        save();
     }
 
     public static void removeStudent(int teacherIndex, int studentIndex) {
         teachers.get(teacherIndex).getStudents().remove(studentIndex);
+        save();
     }
+    /**
+     * Persist data
+     */
+    public static void save() {
+        String json = new Json().toJson(teachers);
+        prefs.putString("teachers", json);
+        // bulk update the preferences
+        prefs.flush();
+    }
+    private static void load() { teachers = new Json().fromJson(ArrayList.class, prefs.getString("teachers")); }
 }

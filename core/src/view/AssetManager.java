@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 /**
  * Stores all of the assets for use with libGDX.
+ * @authors Derick Lenvik, Jared Johnson
  */
 public class AssetManager {
     public static TextureAtlas atlas;

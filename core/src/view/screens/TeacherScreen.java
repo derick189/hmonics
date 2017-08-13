@@ -16,6 +16,7 @@ import viewmodel.ScreenManager;
 
 /**
  * Screen for the teacher to use.
+ * @authors Derick Lenvik, Jared Johnson
  */
 public class TeacherScreen implements Screen {
     private GdxGame game;

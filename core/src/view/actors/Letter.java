@@ -3,8 +3,11 @@ package view.actors;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import view.AssetManager;
 
+/**
+ * Each Letter can have a different spelling if it is a tone.
+ * @authors Derick Lenvik, Jared Johnson
+ */
 public class Letter extends TextButton {
-    // Can have special spelling for tones.
     private String spelling;
 
     public Letter(String name, int size) {

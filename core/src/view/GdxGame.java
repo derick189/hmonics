@@ -10,6 +10,7 @@ import view.screens.TeamLogoSplashScreen;
 
 /**
  * Used by libGDX to draw everything on the currently set screen.
+ * @authors Derick Lenvik, Jared Johnson
  */
 public class GdxGame extends Game {
     public static int virtualWidth = 1920;

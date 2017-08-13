@@ -11,6 +11,10 @@ import view.AssetManager;
 import view.GdxGame;
 import viewmodel.ScreenManager;
 
+/**
+ * Credits shown for libGDX and music. (Loading delay simulated)
+ * @authors Derick Lenvik, Jared Johnson
+ */
 public class LibGDXSplashScreen implements Screen {
     private GdxGame game;
     private Stage stage;

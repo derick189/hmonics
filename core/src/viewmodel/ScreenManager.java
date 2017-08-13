@@ -18,8 +18,8 @@ import view.screens.TeacherScreen;
 import java.util.ArrayList;
 
 /**
- * Creates screens and manages the global state variables.
- * Stores a previous screen when appropriate.
+ * Creates screens and manages the global state variables. Stores a previous screen when appropriate.
+ * @authors Derick Lenvik, Jared Johnson
  */
 public class ScreenManager {
     public static Language selectedLanguage;
