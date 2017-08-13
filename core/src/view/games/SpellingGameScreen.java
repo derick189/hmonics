@@ -25,6 +25,10 @@ import viewmodel.SpellingGameManager;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Currently, the only game screen.
+ * @authors Derick Lenvik, Jared Johnson
+ */
 public class SpellingGameScreen implements Screen {
     private GdxGame game;
     private Stage stage;

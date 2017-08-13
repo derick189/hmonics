@@ -17,6 +17,7 @@ import viewmodel.ScreenManager;
 
 /**
  * Screen for the student to use.
+ * @authors Derick Lenvik, Jared Johnson
  */
 public class StudentScreen implements Screen {
     private GdxGame game;
@@ -49,7 +50,7 @@ public class StudentScreen implements Screen {
     private void selectTeachers() {
         String titleText = "Select a teacher to see their students.";
         if (DataManager.getTeachers().size() == 0) {
-            titleText = "No teachers. Go back and create teacher.";
+            titleText = "Go back and create a teacher first.";
         }
         ChangeListener doOnBackButton = new ChangeListener() {
             @Override

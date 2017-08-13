@@ -16,6 +16,10 @@ import view.AssetManager;
 import view.GdxGame;
 import viewmodel.ScreenManager;
 
+/**
+ * Main screen displays Teacher and Student buttons.
+ * @authors Derick Lenvik, Jared Johnson
+ */
 public class StartScreen implements Screen {
     private GdxGame game;
     private Stage stage;

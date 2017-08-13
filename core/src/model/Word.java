@@ -5,6 +5,7 @@ import viewmodel.ScreenManager.Language;
 /**
  * A Word has an english and hmong spelling. The ID associated with a Word is the english spelling. A hmong word has
  * a certain amount of game spaces that differ from character count.
+ * @authors Derick Lenvik, Jared Johnson
  */
 public class Word implements Comparable<String> {
     private String englishSpelling;

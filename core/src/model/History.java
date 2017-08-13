@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 /**
  * Each Student creates a History object after every game played.
+ * @authors Derick Lenvik, Jared Johnson
  */
 public class History {
     private String gamePlayed;
@@ -19,6 +20,8 @@ public class History {
         date = new Date();
         timestamp = dateFormat.format(date);
     }
+
+    public History(){} // Constructor for DataManager.load() --> data persist
 
     public String getGamePlayed() {
         return gamePlayed;

@@ -15,6 +15,7 @@ import java.util.Random;
 
 /**
  * This class handles each letter drop in the Spelling Game.
+ * @authors Derick Lenvik, Jared Johnson
  */
 public class SpellingGameManager {
     private Random random;
@@ -115,8 +116,11 @@ public class SpellingGameManager {
             return sessionWordList.get(0);
         }
     }
-
+    /**
+     * After all words attempted, persist history data and go back to game screen
+     */
     private void gameComplete() {
+        DataManager.save();
         InputEvent event = new InputEvent();
         event.setType(InputEvent.Type.touchDown);
         spellingGameScreen.backButton.fire(event);

@@ -2,6 +2,10 @@ package model;
 
 import java.util.ArrayList;
 
+/**
+ * Every Student has a game History
+ * @authors Derick Lenvik, Jared Johnson
+ */
 public class Student {
     private String name;
     private ArrayList<History> gameHistories;
@@ -11,6 +15,7 @@ public class Student {
         this.name = name;
         gameHistories = new ArrayList<History>();
     }
+    public Student(){} // Constructor for DataManager.load() --> data persist
 
     public String getName() {
         return name;
