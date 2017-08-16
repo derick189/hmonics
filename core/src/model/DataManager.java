@@ -16,7 +16,7 @@ public class DataManager {
     private static ArrayList<Word> wordList = new ArrayList<Word>();
     private static Preferences prefs= Gdx.app.getPreferences("My Preferences");
 
-    private DataManager() {} // Constructor prevents outside instantiation
+    public DataManager() {} // Constructor for DataManager.load() --> data persist
 
     public static void populate() {
         load();
