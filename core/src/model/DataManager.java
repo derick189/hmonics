@@ -16,7 +16,7 @@ public class DataManager {
     private static ArrayList<Word> wordList = new ArrayList<Word>();
     private static Preferences prefs= Gdx.app.getPreferences("My Preferences");
 
-    public DataManager() {} // Constructor for DataManager.load() --> data persist
+    private DataManager() {} // Constructor to prevent outside instantiation
 
     public static void populate() {
         load();
@@ -109,6 +109,8 @@ public class DataManager {
     }
     /**
      * Persist data
+     * TODO: iOS 9.3 persisting data on iPad, not iOS 10.whatever on iPhone: just get crash when select Teacher from start screen
+     * Reminder on where data persists on different devices: https://github.com/libgdx/libgdx/wiki/Preferences
      */
     public static void save() {
         String json = new Json().toJson(teachers);
@@ -116,5 +118,9 @@ public class DataManager {
         // bulk update the preferences
         prefs.flush();
     }
-    private static void load() { teachers = new Json().fromJson(ArrayList.class, prefs.getString("teachers")); }
+    private static void load() {
+        if (prefs.getString("teachers") != null) { // If not the first app launch
+            teachers = new Json().fromJson(ArrayList.class, prefs.getString("teachers"));
+        }
+    }
 }
