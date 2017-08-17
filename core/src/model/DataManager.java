@@ -109,8 +109,6 @@ public class DataManager {
     }
     /**
      * Persist data
-     * TODO: iOS 9.3 persisting data on iPad, not iOS 10.whatever on iPhone: just get crash when select Teacher from start screen
-     * Reminder on where data persists on different devices: https://github.com/libgdx/libgdx/wiki/Preferences
      */
     public static void save() {
         String json = new Json().toJson(teachers);
@@ -119,7 +117,7 @@ public class DataManager {
         prefs.flush();
     }
     private static void load() {
-        if (prefs.getString("teachers") != null) { // If not the first app launch
+        if (!prefs.get().isEmpty()) { // If not the first app launch
             teachers = new Json().fromJson(ArrayList.class, prefs.getString("teachers"));
         }
     }
